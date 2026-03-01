@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { DashboardController } from "./controllers/dashboard.controller";
+import { KYCController } from "./controllers/kyc.controller";
 import { authenticate } from "../auth/middlewares/auth.middleware";
 
 const router = Router();
@@ -21,6 +22,11 @@ router.get("/properties", DashboardController.getProperties);
 
 // Lead Inquiries
 router.patch("/inquiry/:id/status", DashboardController.updateInquiryStatus);
+
+// KYC Management
+router.get("/kyc", KYCController.getAllSubmissions);
+router.patch("/kyc/:id/status", KYCController.updateStatus);
+router.get("/kyc/:id/summary", KYCController.getSummary);
 
 import { PropertyController } from "./controllers/property.controller";
 import { upload } from "../middlewares/upload.middleware";

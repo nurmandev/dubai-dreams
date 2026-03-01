@@ -9,6 +9,7 @@ import {
   ChevronLeft,
   X,
   Menu,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -25,6 +26,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobile }: AdminSidebarProps) => {
     { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
     { label: "Properties", icon: Building2, path: "/admin/properties" },
     { label: "Lead Management", icon: MessageSquare, path: "/admin/inquiries" },
+    { label: "KYC Management", icon: FileText, path: "/admin/kyc" },
     { label: "Profile", icon: User, path: "/admin/profile" },
   ];
 
