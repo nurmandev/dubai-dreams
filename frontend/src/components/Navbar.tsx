@@ -8,7 +8,6 @@ const navLinks = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Properties", path: "/properties" },
-  { label: "Off-Plan", path: "/properties?category=off-plan" },
   { label: "Blog", path: "/blog" },
   { label: "Contact", path: "/contact" },
 ];
@@ -78,7 +77,7 @@ const Navbar = () => {
               <>
                 {user.role === "admin" && (
                   <Button variant="hero-outline" size="sm" asChild>
-                    <Link to="/admin">Admin Panel</Link>
+                    <Link to="/admin">Dashboard</Link>
                   </Button>
                 )}
                 <Button variant="hero-outline" size="sm" onClick={handleLogout}>
@@ -136,7 +135,7 @@ const Navbar = () => {
                       className="mt-4"
                     >
                       <Link to="/admin" onClick={() => setIsOpen(false)}>
-                        Admin Panel
+                        Dashboard
                       </Link>
                     </Button>
                   )}
