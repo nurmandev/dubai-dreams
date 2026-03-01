@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -13,15 +13,34 @@ import {
 import { motion } from "framer-motion";
 import PropertyCard from "@/components/PropertyCard";
 import Layout from "@/components/Layout";
-import { sampleProperties } from "@/data/properties";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { Property as PropertyType } from "@/data/properties";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [properties, setProperties] = useState<PropertyType[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchType, setSearchType] = useState("buy");
+  const [locationValue, setLocationValue] = useState("");
+  const [propType, setPropType] = useState("all");
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (locationValue) params.set("search", locationValue);
+    if (propType !== "all") params.set("type", propType);
+
+    // Map searchType to category
+    let category = "all";
+    if (searchType === "off-plan") category = "off-plan";
+    if (searchType === "rent") category = "rental";
+    if (searchType === "buy") category = "secondary";
+
+    params.set("category", category);
+
+    navigate(`/properties?${params.toString()}`);
+  };
+  // ... (rest of the component structure)
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -130,21 +149,52 @@ const Index = () => {
                 ))}
               </div>
               <div className="flex flex-col sm:flex-row gap-2">
-                <div className="flex-1 flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3">
+                <div className="flex-1 flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 min-w-0">
                   <MapPin className="w-4 h-4 text-gold shrink-0" />
                   <input
                     type="text"
+                    value={locationValue}
+                    onChange={(e) => setLocationValue(e.target.value)}
                     placeholder="Search by location..."
                     className="bg-transparent text-primary-foreground placeholder:text-primary-foreground/40 font-body text-sm w-full outline-none"
                   />
                 </div>
-                <div className="flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3">
-                  <span className="text-primary-foreground/40 font-body text-sm">
-                    Type
-                  </span>
-                  <ChevronDown className="w-4 h-4 text-primary-foreground/40" />
+                <div className="flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 shrink-0">
+                  <select
+                    value={propType}
+                    onChange={(e) => setPropType(e.target.value)}
+                    className="bg-transparent text-primary-foreground font-body text-sm outline-none cursor-pointer appearance-none pr-6"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.4)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right center",
+                      backgroundSize: "1rem",
+                    }}
+                  >
+                    <option value="all" className="bg-primary text-white">
+                      All Types
+                    </option>
+                    <option value="apartment" className="bg-primary text-white">
+                      Apartment
+                    </option>
+                    <option value="villa" className="bg-primary text-white">
+                      Villa
+                    </option>
+                    <option value="townhouse" className="bg-primary text-white">
+                      Townhouse
+                    </option>
+                    <option value="penthouse" className="bg-primary text-white">
+                      Penthouse
+                    </option>
+                  </select>
                 </div>
-                <Button variant="gold" size="lg" className="shrink-0">
+                <Button
+                  variant="gold"
+                  size="lg"
+                  className="shrink-0"
+                  onClick={handleSearch}
+                >
                   <Search className="w-4 h-4" />
                   Search
                 </Button>

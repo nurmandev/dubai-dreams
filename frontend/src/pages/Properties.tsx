@@ -11,14 +11,22 @@ import { Button } from "@/components/ui/button";
 const Properties = () => {
   const [searchParams] = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
+  const initialSearch = searchParams.get("search") || "";
+  const initialType = searchParams.get("type") || "all";
 
   const [properties, setProperties] = useState<PropertyType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
-  const [propertyType, setPropertyType] = useState("all");
+  const [propertyType, setPropertyType] = useState(initialType);
   const [bedrooms, setBedrooms] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
+
+  useEffect(() => {
+    setCategory(searchParams.get("category") || "all");
+    setSearch(searchParams.get("search") || "");
+    setPropertyType(searchParams.get("type") || "all");
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchProperties = async () => {
