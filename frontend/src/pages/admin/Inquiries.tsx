@@ -135,24 +135,24 @@ const ManageInquiries = () => {
 
               <div className="flex flex-col lg:flex-row justify-between gap-8">
                 <div className="flex-1 space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center text-white font-bold font-display text-xl uppercase shadow-lg shadow-primary/20">
+                  <div className="flex items-start gap-5">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-bold font-display text-2xl uppercase shrink-0 border border-primary/5">
                       {inquiry.name[0]}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="font-display font-black text-foreground text-lg md:text-xl tracking-tight leading-none">
+                    <div className="pt-1">
+                      <div className="flex flex-wrap items-center gap-3 mb-2">
+                        <h3 className="font-display font-black text-foreground text-xl md:text-2xl tracking-tight leading-none">
                           {inquiry.name}
                         </h3>
                         {inquiry.status === "resolved" && (
-                          <span className="px-2 py-0.5 rounded-full bg-emerald/10 text-emerald text-[9px] font-black uppercase tracking-widest border border-emerald/20">
+                          <span className="px-3 py-1 rounded-full bg-emerald/10 text-emerald text-[10px] font-black uppercase tracking-widest border border-emerald/20">
                             Resolved
                           </span>
                         )}
                       </div>
                       {inquiry.propertyTitle && (
-                        <p className="text-[10px] md:text-xs font-body font-bold text-gold uppercase tracking-widest flex items-center gap-1.5 px-2 py-0.5 bg-gold/5 rounded-full border border-gold/10 w-fit">
-                          <Building2 className="w-3 h-3" />{" "}
+                        <p className="text-[10px] md:text-xs font-body font-bold text-gold uppercase tracking-widest flex items-center gap-2 px-3 py-1 bg-gold/5 rounded-lg border border-gold/10 w-fit">
+                          <Building2 className="w-3.5 h-3.5" />{" "}
                           {inquiry.propertyTitle}
                         </p>
                       )}
@@ -165,21 +165,33 @@ const ManageInquiries = () => {
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap gap-x-6 gap-y-3 pt-2">
-                    <a
-                      href={`mailto:${inquiry.email}`}
-                      className="flex items-center gap-2 text-primary font-body font-bold text-xs hover:text-gold transition-colors border-b border-primary/10 pb-1"
-                    >
-                      <Mail className="w-3.5 h-3.5" /> {inquiry.email}
-                    </a>
-                    <a
-                      href={`tel:${inquiry.phone}`}
-                      className="flex items-center gap-2 text-muted-foreground font-body font-bold text-xs hover:text-gold transition-colors border-b border-border/20 pb-1"
-                    >
-                      <PhoneIcon className="w-3.5 h-3.5" /> {inquiry.phone}
-                    </a>
-                    <div className="flex items-center gap-2 text-muted-foreground/40 font-mono text-[10px]">
-                      <Calendar className="w-3 h-3" />{" "}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-border/50">
+                    <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+                      <a
+                        href={`mailto:${inquiry.email}`}
+                        className="flex items-center gap-2.5 text-primary font-body font-bold text-sm hover:text-gold transition-colors group/link"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center group-hover/link:bg-gold/10 transition-colors">
+                          <Mail className="w-4 h-4" />
+                        </div>
+                        <span className="border-b border-primary/10">
+                          {inquiry.email}
+                        </span>
+                      </a>
+                      <a
+                        href={`tel:${inquiry.phone}`}
+                        className="flex items-center gap-2.5 text-muted-foreground font-body font-bold text-sm hover:text-gold transition-colors group/link"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center group-hover/link:bg-gold/10 transition-colors">
+                          <PhoneIcon className="w-4 h-4" />
+                        </div>
+                        <span className="border-b border-border/20">
+                          {inquiry.phone}
+                        </span>
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-2.5 text-muted-foreground/50 font-mono text-[11px] sm:ml-auto">
+                      <Calendar className="w-3.5 h-3.5" />{" "}
                       {new Date(inquiry.createdAt).toLocaleString(undefined, {
                         dateStyle: "medium",
                         timeStyle: "short",
@@ -188,18 +200,18 @@ const ManageInquiries = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-row lg:flex-col justify-stretch gap-3 lg:w-48 pt-4 lg:pt-0 border-t lg:border-t-0 lg:border-l border-border mt-4 lg:mt-0 lg:pl-8">
+                <div className="flex flex-col sm:flex-row lg:flex-col justify-stretch gap-3 lg:w-56 pt-6 lg:pt-0 border-t lg:border-t-0 lg:border-l border-border mt-2 lg:mt-0 lg:pl-10">
                   {inquiry.status !== "resolved" && (
                     <button
                       onClick={() => handleStatusUpdate(inquiry.id, "resolved")}
-                      className="flex-1 items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gold text-white font-display font-bold text-xs uppercase tracking-widest hover:bg-primary transition-all flex shadow-lg shadow-gold/20 active:scale-95"
+                      className="flex-1 items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-gold text-white font-display font-bold text-xs uppercase tracking-[0.15em] hover:bg-primary transition-all flex shadow-xl shadow-gold/20 active:scale-[0.98]"
                     >
                       <CheckCircle2 className="w-4 h-4" /> Resolve
                     </button>
                   )}
                   <button
                     onClick={() => handleStatusUpdate(inquiry.id, "archived")}
-                    className="flex-1 items-center justify-center gap-2 px-6 py-4 rounded-xl bg-muted text-foreground/50 font-display font-bold text-xs uppercase tracking-widest hover:bg-destructive/10 hover:text-destructive transition-all flex border border-transparent hover:border-destructive/20"
+                    className="flex-1 items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-muted text-foreground/50 font-display font-bold text-xs uppercase tracking-[0.15em] hover:bg-destructive/10 hover:text-destructive transition-all flex border border-transparent hover:border-destructive/20 active:scale-[0.98]"
                   >
                     <Trash2 className="w-4 h-4" /> Archive
                   </button>
