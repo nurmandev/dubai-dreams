@@ -1,0 +1,84 @@
+import { Link } from "react-router-dom";
+import { Bed, Bath, Maximize } from "lucide-react";
+import { Property, formatPrice } from "@/data/properties";
+import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
+
+interface PropertyCardProps {
+  property: Property;
+  index?: number;
+}
+
+const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
+  const categoryLabel = {
+    "off-plan": "Off-Plan",
+    secondary: "Resale",
+    rental: "Rental",
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
+      <Link
+        to={`/properties/${property.id}`}
+        className="group block bg-card rounded-lg overflow-hidden shadow-luxury hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+      >
+        {/* Image */}
+        <div className="relative h-64 overflow-hidden">
+          <img
+            src={property.image}
+            alt={property.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            loading="lazy"
+          />
+          <div className="absolute top-4 left-4 flex gap-2">
+            <Badge className="bg-primary text-primary-foreground font-body text-xs">
+              {categoryLabel[property.category]}
+            </Badge>
+            {property.status === "ready" && (
+              <Badge className="bg-gold text-accent-foreground font-body text-xs">
+                Ready
+              </Badge>
+            )}
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/80 to-transparent p-4">
+            <p className="text-primary-foreground font-display text-xl font-semibold">
+              {formatPrice(property.price, property.category)}
+            </p>
+          </div>
+        </div>
+
+        {/* Details */}
+        <div className="p-5">
+          <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-emerald transition-colors line-clamp-1">
+            {property.title}
+          </h3>
+          <p className="text-muted-foreground text-sm font-body mt-1">
+            {property.location}
+          </p>
+
+          <div className="flex items-center gap-5 mt-4 pt-4 border-t border-border">
+            <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+              <Bed className="w-4 h-4 text-gold" />
+              {property.bedrooms}
+            </span>
+            <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+              <Bath className="w-4 h-4 text-gold" />
+              {property.bathrooms}
+            </span>
+            <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+              <Maximize className="w-4 h-4 text-gold" />
+              {property.area.toLocaleString()} sq.ft
+            </span>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+};
+
+export default PropertyCard;

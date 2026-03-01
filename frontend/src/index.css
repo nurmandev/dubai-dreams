@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 97%;
+    --foreground: 160 30% 10%;
+
+    --card: 40 25% 95%;
+    --card-foreground: 160 30% 10%;
+
+    --popover: 40 20% 97%;
+    --popover-foreground: 160 30% 10%;
+
+    --primary: 160 45% 22%;
+    --primary-foreground: 40 30% 95%;
+
+    --secondary: 40 40% 90%;
+    --secondary-foreground: 160 30% 15%;
+
+    --muted: 40 15% 92%;
+    --muted-foreground: 160 10% 45%;
+
+    --accent: 42 80% 55%;
+    --accent-foreground: 160 40% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 160 45% 22%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 160 30% 8%;
+    --sidebar-foreground: 40 20% 90%;
+    --sidebar-primary: 42 80% 55%;
+    --sidebar-primary-foreground: 160 40% 10%;
+    --sidebar-accent: 160 25% 15%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 160 20% 18%;
+    --sidebar-ring: 42 80% 55%;
+
+    /* Custom tokens */
+    --gold: 42 80% 55%;
+    --gold-light: 42 70% 70%;
+    --gold-dark: 42 85% 40%;
+    --emerald: 160 45% 22%;
+    --emerald-light: 160 35% 35%;
+    --emerald-dark: 160 50% 12%;
+    --cream: 40 30% 95%;
+    --cream-dark: 40 20% 88%;
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  .dark {
+    --background: 160 30% 6%;
+    --foreground: 40 20% 95%;
+    --card: 160 25% 10%;
+    --card-foreground: 40 20% 95%;
+    --popover: 160 25% 10%;
+    --popover-foreground: 40 20% 95%;
+    --primary: 42 80% 55%;
+    --primary-foreground: 160 40% 10%;
+    --secondary: 160 20% 15%;
+    --secondary-foreground: 40 20% 90%;
+    --muted: 160 15% 15%;
+    --muted-foreground: 40 10% 60%;
+    --accent: 42 80% 55%;
+    --accent-foreground: 160 40% 10%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 160 15% 18%;
+    --input: 160 15% 18%;
+    --ring: 42 80% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 50%, hsl(var(--gold)) 100%);
+  }
+
+  .bg-gradient-hero {
+    background: linear-gradient(180deg, hsla(160, 50%, 8%, 0.7) 0%, hsla(160, 40%, 5%, 0.85) 100%);
+  }
+
+  .bg-gradient-emerald {
+    background: linear-gradient(135deg, hsl(var(--emerald-dark)) 0%, hsl(var(--emerald)) 100%);
+  }
+
+  .bg-gradient-gold {
+    background: linear-gradient(135deg, hsl(var(--gold-dark)) 0%, hsl(var(--gold)) 50%, hsl(var(--gold-light)) 100%);
+  }
+
+  .shadow-luxury {
+    box-shadow: 0 20px 60px -15px hsla(160, 40%, 10%, 0.15), 0 0 0 1px hsla(42, 80%, 55%, 0.05);
+  }
+
+  .shadow-gold {
+    box-shadow: 0 4px 20px -4px hsla(42, 80%, 55%, 0.3);
+  }
+
+  .border-gold {
+    border-color: hsl(var(--gold));
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--emerald));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--emerald-light));
+}

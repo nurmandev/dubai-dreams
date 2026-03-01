@@ -1,0 +1,485 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AdminLayout from "@/components/AdminLayout";
+import { api } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import {
+  ArrowLeft,
+  Save,
+  Building2,
+  MapPin,
+  Tag,
+  Info,
+  Bed,
+  Bath,
+  Square,
+  Calendar,
+  Home,
+  Car,
+  DollarSign,
+  FileText,
+  Video,
+  Upload,
+  X,
+  Image as ImageIcon,
+  Trash2,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+const AddProperty = () => {
+  const navigate = useNavigate();
+  const [saving, setSaving] = useState(false);
+  const [amenitiesText, setAmenitiesText] = useState("");
+
+  // File handling for New Assets
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
+  const [floorPlans, setFloorPlans] = useState<File[]>([]);
+  const [floorPlanPreviews, setFloorPlanPreviews] = useState<string[]>([]);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    location: "",
+    address: "",
+    price: "",
+    propertyType: "apartment",
+    status: "active",
+    listedIn: "Buy",
+    bedrooms: "",
+    bathrooms: "",
+    area: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "United Arab Emirates",
+    yearBuilt: new Date().getFullYear().toString(),
+    kitchens: "1",
+    garages: "0",
+    garageSize: "0",
+    floorsNo: "1",
+    yearlyTaxRate: "0",
+    videoUrl: "",
+  });
+
+  const handleFilesChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "images" | "floorPlans",
+  ) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+
+      if (type === "images") {
+        setImages((prev) => [...prev, ...newFiles]);
+        setImagePreviews((prev) => [...prev, ...newPreviews]);
+      } else {
+        setFloorPlans((prev) => [...prev, ...newFiles]);
+        setFloorPlanPreviews((prev) => [...prev, ...newPreviews]);
+      }
+    }
+  };
+
+  const removeFile = (index: number, type: "images" | "floorPlans") => {
+    if (type === "images") {
+      setImages((prev) => prev.filter((_, i) => i !== index));
+      setImagePreviews((prev) => {
+        URL.revokeObjectURL(prev[index]);
+        return prev.filter((_, i) => i !== index);
+      });
+    } else {
+      setFloorPlans((prev) => prev.filter((_, i) => i !== index));
+      setFloorPlanPreviews((prev) => {
+        URL.revokeObjectURL(prev[index]);
+        return prev.filter((_, i) => i !== index);
+      });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+
+    try {
+      const amenitiesArray = amenitiesText
+        .split(",")
+        .map((a) => a.trim())
+        .filter((a) => a !== "");
+
+      const data = new FormData();
+
+      // Basic fields
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== "") data.append(key, value);
+      });
+
+      // Arrays
+      amenitiesArray.forEach((a) => data.append("amenities", a));
+
+      // Files
+      images.forEach((file) => data.append("images", file));
+      floorPlans.forEach((file) => data.append("floorPlans", file));
+
+      await api.post("/api/dashboard/properties", { data });
+      toast.success("New property listed successfully");
+      navigate("/admin/properties");
+    } catch (err: any) {
+      console.error("Create error:", err);
+      toast.error(err.response?.data?.message || "Failed to list property");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <AdminLayout>
+      <div className="mb-8">
+        <Button
+          variant="ghost"
+          asChild
+          className="mb-4 -ml-4 text-muted-foreground hover:text-gold"
+        >
+          <Link to="/admin/properties">
+            <ArrowLeft className="w-4 h-4 mr-2" /> Back to Properties
+          </Link>
+        </Button>
+        <h1 className="font-display text-2xl md:text-4xl font-black text-foreground tracking-tighter">
+          List New Property
+        </h1>
+        <p className="text-muted-foreground font-body text-sm">
+          Create a premium showcase listing for your portfolio.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-8 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-6">
+            {/* 1. General Content */}
+            <div className="bg-background rounded-2xl p-6 md:p-8 shadow-sm border border-border space-y-6">
+              <div className="flex items-center gap-3 pb-4 border-b border-border">
+                <Building2 className="w-5 h-5 text-gold" />
+                <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
+                  General Content
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    Property Title*
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Ultra Luxury Penthouse at 22 Karat"
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                    value={formData.title}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    Full Description*
+                  </label>
+                  <textarea
+                    required
+                    rows={6}
+                    placeholder="Describe the architectural marvel and exclusive amenities..."
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                    value={formData.description}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-gold" /> Specific
+                    Location / Street
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Palm Jumeirah West Crescent"
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                    value={formData.address}
+                    onChange={(e) =>
+                      setFormData({ ...formData, address: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Media Manager */}
+            <div className="bg-background rounded-2xl p-6 md:p-8 shadow-sm border border-border space-y-8">
+              <div className="flex items-center gap-3 pb-4 border-b border-border">
+                <ImageIcon className="w-5 h-5 text-gold" />
+                <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
+                  Gallery & Assets
+                </h2>
+              </div>
+
+              {/* Photos */}
+              <div className="space-y-4">
+                <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                  Exclusive Gallery (Max 10)
+                </label>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                  {imagePreviews.map((prev, idx) => (
+                    <div
+                      key={`new-img-${idx}`}
+                      className="relative group aspect-square rounded-xl overflow-hidden border-2 border-gold/20 border-dashed"
+                    >
+                      <img src={prev} className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => removeFile(idx, "images")}
+                        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full"
+                      >
+                        <X className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
+                  ))}
+                  <label className="aspect-square rounded-xl border-2 border-dashed border-border hover:border-gold flex flex-col items-center justify-center bg-muted/10 cursor-pointer transition-all hover:bg-gold/5">
+                    <Upload className="w-6 h-6 text-gold mb-1" />
+                    <span className="text-[9px] text-muted-foreground font-black tracking-tighter">
+                      ADD PHOTO
+                    </span>
+                    <input
+                      type="file"
+                      className="hidden"
+                      multiple
+                      accept="image/*"
+                      onChange={(e) => handleFilesChange(e, "images")}
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {/* Floor Plans */}
+              <div className="space-y-4 pt-6 border-t border-border">
+                <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                  Technical Floor Plans
+                </label>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                  {floorPlanPreviews.map((prev, idx) => (
+                    <div
+                      key={`new-plan-${idx}`}
+                      className="relative group aspect-square rounded-xl overflow-hidden border-2 border-gold/20 border-dashed bg-muted/10 flex items-center justify-center"
+                    >
+                      <FileText className="w-7 h-7 text-gold opacity-50" />
+                      <button
+                        type="button"
+                        onClick={() => removeFile(idx, "floorPlans")}
+                        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full"
+                      >
+                        <X className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
+                  ))}
+                  <label className="aspect-square rounded-xl border-2 border-dashed border-border hover:border-gold flex flex-col items-center justify-center bg-muted/10 cursor-pointer transition-all hover:bg-gold/5">
+                    <FileText className="w-6 h-6 text-gold mb-1" />
+                    <span className="text-[9px] text-muted-foreground font-black tracking-tighter">
+                      ADD PLAN
+                    </span>
+                    <input
+                      type="file"
+                      className="hidden"
+                      multiple
+                      accept="image/*,application/pdf"
+                      onChange={(e) => handleFilesChange(e, "floorPlans")}
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Specs Grid */}
+            <div className="bg-background rounded-2xl p-6 md:p-8 shadow-sm border border-border space-y-6">
+              <div className="flex items-center gap-3 pb-4 border-b border-border">
+                <Square className="w-5 h-5 text-gold" />
+                <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
+                  Dimensions & Specs
+                </h2>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    Beds
+                  </label>
+                  <input
+                    type="number"
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                    value={formData.bedrooms}
+                    onChange={(e) =>
+                      setFormData({ ...formData, bedrooms: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    Baths
+                  </label>
+                  <input
+                    type="number"
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                    value={formData.bathrooms}
+                    onChange={(e) =>
+                      setFormData({ ...formData, bathrooms: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    Kitchens
+                  </label>
+                  <input
+                    type="number"
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                    value={formData.kitchens}
+                    onChange={(e) =>
+                      setFormData({ ...formData, kitchens: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    SQFT
+                  </label>
+                  <input
+                    type="number"
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                    value={formData.area}
+                    onChange={(e) =>
+                      setFormData({ ...formData, area: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar Area */}
+          <div className="space-y-6">
+            <div className="bg-background rounded-2xl p-6 shadow-sm border border-border space-y-6">
+              <h3 className="font-display font-black text-xs uppercase tracking-widest text-gold border-b border-gold/10 pb-2">
+                Publishing Desk
+              </h3>
+
+              <div className="space-y-5">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    Portfolio Segment
+                  </label>
+                  <select
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold appearance-none"
+                    value={formData.listedIn}
+                    onChange={(e) =>
+                      setFormData({ ...formData, listedIn: e.target.value })
+                    }
+                  >
+                    <option value="Buy">Premium Sale</option>
+                    <option value="Rent">Luxury Rental</option>
+                    <option value="Off-Plan">Off-Plan Offering</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest text-gold">
+                    Offer Value (AED)*
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    placeholder="Enter valuation..."
+                    className="w-full bg-primary text-white border-none rounded-xl px-5 py-4 outline-none font-display font-bold text-2xl placeholder:text-white/20"
+                    value={formData.price}
+                    onChange={(e) =>
+                      setFormData({ ...formData, price: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    Initial Status
+                  </label>
+                  <select
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold appearance-none"
+                    value={formData.status}
+                    onChange={(e) =>
+                      setFormData({ ...formData, status: e.target.value })
+                    }
+                  >
+                    <option value="active">Active Listing</option>
+                    <option value="pending">Draft Mode</option>
+                    <option value="sold">Already Sold</option>
+                    <option value="rented">Leased</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="pt-4 space-y-3">
+                <Button
+                  variant="gold"
+                  className="w-full py-7 text-lg rounded-2xl shadow-xl shadow-gold/20"
+                  type="submit"
+                  disabled={saving}
+                >
+                  <Save className="w-5 h-5 mr-3" />
+                  {saving ? "Finalizing..." : "Publish Listing"}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full py-6 rounded-xl border-dashed"
+                  asChild
+                  disabled={saving}
+                >
+                  <Link to="/admin/properties">Abort & Exit</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="bg-background rounded-2xl p-6 shadow-sm border border-border space-y-4">
+              <div className="flex items-center gap-2 text-gold">
+                <Tag className="w-4 h-4" />
+                <h3 className="font-display font-black text-[10px] uppercase tracking-widest">
+                  Discovery Tags
+                </h3>
+              </div>
+              <textarea
+                rows={4}
+                placeholder="e.g. Marina View, Smart Home, Private Gym..."
+                className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold"
+                value={amenitiesText}
+                onChange={(e) => setAmenitiesText(e.target.value)}
+              />
+              <p className="text-[10px] text-muted-foreground opacity-60">
+                Separate with commas for dynamic filtering.
+              </p>
+            </div>
+
+            <div className="bg-primary/5 rounded-2xl p-6 border border-gold/10">
+              <div className="flex items-center gap-2 text-gold mb-3">
+                <Info className="w-4 h-4" />
+                <h3 className="font-display font-black text-[10px] uppercase tracking-widest">
+                  Asset Sync
+                </h3>
+              </div>
+              <p className="text-[10px] text-muted-foreground font-body leading-relaxed">
+                Images will be automatically optimized for high-retina displays.
+                Ensure floor plans are clearly legible.
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+    </AdminLayout>
+  );
+};
+
+export default AddProperty;
