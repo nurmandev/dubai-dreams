@@ -1,16 +1,26 @@
 export interface Property {
   id: string;
   title: string;
+  description?: string;
   price: number;
   area: number;
   bedrooms: number;
   bathrooms: number;
-  type: "apartment" | "villa" | "townhouse" | "penthouse" | "plot" | "commercial";
+  type: string;
   category: "off-plan" | "secondary" | "rental";
   location: string;
   developer?: string;
   status: "off-plan" | "ready";
   image: string;
+  images?: string[];
+  amenities?: string[];
+  yearBuilt?: number;
+  kitchens?: number;
+  garages?: number;
+  garageSize?: number;
+  floorsNo?: number;
+  videoUrl?: string;
+  floorPlans?: string[];
   featured?: boolean;
 }
 
