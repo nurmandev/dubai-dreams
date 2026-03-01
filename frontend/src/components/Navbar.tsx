@@ -75,24 +75,23 @@ const Navbar = () => {
 
             {user.isLoggedIn ? (
               <>
-                {user.role === "admin" && (
-                  <Button variant="hero-outline" size="sm" asChild>
-                    <Link to="/admin">Dashboard</Link>
-                  </Button>
-                )}
                 <Button variant="hero-outline" size="sm" onClick={handleLogout}>
                   Logout
                 </Button>
+                <Button variant="gold" size="sm" asChild>
+                  <Link to="/admin">Dashboard</Link>
+                </Button>
               </>
             ) : (
-              <Button variant="hero-outline" size="sm" asChild>
-                <Link to="/login">Sign In</Link>
-              </Button>
+              <>
+                <Button variant="hero-outline" size="sm" asChild>
+                  <Link to="/login">Sign In</Link>
+                </Button>
+                <Button variant="gold" size="sm" asChild>
+                  <Link to="/contact">Enquire Now</Link>
+                </Button>
+              </>
             )}
-
-            <Button variant="gold" size="sm" asChild>
-              <Link to="/contact">Enquire Now</Link>
-            </Button>
           </div>
 
           {/* Mobile toggle */}
@@ -127,50 +126,49 @@ const Navbar = () => {
               ))}
               {user.isLoggedIn ? (
                 <>
-                  {user.role === "admin" && (
-                    <Button
-                      variant="hero-outline"
-                      size="lg"
-                      asChild
-                      className="mt-4"
-                    >
-                      <Link to="/admin" onClick={() => setIsOpen(false)}>
-                        Dashboard
-                      </Link>
-                    </Button>
-                  )}
                   <Button
                     variant="hero-outline"
                     size="lg"
-                    className="mt-2"
+                    className="mt-6"
                     onClick={handleLogout}
                   >
                     Logout
                   </Button>
+                  <Button
+                    variant="gold"
+                    size="lg"
+                    asChild
+                    className="mt-2 text-primary"
+                  >
+                    <Link to="/admin" onClick={() => setIsOpen(false)}>
+                      Dashboard
+                    </Link>
+                  </Button>
                 </>
               ) : (
-                <Button
-                  variant="hero-outline"
-                  size="lg"
-                  asChild
-                  className="mt-4"
-                >
-                  <Link to="/login" onClick={() => setIsOpen(false)}>
-                    Sign In
-                  </Link>
-                </Button>
+                <>
+                  <Button
+                    variant="hero-outline"
+                    size="lg"
+                    asChild
+                    className="mt-6"
+                  >
+                    <Link to="/login" onClick={() => setIsOpen(false)}>
+                      Sign In
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="gold"
+                    size="lg"
+                    asChild
+                    className="mt-2 text-primary"
+                  >
+                    <Link to="/contact" onClick={() => setIsOpen(false)}>
+                      Enquire Now
+                    </Link>
+                  </Button>
+                </>
               )}
-
-              <Button
-                variant="gold"
-                size="lg"
-                asChild
-                className="mt-2 text-primary"
-              >
-                <Link to="/contact" onClick={() => setIsOpen(false)}>
-                  Enquire Now
-                </Link>
-              </Button>
             </div>
           </motion.div>
         )}
