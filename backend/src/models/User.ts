@@ -39,6 +39,7 @@ export interface IUser extends Document {
   sessions: ISession[];
   failedLoginAttempts: number;
   lockUntil?: Date;
+  role: "admin" | "agent" | "user";
   comparePassword(password: string): Promise<boolean>;
 }
 
@@ -112,6 +113,11 @@ const UserSchema = new Schema<IUser>(
     },
     lockUntil: {
       type: Date,
+    },
+    role: {
+      type: String,
+      enum: ["admin", "agent", "user"],
+      default: "user",
     },
   },
   { timestamps: true },

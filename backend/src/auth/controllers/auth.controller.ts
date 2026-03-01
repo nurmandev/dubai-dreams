@@ -54,6 +54,7 @@ export class AuthController {
         message: "User registered successfully! Redirecting...",
         accessToken,
         refreshToken,
+        role: user.role,
       });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -161,7 +162,7 @@ export class AuthController {
         );
       }
 
-      res.status(200).json({ accessToken, refreshToken });
+      res.status(200).json({ accessToken, refreshToken, role: user.role });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }

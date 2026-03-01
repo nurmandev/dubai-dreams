@@ -17,6 +17,21 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const [user, setUser] = useState<{
+    role: string | null;
+    isLoggedIn: boolean;
+  }>({
+    role: localStorage.getItem("userRole"),
+    isLoggedIn: !!localStorage.getItem("accessToken"),
+  });
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userRole");
+    setUser({ role: null, isLoggedIn: false });
+    window.location.href = "/";
+  };
 
   return (
     <nav
@@ -58,9 +73,24 @@ const Navbar = () => {
                 Call Us
               </a>
             </Button>
-            <Button variant="hero-outline" size="sm" asChild>
-              <Link to="/login">Sign In</Link>
-            </Button>
+
+            {user.isLoggedIn ? (
+              <>
+                {user.role === "admin" && (
+                  <Button variant="hero-outline" size="sm" asChild>
+                    <Link to="/admin">Admin Panel</Link>
+                  </Button>
+                )}
+                <Button variant="hero-outline" size="sm" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button variant="hero-outline" size="sm" asChild>
+                <Link to="/login">Sign In</Link>
+              </Button>
+            )}
+
             <Button variant="gold" size="sm" asChild>
               <Link to="/contact">Enquire Now</Link>
             </Button>
@@ -96,12 +126,48 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
-              <Button variant="hero-outline" size="lg" asChild className="mt-4">
-                <Link to="/login" onClick={() => setIsOpen(false)}>
-                  Sign In
-                </Link>
-              </Button>
-              <Button variant="gold" size="lg" asChild className="mt-2">
+              {user.isLoggedIn ? (
+                <>
+                  {user.role === "admin" && (
+                    <Button
+                      variant="hero-outline"
+                      size="lg"
+                      asChild
+                      className="mt-4"
+                    >
+                      <Link to="/admin" onClick={() => setIsOpen(false)}>
+                        Admin Panel
+                      </Link>
+                    </Button>
+                  )}
+                  <Button
+                    variant="hero-outline"
+                    size="lg"
+                    className="mt-2"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="hero-outline"
+                  size="lg"
+                  asChild
+                  className="mt-4"
+                >
+                  <Link to="/login" onClick={() => setIsOpen(false)}>
+                    Sign In
+                  </Link>
+                </Button>
+              )}
+
+              <Button
+                variant="gold"
+                size="lg"
+                asChild
+                className="mt-2 text-primary"
+              >
                 <Link to="/contact" onClick={() => setIsOpen(false)}>
                   Enquire Now
                 </Link>

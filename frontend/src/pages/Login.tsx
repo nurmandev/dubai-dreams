@@ -23,9 +23,14 @@ const Login = () => {
 
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("userRole", data.role);
 
       toast.success("Logged in successfully!");
-      navigate("/");
+      if (data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Invalid credentials");
     } finally {
