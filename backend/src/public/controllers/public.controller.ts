@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Property from "../../models/Property";
+import Inquiry from "../../models/Inquiry";
 
 export class PublicController {
   /**
@@ -143,6 +144,40 @@ export class PublicController {
     } catch (error: any) {
       console.error("Error fetching property by ID:", error);
       res.status(500).json({ message: "Failed to fetch property details" });
+    }
+  }
+
+  /**
+   * Submit an inquiry (Contact Us)
+   * POST /api/public/inquiry
+   */
+  static async submitInquiry(req: Request, res: Response) {
+    try {
+      const { name, email, phone, message, budget, propertyId, propertyTitle } =
+        req.body;
+
+      if (!name || !email || !phone || !message) {
+        return res
+          .status(400)
+          .json({ message: "Missing required contact fields" });
+      }
+
+      const inquiry = new Inquiry({
+        name,
+        email,
+        phone,
+        message,
+        budget,
+        propertyId,
+        propertyTitle,
+      });
+
+      await inquiry.save();
+
+      res.status(201).json({ message: "Inquiry submitted successfully" });
+    } catch (error: any) {
+      console.error("Error submitting inquiry:", error);
+      res.status(500).json({ message: "Failed to submit inquiry" });
     }
   }
   private static getFullUrl(path: string) {

@@ -9,6 +9,7 @@ import {
   Phone as PhoneIcon,
   Trash2,
   CheckCircle2,
+  Building2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -22,6 +23,7 @@ interface Inquiry {
   message: string;
   propertyTitle?: string;
   createdAt: string;
+  status?: string;
 }
 
 const ManageInquiries = () => {
@@ -45,16 +47,31 @@ const ManageInquiries = () => {
     }
   };
 
+  const handleStatusUpdate = async (id: string, status: string) => {
+    try {
+      await api.patch(`/api/dashboard/inquiry/${id}/status`, {
+        data: { status },
+      });
+      toast.success(`Inquiry marked as ${status}`);
+      setInquiries((prev) =>
+        prev.map((inq) => (inq.id === id ? { ...inq, status } : inq)),
+      );
+    } catch (err) {
+      toast.error("Failed to update status");
+    }
+  };
+
   useEffect(() => {
     fetchInquiries();
   }, []);
 
   const filteredInquiries = inquiries.filter(
     (i) =>
-      i.name.toLowerCase().includes(search.toLowerCase()) ||
-      i.email.toLowerCase().includes(search.toLowerCase()) ||
-      (i.propertyTitle &&
-        i.propertyTitle.toLowerCase().includes(search.toLowerCase())),
+      i.status !== "archived" &&
+      (i.name.toLowerCase().includes(search.toLowerCase()) ||
+        i.email.toLowerCase().includes(search.toLowerCase()) ||
+        (i.propertyTitle &&
+          i.propertyTitle.toLowerCase().includes(search.toLowerCase()))),
   );
 
   return (
@@ -74,7 +91,7 @@ const ManageInquiries = () => {
               System Log
             </span>
             <span className="text-lg font-display font-bold text-gold">
-              {filteredInquiries.length} Messages
+              {filteredInquiries.length} Active
             </span>
           </div>
         )}
@@ -114,7 +131,6 @@ const ManageInquiries = () => {
               transition={{ delay: i * 0.05 }}
               className="bg-background rounded-2xl p-5 md:p-8 shadow-sm border border-border hover:shadow-xl hover:shadow-gold/5 transition-all group overflow-hidden relative"
             >
-              {/* Luxury Accent */}
               <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gold/40 group-hover:bg-gold transition-colors" />
 
               <div className="flex flex-col lg:flex-row justify-between gap-8">
@@ -124,9 +140,16 @@ const ManageInquiries = () => {
                       {inquiry.name[0]}
                     </div>
                     <div>
-                      <h3 className="font-display font-black text-foreground text-lg md:text-xl tracking-tight leading-none mb-1">
-                        {inquiry.name}
-                      </h3>
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3 className="font-display font-black text-foreground text-lg md:text-xl tracking-tight leading-none">
+                          {inquiry.name}
+                        </h3>
+                        {inquiry.status === "resolved" && (
+                          <span className="px-2 py-0.5 rounded-full bg-emerald/10 text-emerald text-[9px] font-black uppercase tracking-widest border border-emerald/20">
+                            Resolved
+                          </span>
+                        )}
+                      </div>
                       {inquiry.propertyTitle && (
                         <p className="text-[10px] md:text-xs font-body font-bold text-gold uppercase tracking-widest flex items-center gap-1.5 px-2 py-0.5 bg-gold/5 rounded-full border border-gold/10 w-fit">
                           <Building2 className="w-3 h-3" />{" "}
@@ -166,10 +189,18 @@ const ManageInquiries = () => {
                 </div>
 
                 <div className="flex flex-row lg:flex-col justify-stretch gap-3 lg:w-48 pt-4 lg:pt-0 border-t lg:border-t-0 lg:border-l border-border mt-4 lg:mt-0 lg:pl-8">
-                  <button className="flex-1 items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gold text-white font-display font-bold text-xs uppercase tracking-widest hover:bg-primary transition-all flex shadow-lg shadow-gold/20 active:scale-95">
-                    <CheckCircle2 className="w-4 h-4" /> Resolve
-                  </button>
-                  <button className="flex-1 items-center justify-center gap-2 px-6 py-4 rounded-xl bg-muted text-foreground/50 font-display font-bold text-xs uppercase tracking-widest hover:bg-destructive/10 hover:text-destructive transition-all flex border border-transparent hover:border-destructive/20">
+                  {inquiry.status !== "resolved" && (
+                    <button
+                      onClick={() => handleStatusUpdate(inquiry.id, "resolved")}
+                      className="flex-1 items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gold text-white font-display font-bold text-xs uppercase tracking-widest hover:bg-primary transition-all flex shadow-lg shadow-gold/20 active:scale-95"
+                    >
+                      <CheckCircle2 className="w-4 h-4" /> Resolve
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleStatusUpdate(inquiry.id, "archived")}
+                    className="flex-1 items-center justify-center gap-2 px-6 py-4 rounded-xl bg-muted text-foreground/50 font-display font-bold text-xs uppercase tracking-widest hover:bg-destructive/10 hover:text-destructive transition-all flex border border-transparent hover:border-destructive/20"
+                  >
                     <Trash2 className="w-4 h-4" /> Archive
                   </button>
                 </div>
@@ -181,8 +212,5 @@ const ManageInquiries = () => {
     </AdminLayout>
   );
 };
-
-// Missing imports
-import { Building2 } from "lucide-react";
 
 export default ManageInquiries;

@@ -3,24 +3,46 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { api } from "@/lib/api";
 
 const Contact = () => {
-  const { toast } = useToast();
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "", budget: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+    budget: "",
+  });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "Enquiry Submitted!", description: "Our team will get back to you shortly." });
-    setForm({ name: "", email: "", phone: "", message: "", budget: "" });
+    setLoading(true);
+    try {
+      await api.post("/api/public/inquiry", { data: form });
+      toast.success(
+        "Enquiry Submitted! Our team will get back to you shortly.",
+      );
+      setForm({ name: "", email: "", phone: "", message: "", budget: "" });
+    } catch (error) {
+      toast.error("Failed to submit enquiry. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Layout>
       <section className="pt-20 bg-primary">
         <div className="container mx-auto px-4 lg:px-8 py-12">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <p className="text-gold font-body text-sm tracking-[0.3em] uppercase mb-2">Get In Touch</p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <p className="text-gold font-body text-sm tracking-[0.3em] uppercase mb-2">
+              Get In Touch
+            </p>
             <h1 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground">
               Contact Us
             </h1>
@@ -38,26 +60,36 @@ const Contact = () => {
               viewport={{ once: true }}
               className="lg:col-span-3"
             >
-              <h2 className="font-display text-2xl font-bold text-foreground mb-6">Send Us a Message</h2>
+              <h2 className="font-display text-2xl font-bold text-foreground mb-6">
+                Send Us a Message
+              </h2>
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="font-body text-sm text-foreground mb-1 block">Full Name *</label>
+                    <label className="font-body text-sm text-foreground mb-1 block">
+                      Full Name *
+                    </label>
                     <input
                       required
                       value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, name: e.target.value })
+                      }
                       className="w-full bg-muted rounded-lg px-4 py-3 text-foreground font-body text-sm outline-none border border-border focus:border-gold transition-colors"
                       placeholder="Your name"
                     />
                   </div>
                   <div>
-                    <label className="font-body text-sm text-foreground mb-1 block">Email *</label>
+                    <label className="font-body text-sm text-foreground mb-1 block">
+                      Email *
+                    </label>
                     <input
                       required
                       type="email"
                       value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, email: e.target.value })
+                      }
                       className="w-full bg-muted rounded-lg px-4 py-3 text-foreground font-body text-sm outline-none border border-border focus:border-gold transition-colors"
                       placeholder="your@email.com"
                     />
@@ -65,20 +97,28 @@ const Contact = () => {
                 </div>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="font-body text-sm text-foreground mb-1 block">Phone *</label>
+                    <label className="font-body text-sm text-foreground mb-1 block">
+                      Phone *
+                    </label>
                     <input
                       required
                       value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, phone: e.target.value })
+                      }
                       className="w-full bg-muted rounded-lg px-4 py-3 text-foreground font-body text-sm outline-none border border-border focus:border-gold transition-colors"
                       placeholder="+971 XX XXX XXXX"
                     />
                   </div>
                   <div>
-                    <label className="font-body text-sm text-foreground mb-1 block">Budget (Optional)</label>
+                    <label className="font-body text-sm text-foreground mb-1 block">
+                      Budget (Optional)
+                    </label>
                     <select
                       value={form.budget}
-                      onChange={(e) => setForm({ ...form, budget: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, budget: e.target.value })
+                      }
                       className="w-full bg-muted rounded-lg px-4 py-3 text-foreground font-body text-sm outline-none border border-border focus:border-gold transition-colors"
                     >
                       <option value="">Select budget range</option>
@@ -91,18 +131,28 @@ const Contact = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="font-body text-sm text-foreground mb-1 block">Message *</label>
+                  <label className="font-body text-sm text-foreground mb-1 block">
+                    Message *
+                  </label>
                   <textarea
                     required
                     rows={5}
                     value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, message: e.target.value })
+                    }
                     className="w-full bg-muted rounded-lg px-4 py-3 text-foreground font-body text-sm outline-none border border-border focus:border-gold transition-colors resize-none"
                     placeholder="Tell us about your requirements..."
                   />
                 </div>
-                <Button variant="gold" size="lg" type="submit">
-                  <Send className="w-4 h-4" /> Send Enquiry
+                <Button
+                  variant="gold"
+                  size="lg"
+                  type="submit"
+                  disabled={loading}
+                >
+                  <Send className="w-4 h-4" />{" "}
+                  {loading ? "Sending..." : "Send Enquiry"}
                 </Button>
               </form>
             </motion.div>
@@ -115,15 +165,21 @@ const Contact = () => {
               className="lg:col-span-2"
             >
               <div className="bg-card rounded-xl p-8 shadow-luxury mb-8">
-                <h3 className="font-display text-xl font-bold text-foreground mb-6">Contact Information</h3>
+                <h3 className="font-display text-xl font-bold text-foreground mb-6">
+                  Contact Information
+                </h3>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-lg bg-gradient-emerald flex items-center justify-center shrink-0">
                       <MapPin className="w-5 h-5 text-gold" />
                     </div>
                     <div>
-                      <p className="font-body text-sm font-medium text-foreground">Office Address</p>
-                      <p className="text-muted-foreground font-body text-sm">Business Bay, Dubai, UAE</p>
+                      <p className="font-body text-sm font-medium text-foreground">
+                        Office Address
+                      </p>
+                      <p className="text-muted-foreground font-body text-sm">
+                        Business Bay, Dubai, UAE
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -131,8 +187,13 @@ const Contact = () => {
                       <Phone className="w-5 h-5 text-gold" />
                     </div>
                     <div>
-                      <p className="font-body text-sm font-medium text-foreground">Phone</p>
-                      <a href="tel:+971000000000" className="text-muted-foreground hover:text-gold font-body text-sm transition-colors">
+                      <p className="font-body text-sm font-medium text-foreground">
+                        Phone
+                      </p>
+                      <a
+                        href="tel:+971000000000"
+                        className="text-muted-foreground hover:text-gold font-body text-sm transition-colors"
+                      >
                         +971 00 000 0000
                       </a>
                     </div>
@@ -142,8 +203,13 @@ const Contact = () => {
                       <Mail className="w-5 h-5 text-gold" />
                     </div>
                     <div>
-                      <p className="font-body text-sm font-medium text-foreground">Email</p>
-                      <a href="mailto:info@omnisproperties.ae" className="text-muted-foreground hover:text-gold font-body text-sm transition-colors">
+                      <p className="font-body text-sm font-medium text-foreground">
+                        Email
+                      </p>
+                      <a
+                        href="mailto:info@omnisproperties.ae"
+                        className="text-muted-foreground hover:text-gold font-body text-sm transition-colors"
+                      >
                         info@omnisproperties.ae
                       </a>
                     </div>
@@ -152,7 +218,11 @@ const Contact = () => {
               </div>
 
               <Button variant="whatsapp" size="xl" className="w-full" asChild>
-                <a href="https://wa.me/971000000000" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://wa.me/971000000000"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle className="w-5 h-5" /> Chat on WhatsApp
                 </a>
               </Button>

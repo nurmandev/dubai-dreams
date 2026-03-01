@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Property from "../../models/Property";
 import AuditLog from "../../models/AuditLog";
 import User from "../../models/User";
+import Inquiry from "../../models/Inquiry";
 
 export class DashboardController {
   /**
@@ -102,28 +103,25 @@ export class DashboardController {
 
   /**
    * GET /api/dashboard/recent-messages
-   * Returns the 5 most recent audit/activity log entries for the user.
+   * Returns the most recent lead inquiries for the admin.
    */
   static async getRecentMessages(req: Request, res: Response) {
     try {
-      const userId = (req as any).user.userId;
-
-      const logs = await AuditLog.find({ userId })
-        .sort({ timestamp: -1 })
-        .limit(5)
+      // Inquiries are global for all admins in this implementation
+      const inquiries = await Inquiry.find()
+        .sort({ createdAt: -1 })
+        .limit(20)
         .lean();
 
-      const messages = (logs as any[]).map((log: any) => ({
-        id: log._id,
-        name: "System",
-        date: new Date(log.timestamp).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        }),
-        title: log.action.replace(/_/g, " "),
-        desc:
-          log.details || `Action ${log.action} performed from ${log.device}.`,
-        status: log.status,
+      const messages = (inquiries as any[]).map((inquiry: any) => ({
+        id: inquiry._id,
+        name: inquiry.name,
+        email: inquiry.email,
+        phone: inquiry.phone,
+        message: inquiry.message,
+        propertyTitle: inquiry.propertyTitle,
+        createdAt: inquiry.createdAt,
+        status: inquiry.status,
       }));
 
       res.status(200).json({ messages });
@@ -152,15 +150,46 @@ export class DashboardController {
         Property.countDocuments({ ownerId: userId }),
       ]);
 
-      res.status(200).json({
-        properties,
-        pagination: {
-          total,
-          page,
-          limit,
-          totalPages: Math.ceil(total / limit),
-        },
-      });
+      res
+        .status(200)
+        .json({
+          properties,
+          pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+          },
+        });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  /**
+   * PATCH /api/dashboard/inquiry/:id/status
+   * Updates the status of an inquiry (resolved/archived).
+   */
+  static async updateInquiryStatus(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      if (!["new", "resolved", "archived"].includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+      }
+
+      const inquiry = await Inquiry.findByIdAndUpdate(
+        id,
+        { status },
+        { new: true },
+      );
+
+      if (!inquiry) {
+        return res.status(404).json({ message: "Inquiry not found" });
+      }
+
+      res.status(200).json({ message: `Inquiry marked as ${status}`, inquiry });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }

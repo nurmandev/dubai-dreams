@@ -19,6 +19,9 @@ router.get("/recent-messages", DashboardController.getRecentMessages);
 // GET /api/dashboard/properties   — paginated property list
 router.get("/properties", DashboardController.getProperties);
 
+// Lead Inquiries
+router.patch("/inquiry/:id/status", DashboardController.updateInquiryStatus);
+
 import { PropertyController } from "./controllers/property.controller";
 import { upload } from "../middlewares/upload.middleware";
 

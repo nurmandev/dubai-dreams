@@ -59,7 +59,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobile }: AdminSidebarProps) => {
           />
           {(isOpen || isMobile) && (
             <span className="text-white font-display font-black text-xs tracking-widest uppercase">
-              Dubai Dreams
+             
             </span>
           )}
         </Link>
