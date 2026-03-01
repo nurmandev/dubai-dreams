@@ -11,47 +11,19 @@ export class DashboardController {
    */
   static async getStats(req: Request, res: Response) {
     try {
-      const userId = (req as any).user.userId;
-
-      const [totalProperties, totalPending, totalFavourites, viewsAgg] =
+      const [totalProperties, activeListings, totalInquiries, newInquiries] =
         await Promise.all([
-          // Total properties owned by user
-          Property.countDocuments({ ownerId: userId }),
-
-          // Pending properties
-          Property.countDocuments({ ownerId: userId, status: "pending" }),
-
-          // Total times any of user's properties were favourited
-          Property.aggregate([
-            {
-              $match: {
-                ownerId: new (require("mongoose").Types.ObjectId)(userId),
-              },
-            },
-            { $project: { count: { $size: "$favouritedBy" } } },
-            { $group: { _id: null, total: { $sum: "$count" } } },
-          ]),
-
-          // Total views across all user properties
-          Property.aggregate([
-            {
-              $match: {
-                ownerId: new (require("mongoose").Types.ObjectId)(userId),
-              },
-            },
-            { $group: { _id: null, total: { $sum: "$views" } } },
-          ]),
+          Property.countDocuments(),
+          Property.countDocuments({ status: "active" }),
+          Inquiry.countDocuments(),
+          Inquiry.countDocuments({ status: "new" }),
         ]);
-
-      const totalViews = viewsAgg.length > 0 ? viewsAgg[0].total : 0;
-      const totalFavs =
-        totalFavourites.length > 0 ? totalFavourites[0].total : 0;
 
       res.status(200).json({
         totalProperties,
-        totalPending,
-        totalViews,
-        totalFavourites: totalFavs,
+        activeListings,
+        totalInquiries,
+        newInquiries,
       });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -150,17 +122,15 @@ export class DashboardController {
         Property.countDocuments({ ownerId: userId }),
       ]);
 
-      res
-        .status(200)
-        .json({
-          properties,
-          pagination: {
-            total,
-            page,
-            limit,
-            totalPages: Math.ceil(total / limit),
-          },
-        });
+      res.status(200).json({
+        properties,
+        pagination: {
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit),
+        },
+      });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }
