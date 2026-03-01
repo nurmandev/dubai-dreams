@@ -204,7 +204,7 @@ const PropertyDetails = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-background/80 backdrop-blur-2xl rounded-[2rem] shadow-2xl p-8 md:p-12 border border-white/10"
+                className="bg-background/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 md:p-12 border border-white/10"
               >
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
                   <div>
