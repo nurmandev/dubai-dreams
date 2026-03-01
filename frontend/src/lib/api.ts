@@ -20,7 +20,9 @@ const request = async (
   };
 
   try {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
+    const baseUrl = API_BASE_URL.replace(/\/$/, "");
+    const cleanPath = path.startsWith("/") ? path : `/${path}`;
+    const response = await fetch(`${baseUrl}${cleanPath}`, {
       method,
       headers,
       body: options.data
