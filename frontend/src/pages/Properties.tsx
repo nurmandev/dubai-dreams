@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PropertyCard from "@/components/PropertyCard";
-import { sampleProperties, type Property } from "@/data/properties";
+import { api } from "@/lib/api";
+import { type Property as PropertyType } from "@/data/properties";
 import { motion } from "framer-motion";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,21 +12,70 @@ const Properties = () => {
   const [searchParams] = useSearchParams();
   const initialCategory = searchParams.get("category") || "all";
 
+  const [properties, setProperties] = useState<PropertyType[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(initialCategory);
   const [propertyType, setPropertyType] = useState("all");
   const [bedrooms, setBedrooms] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
 
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const { data } = await api.get("/api/public/properties");
+        if (data && data.properties) {
+          const mapped: PropertyType[] = data.properties.map((p: any) => ({
+            id: p.id,
+            title: p.title,
+            price: p.price,
+            area: p.property_info?.sqft || 0,
+            bedrooms: p.property_info?.bed || 0,
+            bathrooms: p.property_info?.bath || 0,
+            location: p.location || p.address,
+            type: p.type?.toLowerCase() || "apartment",
+            category:
+              p.listedIn === "Off-Plan"
+                ? "off-plan"
+                : p.listedIn === "Rent"
+                  ? "rental"
+                  : "secondary",
+            status: p.status === "active" ? "ready" : "off-plan",
+            image:
+              p.carousel_thumb?.[0]?.img || "/images/property-placeholder.jpg",
+          }));
+          setProperties(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch properties:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
   const filtered = useMemo(() => {
-    return sampleProperties.filter((p: Property) => {
+    return properties.filter((p: PropertyType) => {
       if (category !== "all" && p.category !== category) return false;
       if (propertyType !== "all" && p.type !== propertyType) return false;
-      if (bedrooms !== "all" && p.bedrooms !== Number(bedrooms)) return false;
-      if (search && !p.title.toLowerCase().includes(search.toLowerCase()) && !p.location.toLowerCase().includes(search.toLowerCase())) return false;
+      if (
+        bedrooms !== "all" &&
+        bedrooms !== "4" &&
+        p.bedrooms !== Number(bedrooms)
+      )
+        return false;
+      if (bedrooms === "4" && p.bedrooms < 4) return false;
+      if (
+        search &&
+        !p.title.toLowerCase().includes(search.toLowerCase()) &&
+        !p.location.toLowerCase().includes(search.toLowerCase())
+      )
+        return false;
       return true;
     });
-  }, [search, category, propertyType, bedrooms]);
+  }, [properties, search, category, propertyType, bedrooms]);
 
   const categories = [
     { value: "all", label: "All" },
@@ -46,7 +96,10 @@ const Properties = () => {
       {/* Header */}
       <section className="pt-20 bg-primary">
         <div className="container mx-auto px-4 lg:px-8 py-12">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             <p className="text-gold font-body text-sm tracking-[0.3em] uppercase mb-2">
               Our Portfolio
             </p>
@@ -144,10 +197,21 @@ const Properties = () => {
       <section className="py-12">
         <div className="container mx-auto px-4 lg:px-8">
           <p className="text-muted-foreground font-body text-sm mb-8">
-            Showing {filtered.length} properties
+            {loading
+              ? "Discovering luxury assets..."
+              : `Showing ${filtered.length} properties`}
           </p>
 
-          {filtered.length > 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <div
+                  key={n}
+                  className="h-[400px] w-full bg-muted/20 animate-pulse rounded-lg"
+                />
+              ))}
+            </div>
+          ) : filtered.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((property, i) => (
                 <PropertyCard key={property.id} property={property} index={i} />
@@ -155,8 +219,12 @@ const Properties = () => {
             </div>
           ) : (
             <div className="text-center py-20">
-              <p className="font-display text-2xl text-foreground mb-2">No properties found</p>
-              <p className="text-muted-foreground font-body">Try adjusting your search or filters.</p>
+              <p className="font-display text-2xl text-foreground mb-2">
+                No properties found
+              </p>
+              <p className="text-muted-foreground font-body">
+                Try adjusting your search or filters.
+              </p>
               <Button variant="gold" className="mt-6" onClick={resetFilters}>
                 Clear Filters
               </Button>

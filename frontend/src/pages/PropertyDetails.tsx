@@ -1,20 +1,85 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { sampleProperties, formatPrice } from "@/data/properties";
+import { api } from "@/lib/api";
+import { type Property as PropertyType, formatPrice } from "@/data/properties";
 import { Button } from "@/components/ui/button";
-import { Bed, Bath, Maximize, MapPin, Building2, ArrowLeft, Phone, MessageCircle } from "lucide-react";
+import {
+  Bed,
+  Bath,
+  Maximize,
+  MapPin,
+  Building2,
+  ArrowLeft,
+  Phone,
+  MessageCircle,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 
 const PropertyDetails = () => {
   const { id } = useParams();
-  const property = sampleProperties.find((p) => p.id === id);
+  const [property, setProperty] = useState<PropertyType | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const { data } = await api.get(`/api/public/properties/${id}`);
+        if (data && data.property) {
+          const p = data.property;
+          const mapped: PropertyType = {
+            id: p.id,
+            title: p.title,
+            price: p.price,
+            area: p.property_info?.sqft || 0,
+            bedrooms: p.property_info?.bed || 0,
+            bathrooms: p.property_info?.bath || 0,
+            location: p.location || p.address,
+            type: p.type?.toLowerCase() || "apartment",
+            category:
+              p.listedIn === "Off-Plan"
+                ? "off-plan"
+                : p.listedIn === "Rent"
+                  ? "rental"
+                  : "secondary",
+            status: p.status === "active" ? "ready" : "off-plan",
+            image:
+              p.carousel_thumb?.[0]?.img || "/images/property-placeholder.jpg",
+            developer: p.owner?.name,
+          };
+          setProperty(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch property details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchProperty();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="pt-32 pb-20 text-center container mx-auto px-4">
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="h-12 w-48 bg-muted/20 rounded mb-4" />
+            <div className="h-4 w-64 bg-muted/10 rounded" />
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!property) {
     return (
       <Layout>
         <div className="pt-32 pb-20 text-center container mx-auto px-4">
-          <h1 className="font-display text-3xl text-foreground mb-4">Property Not Found</h1>
+          <h1 className="font-display text-3xl text-foreground mb-4">
+            Property Not Found
+          </h1>
           <Button variant="gold" asChild>
             <Link to="/properties">Back to Properties</Link>
           </Button>
@@ -23,14 +88,22 @@ const PropertyDetails = () => {
     );
   }
 
-  const categoryLabel = { "off-plan": "Off-Plan", secondary: "Resale", rental: "Rental" };
+  const categoryLabel = {
+    "off-plan": "Off-Plan",
+    secondary: "Resale",
+    rental: "Rental",
+  };
 
   return (
     <Layout>
       <div className="pt-20">
         {/* Image */}
         <div className="h-[50vh] md:h-[60vh] relative overflow-hidden">
-          <img src={property.image} alt={property.title} className="w-full h-full object-cover" />
+          <img
+            src={property.image}
+            alt={property.title}
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
           <div className="absolute top-6 left-6">
             <Button variant="secondary" size="sm" asChild>
@@ -53,9 +126,13 @@ const PropertyDetails = () => {
                 {categoryLabel[property.category]}
               </Badge>
               {property.status === "ready" && (
-                <Badge className="bg-gold text-accent-foreground font-body">Ready</Badge>
+                <Badge className="bg-gold text-accent-foreground font-body">
+                  Ready
+                </Badge>
               )}
-              <Badge variant="outline" className="font-body capitalize">{property.type}</Badge>
+              <Badge variant="outline" className="font-body capitalize">
+                {property.type}
+              </Badge>
             </div>
 
             <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
@@ -72,36 +149,58 @@ const PropertyDetails = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10 py-8 border-y border-border">
               <div className="text-center">
                 <Bed className="w-6 h-6 text-gold mx-auto mb-2" />
-                <p className="font-display text-xl font-bold text-foreground">{property.bedrooms}</p>
-                <p className="text-muted-foreground font-body text-sm">Bedrooms</p>
+                <p className="font-display text-xl font-bold text-foreground">
+                  {property.bedrooms}
+                </p>
+                <p className="text-muted-foreground font-body text-sm">
+                  Bedrooms
+                </p>
               </div>
               <div className="text-center">
                 <Bath className="w-6 h-6 text-gold mx-auto mb-2" />
-                <p className="font-display text-xl font-bold text-foreground">{property.bathrooms}</p>
-                <p className="text-muted-foreground font-body text-sm">Bathrooms</p>
+                <p className="font-display text-xl font-bold text-foreground">
+                  {property.bathrooms}
+                </p>
+                <p className="text-muted-foreground font-body text-sm">
+                  Bathrooms
+                </p>
               </div>
               <div className="text-center">
                 <Maximize className="w-6 h-6 text-gold mx-auto mb-2" />
-                <p className="font-display text-xl font-bold text-foreground">{property.area.toLocaleString()}</p>
-                <p className="text-muted-foreground font-body text-sm">Sq. Ft.</p>
+                <p className="font-display text-xl font-bold text-foreground">
+                  {property.area.toLocaleString()}
+                </p>
+                <p className="text-muted-foreground font-body text-sm">
+                  Sq. Ft.
+                </p>
               </div>
               {property.developer && (
                 <div className="text-center">
                   <Building2 className="w-6 h-6 text-gold mx-auto mb-2" />
-                  <p className="font-display text-lg font-bold text-foreground">{property.developer}</p>
-                  <p className="text-muted-foreground font-body text-sm">Developer</p>
+                  <p className="font-display text-lg font-bold text-foreground">
+                    {property.developer}
+                  </p>
+                  <p className="text-muted-foreground font-body text-sm">
+                    Developer
+                  </p>
                 </div>
               )}
             </div>
 
             {/* Description */}
             <div className="mb-10">
-              <h2 className="font-display text-2xl font-bold text-foreground mb-4">About This Property</h2>
+              <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                About This Property
+              </h2>
               <p className="text-muted-foreground font-body leading-relaxed">
-                Experience luxury living at its finest in this stunning {property.type} located in {property.location}.
-                Featuring {property.bedrooms} spacious bedrooms and {property.bathrooms} elegantly designed bathrooms,
-                this {property.area.toLocaleString()} sq.ft. property offers panoramic views and world-class amenities.
-                {property.developer && ` Developed by ${property.developer}, one of the UAE's most prestigious developers.`}
+                Experience luxury living at its finest in this stunning{" "}
+                {property.type} located in {property.location}. Featuring{" "}
+                {property.bedrooms} spacious bedrooms and {property.bathrooms}{" "}
+                elegantly designed bathrooms, this{" "}
+                {property.area.toLocaleString()} sq.ft. property offers
+                panoramic views and world-class amenities.
+                {property.developer &&
+                  ` Developed by ${property.developer}, one of the UAE's most prestigious developers.`}
               </p>
             </div>
 
@@ -113,7 +212,11 @@ const PropertyDetails = () => {
                 </Link>
               </Button>
               <Button variant="whatsapp" size="xl" asChild>
-                <a href="https://wa.me/971000000000" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://wa.me/971000000000"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle className="w-5 h-5" /> WhatsApp
                 </a>
               </Button>

@@ -1,15 +1,66 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Building2, Shield, Globe, TrendingUp, Search, MapPin, ChevronDown } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  Shield,
+  Globe,
+  TrendingUp,
+  Search,
+  MapPin,
+  ChevronDown,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import PropertyCard from "@/components/PropertyCard";
 import Layout from "@/components/Layout";
 import { sampleProperties } from "@/data/properties";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
+import { Property as PropertyType } from "@/data/properties";
 
 const Index = () => {
-  const featuredProperties = sampleProperties.filter((p) => p.featured);
+  const [properties, setProperties] = useState<PropertyType[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchType, setSearchType] = useState("buy");
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const { data } = await api.get("/api/public/properties");
+        if (data && data.properties) {
+          const mapped: PropertyType[] = data.properties.map((p: any) => ({
+            id: p.id,
+            title: p.title,
+            price: p.price,
+            area: p.property_info?.sqft || 0,
+            bedrooms: p.property_info?.bed || 0,
+            bathrooms: p.property_info?.bath || 0,
+            location: p.location || p.address,
+            type: p.type?.toLowerCase() || "apartment",
+            category:
+              p.listedIn === "Off-Plan"
+                ? "off-plan"
+                : p.listedIn === "Rent"
+                  ? "rental"
+                  : "secondary",
+            status: p.status === "active" ? "ready" : "off-plan",
+            image:
+              p.carousel_thumb?.[0]?.img || "/images/property-placeholder.jpg",
+            featured: true, // For home page we'll show them as featured
+          }));
+          setProperties(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch featured properties:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
+  const featuredProperties = properties.slice(0, 6); // Just show the first 6 for featured
 
   return (
     <Layout>
@@ -72,7 +123,9 @@ const Index = () => {
                         : "text-primary-foreground/70 hover:text-primary-foreground"
                     }`}
                   >
-                    {t === "off-plan" ? "Off-Plan" : t.charAt(0).toUpperCase() + t.slice(1)}
+                    {t === "off-plan"
+                      ? "Off-Plan"
+                      : t.charAt(0).toUpperCase() + t.slice(1)}
                   </button>
                 ))}
               </div>
@@ -86,7 +139,9 @@ const Index = () => {
                   />
                 </div>
                 <div className="flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3">
-                  <span className="text-primary-foreground/40 font-body text-sm">Type</span>
+                  <span className="text-primary-foreground/40 font-body text-sm">
+                    Type
+                  </span>
                   <ChevronDown className="w-4 h-4 text-primary-foreground/40" />
                 </div>
                 <Button variant="gold" size="lg" className="shrink-0">
@@ -125,9 +180,27 @@ const Index = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProperties.map((property, i) => (
-              <PropertyCard key={property.id} property={property} index={i} />
-            ))}
+            {loading ? (
+              [1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="h-[400px] w-full bg-muted/20 animate-pulse rounded-lg"
+                />
+              ))
+            ) : featuredProperties.length > 0 ? (
+              featuredProperties.map((property, i) => (
+                <PropertyCard key={property.id} property={property} index={i} />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-20 text-muted-foreground">
+                <p className="font-display text-xl">
+                  No featured properties at the moment.
+                </p>
+                <p className="font-body mt-2">
+                  Check back soon for our latest exclusive listings.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -222,10 +295,26 @@ const Index = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Globe, title: "Global Reach", desc: "Serving investors from across the globe with dedicated multilingual support." },
-              { icon: Shield, title: "Trusted Partner", desc: "Licensed and regulated by Dubai's Real Estate Regulatory Agency (RERA)." },
-              { icon: TrendingUp, title: "Market Insights", desc: "In-depth market analysis and investment guidance for maximum ROI." },
-              { icon: Building2, title: "Premium Portfolio", desc: "Exclusive access to Dubai's most prestigious developments and communities." },
+              {
+                icon: Globe,
+                title: "Global Reach",
+                desc: "Serving investors from across the globe with dedicated multilingual support.",
+              },
+              {
+                icon: Shield,
+                title: "Trusted Partner",
+                desc: "Licensed and regulated by Dubai's Real Estate Regulatory Agency (RERA).",
+              },
+              {
+                icon: TrendingUp,
+                title: "Market Insights",
+                desc: "In-depth market analysis and investment guidance for maximum ROI.",
+              },
+              {
+                icon: Building2,
+                title: "Premium Portfolio",
+                desc: "Exclusive access to Dubai's most prestigious developments and communities.",
+              },
             ].map((item, i) => (
               <motion.div
                 key={item.title}
@@ -275,7 +364,11 @@ const Index = () => {
                 <Link to="/contact">Get In Touch</Link>
               </Button>
               <Button variant="hero-outline" size="xl" asChild>
-                <a href="https://wa.me/971000000000" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://wa.me/971000000000"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   WhatsApp Us
                 </a>
               </Button>
