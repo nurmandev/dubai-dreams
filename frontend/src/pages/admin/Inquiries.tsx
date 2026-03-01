@@ -10,6 +10,8 @@ import {
   Trash2,
   CheckCircle2,
   Building2,
+  Download,
+  Filter,
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -30,6 +32,8 @@ const ManageInquiries = () => {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [propertyFilter, setPropertyFilter] = useState("all");
+  const [propertyList, setPropertyList] = useState<string[]>([]);
 
   const fetchInquiries = async () => {
     try {
@@ -39,12 +43,63 @@ const ManageInquiries = () => {
         id: m._id || m.id,
       }));
       setInquiries(mapped);
+
+      // Extract unique property titles for filter
+      const titles = Array.from(
+        new Set(
+          mapped
+            .map((m: any) => m.propertyTitle)
+            .filter((t: any) => t !== undefined && t !== ""),
+        ),
+      ) as string[];
+      setPropertyList(titles);
     } catch (err) {
       console.error("Failed to fetch inquiries", err);
       toast.error("Failed to load inquiries");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleExport = () => {
+    if (filteredInquiries.length === 0) {
+      toast.error("No leads to export");
+      return;
+    }
+
+    const headers = [
+      "Name",
+      "Email",
+      "Phone",
+      "Property",
+      "Message",
+      "Status",
+      "Date",
+    ];
+    const rows = filteredInquiries.map((i) => [
+      i.name,
+      i.email,
+      i.phone,
+      i.propertyTitle || "General",
+      `"${i.message.replace(/"/g, '""')}"`,
+      i.status || "new",
+      new Date(i.createdAt).toLocaleDateString(),
+    ]);
+
+    const csvContent = [headers, ...rows].map((e) => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `dubai-dreams-leads-${new Date().toISOString().split("T")[0]}.csv`,
+    );
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Leads exported successfully");
   };
 
   const handleStatusUpdate = async (id: string, status: string) => {
@@ -68,6 +123,7 @@ const ManageInquiries = () => {
   const filteredInquiries = inquiries.filter(
     (i) =>
       i.status !== "archived" &&
+      (propertyFilter === "all" || i.propertyTitle === propertyFilter) &&
       (i.name.toLowerCase().includes(search.toLowerCase()) ||
         i.email.toLowerCase().includes(search.toLowerCase()) ||
         (i.propertyTitle &&
@@ -79,7 +135,7 @@ const ManageInquiries = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
         <div className="space-y-1">
           <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground font-title">
-            Lead Inquiries
+            Lead Management
           </h1>
           <p className="text-muted-foreground font-body text-sm">
             Respond to client engagement and property interests.
@@ -98,7 +154,7 @@ const ManageInquiries = () => {
       </div>
 
       <div className="mb-8 p-3 md:p-4 bg-background rounded-2xl border border-border shadow-sm flex flex-col md:flex-row items-center gap-4">
-        <div className="relative w-full">
+        <div className="relative flex-1">
           <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
@@ -107,6 +163,34 @@ const ManageInquiries = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+        </div>
+
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="relative flex-1 md:flex-initial">
+            <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gold shrink-0" />
+            <select
+              value={propertyFilter}
+              onChange={(e) => setPropertyFilter(e.target.value)}
+              className="w-full md:w-64 pl-11 pr-10 py-3 rounded-xl bg-muted/20 border-border font-body text-sm outline-none focus:ring-1 ring-gold/30 transition-all appearance-none cursor-pointer"
+            >
+              <option value="all">All Properties</option>
+              {propertyList.map((title) => (
+                <option key={title} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+              <Building2 className="w-3.5 h-3.5 text-muted-foreground/40" />
+            </div>
+          </div>
+
+          <button
+            onClick={handleExport}
+            className="px-6 py-3 rounded-xl bg-emerald text-white font-display font-bold text-xs uppercase tracking-widest hover:bg-emerald-dark transition-all flex items-center gap-2 shrink-0 active:scale-95 shadow-sm"
+          >
+            <Download className="w-4 h-4" /> Export Assets
+          </button>
         </div>
       </div>
 

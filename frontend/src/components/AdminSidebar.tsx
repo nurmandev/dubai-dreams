@@ -24,7 +24,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobile }: AdminSidebarProps) => {
   const menuItems = [
     { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
     { label: "Properties", icon: Building2, path: "/admin/properties" },
-    { label: "Inquiries", icon: MessageSquare, path: "/admin/inquiries" },
+    { label: "Lead Management", icon: MessageSquare, path: "/admin/inquiries" },
     { label: "Profile", icon: User, path: "/admin/profile" },
   ];
 
@@ -58,9 +58,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobile }: AdminSidebarProps) => {
             className={`h-8 w-auto min-w-[32px] transition-transform group-hover:scale-110 ${!isOpen && !isMobile ? "mx-auto" : ""}`}
           />
           {(isOpen || isMobile) && (
-            <span className="text-white font-display font-black text-xs tracking-widest uppercase">
-             
-            </span>
+            <span className="text-white font-display font-black text-xs tracking-widest uppercase"></span>
           )}
         </Link>
 
