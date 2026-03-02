@@ -395,6 +395,33 @@ const PropertyDetails = () => {
                     </div>
                   </div>
                 )}
+                {/* Location Map */}
+                <div className="mt-12 pt-12 border-t border-border">
+                  <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter flex items-center gap-3">
+                    <MapPin className="w-6 h-6 text-gold" /> Location Map
+                  </h2>
+                  <div className="w-full bg-muted/20 rounded-xl overflow-hidden border border-border h-[400px]">
+                    <iframe
+                      src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                        [
+                          property.location,
+                          property.areaLocation,
+                          property.region,
+                          property.city,
+                        ]
+                          .filter(Boolean)
+                          .join(", "),
+                      )}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full h-full"
+                    ></iframe>
+                  </div>
+                </div>
 
                 {/* All Images Grid */}
                 {property.images && property.images.length > 0 && (
