@@ -9,6 +9,11 @@ import {
   Search,
   MapPin,
   ChevronDown,
+  Users,
+  CheckCircle,
+  Zap,
+  Award,
+  Quote,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import PropertyCard from "@/components/PropertyCard";
@@ -255,6 +260,39 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Stats Counter */}
+      <section className="py-16 bg-primary border-y border-white/5">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            {[
+              { label: "Properties Sold", value: "2.4K+", icon: Building2 },
+              { label: "Active Investors", value: "10K+", icon: Users },
+              { label: "Total Transactions", value: "$4.1B+", icon: Zap },
+              { label: "Years Excellence", value: "15+", icon: Award },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="text-center"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold/10 mb-4">
+                  <stat.icon className="w-5 h-5 text-gold" />
+                </div>
+                <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                  {stat.value}
+                </div>
+                <div className="text-gold/60 font-body text-xs uppercase tracking-widest">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Categories */}
       <section className="py-20 bg-card">
         <div className="container mx-auto px-4 lg:px-8">
@@ -326,6 +364,83 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Investment Hotspots */}
+      <section className="py-20 lg:py-28 overflow-hidden">
+        <div className="container mx-auto px-4 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="mb-14"
+          >
+            <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-2">
+              Premium Districts
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
+              Investment Hotspots
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                name: "Downtown Dubai",
+                properties: "450+ Properties",
+                img: "/images/hero-dubai.jpg",
+                tag: "High ROI",
+              },
+              {
+                name: "Palm Jumeirah",
+                properties: "120+ Properties",
+                img: "/images/property-villa.jpg",
+                tag: "Exclusive",
+              },
+              {
+                name: "Dubai Marina",
+                properties: "380+ Properties",
+                img: "/images/property-marina.jpg",
+                tag: "High Yield",
+              },
+              {
+                name: "Business Bay",
+                properties: "290+ Properties",
+                img: "/images/property-offplan.jpg",
+                tag: "Commercial",
+              },
+            ].map((area, i) => (
+              <motion.div
+                key={area.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group relative h-[400px] rounded-3xl overflow-hidden cursor-pointer"
+              >
+                <img
+                  src={area.img}
+                  alt={area.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent" />
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1 bg-gold text-accent-foreground text-[10px] font-black uppercase tracking-widest rounded-full">
+                    {area.tag}
+                  </span>
+                </div>
+                <div className="absolute bottom-6 left-6 right-6">
+                  <h3 className="font-display text-2xl font-bold text-white mb-1">
+                    {area.name}
+                  </h3>
+                  <p className="text-white/60 font-body text-sm">
+                    {area.properties}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Why Omnis */}
       <section className="py-20 lg:py-28">
         <div className="container mx-auto px-4 lg:px-8">
@@ -385,6 +500,126 @@ const Index = () => {
                 </p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="py-20 bg-primary overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gold/5 skew-x-12 translate-x-20" />
+        <div className="container mx-auto px-4 lg:px-8 relative z-10">
+          <div className="max-w-4xl mx-auto bg-card/10 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-16 text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gold/20 mb-6">
+                <Globe className="w-6 h-6 text-gold" />
+              </div>
+              <h2 className="font-display text-3xl md:text-5xl font-bold text-white mb-4">
+                Exclusive Opportunities
+              </h2>
+              <p className="text-gold/60 font-body text-lg mb-10 max-w-xl mx-auto">
+                Join our private list to receive off-market luxury listings and
+                market insights before they go public.
+              </p>
+              <form
+                className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  toast.success("Welcome to the exclusive circle!");
+                }}
+              >
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white font-body outline-none focus:ring-1 ring-gold transition-all"
+                  required
+                />
+                <Button variant="gold" size="xl" className="whitespace-nowrap">
+                  Join Private List
+                </Button>
+              </form>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 lg:py-28 bg-card/50">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-4">
+                Client Success
+              </p>
+              <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-8 leading-tight">
+                What Our Elite <br />
+                Clients Say
+              </h2>
+              <div className="flex gap-4">
+                <div className="p-4 bg-primary rounded-2xl border border-white/5">
+                  <div className="text-2xl font-display font-bold text-white mb-1">
+                    98%
+                  </div>
+                  <div className="text-gold/60 text-[10px] uppercase font-black">
+                    Satisfaction
+                  </div>
+                </div>
+                <div className="p-4 bg-primary rounded-2xl border border-white/5">
+                  <div className="text-2xl font-display font-bold text-white mb-1">
+                    5.0
+                  </div>
+                  <div className="text-gold/60 text-[10px] uppercase font-black">
+                    Average Rating
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <div className="space-y-6">
+              {[
+                {
+                  quote:
+                    "Omnis Properties transformed our investment strategy in Dubai. Their off-market access is truly unrivaled.",
+                  author: "Alexander Hartmann",
+                  role: "Portfolio Manager",
+                },
+                {
+                  quote:
+                    "Professionalism at its finest. They found us our dream penthouse in Palm Jumeirah within a week.",
+                  author: "Sarah Al-Maktoum",
+                  role: "Investor",
+                },
+              ].map((t, i) => (
+                <motion.div
+                  key={t.author}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.2 }}
+                  className="bg-background p-8 rounded-[2rem] border border-border shadow-luxury relative"
+                >
+                  <Quote className="absolute top-6 right-8 w-10 h-10 text-gold/10" />
+                  <p className="text-foreground/80 font-body text-lg italic mb-6 leading-relaxed">
+                    "{t.quote}"
+                  </p>
+                  <div>
+                    <div className="font-display font-bold text-foreground">
+                      {t.author}
+                    </div>
+                    <div className="text-gold text-xs font-black uppercase tracking-widest">
+                      {t.role}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
