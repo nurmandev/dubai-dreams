@@ -37,8 +37,9 @@ export class PropertyController {
         address,
       } = req.body;
 
-      // Extract uploaded files
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      // Extract uploaded files safely
+      const files =
+        (req.files as { [fieldname: string]: Express.Multer.File[] }) || {};
       const uploadedImages = files["images"]
         ? files["images"].map((file) => file.path)
         : [];
@@ -151,16 +152,17 @@ export class PropertyController {
 
       const updateData = { ...req.body };
 
-      // Handle file uploads during update
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      const newImages = files?.["images"]
+      // Handle file uploads during update safely
+      const files =
+        (req.files as { [fieldname: string]: Express.Multer.File[] }) || {};
+      const newImages = files["images"]
         ? files["images"].map((file) => file.path)
         : [];
-      const newVideo = files?.["video"] ? files["video"][0].path : undefined;
-      const newFloorPlans = files?.["floorPlans"]
+      const newVideo = files["video"] ? files["video"][0].path : undefined;
+      const newFloorPlans = files["floorPlans"]
         ? files["floorPlans"].map((file) => file.path)
         : [];
-      const newTechnicalPdf = files?.["technicalPdf"]
+      const newTechnicalPdf = files["technicalPdf"]
         ? files["technicalPdf"][0].path
         : undefined;
 
