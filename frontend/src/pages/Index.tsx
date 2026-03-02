@@ -123,7 +123,7 @@ const Index = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-3xl"
+            className="max-w-3xl pt-24 lg:pt-32"
           >
             <p className="text-gold font-body text-sm tracking-[0.3em] uppercase mb-4">
               Dubai's Premier Real Estate
