@@ -20,7 +20,8 @@ interface BlogPost {
   content: string;
   excerpt: string;
   author: string;
-  image: string;
+  coverImage: string;
+  previewImage: string;
   category: string;
   publishedAt: string;
 }
@@ -163,7 +164,7 @@ const BlogDetails = () => {
               className="rounded-3xl overflow-hidden shadow-luxury mb-16 h-[500px]"
             >
               <img
-                src={post.image}
+                src={post.coverImage}
                 alt={post.title}
                 className="w-full h-full object-cover"
               />

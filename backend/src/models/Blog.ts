@@ -6,7 +6,8 @@ export interface IBlog extends Document {
   content: string;
   excerpt: string;
   author: string;
-  image: string;
+  coverImage: string;
+  previewImage: string;
   category: string;
   tags: string[];
   status: "published" | "draft";
@@ -22,7 +23,8 @@ const BlogSchema: Schema = new Schema(
     content: { type: String, required: true },
     excerpt: { type: String, required: true },
     author: { type: String, default: "Omnis Properties" },
-    image: { type: String, required: true },
+    coverImage: { type: String, required: true },
+    previewImage: { type: String, required: true },
     category: { type: String, required: true },
     tags: [{ type: String }],
     status: {

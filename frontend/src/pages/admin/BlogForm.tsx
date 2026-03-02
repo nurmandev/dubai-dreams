@@ -29,24 +29,31 @@ const BlogForm = () => {
     content: "",
     category: "News",
     status: "published",
-    image: "/images/property-marina.jpg",
+    coverImage: "",
+    previewImage: "",
   });
+
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [previewFile, setPreviewFile] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [previewPreview, setPreviewPreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (isEdit) {
       const fetchBlog = async () => {
         try {
           const { data } = await api.get(`/api/public/blogs/id/${id}`);
-          // Note: need to add byId on public or use a different endpoint
-          // For now let's assume dashboard has get blog by id or we use public
           setFormData({
             title: data.blog.title,
             excerpt: data.blog.excerpt,
             content: data.blog.content,
             category: data.blog.category,
             status: data.blog.status,
-            image: data.blog.image,
+            coverImage: data.blog.coverImage,
+            previewImage: data.blog.previewImage,
           });
+          setCoverPreview(data.blog.coverImage);
+          setPreviewPreview(data.blog.previewImage);
         } catch (err) {
           toast.error("Failed to load blog post");
           navigate("/admin/blogs");
@@ -58,16 +65,53 @@ const BlogForm = () => {
     }
   }, [id, isEdit, navigate]);
 
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "cover" | "preview",
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (type === "cover") {
+        setCoverFile(file);
+        setCoverPreview(URL.createObjectURL(file));
+      } else {
+        setPreviewFile(file);
+        setPreviewPreview(URL.createObjectURL(file));
+      }
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
 
     try {
+      const submitData = new FormData();
+      submitData.append("title", formData.title);
+      submitData.append("excerpt", formData.excerpt);
+      submitData.append("content", formData.content);
+      submitData.append("category", formData.category);
+      submitData.append("status", formData.status);
+
+      if (coverFile) submitData.append("coverImage", coverFile);
+      if (previewFile) submitData.append("previewImage", previewFile);
+
       if (isEdit) {
-        await api.patch(`/api/dashboard/blogs/${id}`, formData);
+        await api.patch(`/api/dashboard/blogs/${id}`, {
+          data: submitData,
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         toast.success("Blog post updated successfully");
       } else {
-        await api.post("/api/dashboard/blogs", formData);
+        if (!coverFile || !previewFile) {
+          toast.error("Please upload both cover and preview images");
+          setSaving(false);
+          return;
+        }
+        await api.post("/api/dashboard/blogs", {
+          data: submitData,
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         toast.success("Blog post created successfully");
       }
       navigate("/admin/blogs");
@@ -168,21 +212,75 @@ const BlogForm = () => {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-                Featured Image URL
-              </label>
-              <div className="relative">
-                <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="URL to featured image..."
-                  className="w-full pl-11 pr-4 py-3 bg-muted/20 border-border rounded-xl outline-none focus:ring-1 ring-gold font-body text-sm"
-                  value={formData.image}
-                  onChange={(e) =>
-                    setFormData({ ...formData, image: e.target.value })
-                  }
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                  Cover Image (Large)
+                </label>
+                <div className="relative group">
+                  <div className="aspect-video bg-muted/20 rounded-xl border-2 border-dashed border-border overflow-hidden flex items-center justify-center relative">
+                    {coverPreview ? (
+                      <img
+                        src={coverPreview}
+                        alt="Cover Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="text-center p-4">
+                        <ImageIcon className="w-8 h-8 mx-auto text-muted-foreground/40 mb-2" />
+                        <p className="text-xs text-muted-foreground">
+                          Upload cover image
+                        </p>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={(e) => handleFileChange(e, "cover")}
+                    />
+                  </div>
+                  {coverPreview && (
+                    <div className="mt-2 text-[10px] text-muted-foreground font-body">
+                      Click to change cover image
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                  Preview Image (Card)
+                </label>
+                <div className="relative group">
+                  <div className="aspect-square bg-muted/20 rounded-xl border-2 border-dashed border-border overflow-hidden flex items-center justify-center relative">
+                    {previewPreview ? (
+                      <img
+                        src={previewPreview}
+                        alt="Preview Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="text-center p-4">
+                        <ImageIcon className="w-8 h-8 mx-auto text-muted-foreground/40 mb-2" />
+                        <p className="text-xs text-muted-foreground">
+                          Upload card preview
+                        </p>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={(e) => handleFileChange(e, "preview")}
+                    />
+                  </div>
+                  {previewPreview && (
+                    <div className="mt-2 text-[10px] text-muted-foreground font-body">
+                      Click to change preview image
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 

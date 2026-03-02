@@ -13,7 +13,17 @@ export class BlogAdminController {
 
   static async createBlog(req: Request, res: Response) {
     try {
-      const { title, excerpt, content, category, status, image } = req.body;
+      const { title, excerpt, content, category, status } = req.body;
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const coverImage = files?.coverImage?.[0]?.path;
+      const previewImage = files?.previewImage?.[0]?.path;
+
+      if (!coverImage || !previewImage) {
+        return res
+          .status(400)
+          .json({ message: "Cover and preview images are required" });
+      }
+
       const slug = title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
@@ -26,7 +36,8 @@ export class BlogAdminController {
         content,
         category,
         status: status || "published",
-        image: image || "/images/property-marina.jpg", // Default if not provided
+        coverImage,
+        previewImage,
         publishedAt: status === "published" ? new Date() : undefined,
       });
 
@@ -40,7 +51,7 @@ export class BlogAdminController {
   static async updateBlog(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { title, excerpt, content, category, status, image } = req.body;
+      const { title, excerpt, content, category, status } = req.body;
 
       const updateData: any = {
         title,
@@ -48,8 +59,13 @@ export class BlogAdminController {
         content,
         category,
         status,
-        image,
       };
+
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      if (files?.coverImage?.[0]?.path)
+        updateData.coverImage = files.coverImage[0].path;
+      if (files?.previewImage?.[0]?.path)
+        updateData.previewImage = files.previewImage[0].path;
 
       if (title) {
         updateData.slug = title

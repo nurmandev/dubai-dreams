@@ -60,8 +60,22 @@ import { BlogAdminController } from "./controllers/blog.controller";
 
 // Blog Management
 router.get("/blogs", BlogAdminController.getAllBlogs);
-router.post("/blogs", BlogAdminController.createBlog);
-router.patch("/blogs/:id", BlogAdminController.updateBlog);
+router.post(
+  "/blogs",
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "previewImage", maxCount: 1 },
+  ]),
+  BlogAdminController.createBlog,
+);
+router.patch(
+  "/blogs/:id",
+  upload.fields([
+    { name: "coverImage", maxCount: 1 },
+    { name: "previewImage", maxCount: 1 },
+  ]),
+  BlogAdminController.updateBlog,
+);
 router.delete("/blogs/:id", BlogAdminController.deleteBlog);
 
 export default router;

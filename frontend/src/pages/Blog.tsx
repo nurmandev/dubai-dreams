@@ -11,7 +11,8 @@ interface BlogPost {
   slug: string;
   excerpt: string;
   publishedAt: string;
-  image: string;
+  previewImage: string;
+  coverImage: string;
   category: string;
 }
 
@@ -105,7 +106,7 @@ const Blog = () => {
                   >
                     <div className="h-60 overflow-hidden relative">
                       <img
-                        src={post.image}
+                        src={post.previewImage}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         loading="lazy"
