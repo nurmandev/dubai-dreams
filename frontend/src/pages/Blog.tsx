@@ -1,89 +1,162 @@
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, Search } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
 
-const blogPosts = [
-  {
-    id: "1",
-    title: "Top 5 Areas to Invest in Dubai in 2026",
-    excerpt: "Discover the most promising neighborhoods for real estate investment in Dubai this year.",
-    date: "Feb 15, 2026",
-    image: "/images/property-marina.jpg",
-    category: "Investment",
-  },
-  {
-    id: "2",
-    title: "Understanding Off-Plan Properties in Dubai",
-    excerpt: "A comprehensive guide to buying off-plan properties, payment plans, and developer guarantees.",
-    date: "Feb 10, 2026",
-    image: "/images/property-offplan.jpg",
-    category: "Guide",
-  },
-  {
-    id: "3",
-    title: "Dubai Golden Visa Through Real Estate",
-    excerpt: "Learn how property investment can qualify you for the UAE's Golden Visa program.",
-    date: "Feb 5, 2026",
-    image: "/images/property-apartment.jpg",
-    category: "News",
-  },
-];
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  publishedAt: string;
+  image: string;
+  category: string;
+}
 
 const Blog = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const { data } = await api.get("/api/public/blogs");
+        setPosts(data.blogs || []);
+      } catch (err) {
+        console.error("Failed to fetch blog posts", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.category.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
   return (
     <Layout>
-      <section className="pt-20 bg-primary">
-        <div className="container mx-auto px-4 lg:px-8 py-12">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <p className="text-gold font-body text-sm tracking-[0.3em] uppercase mb-2">Insights & News</p>
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground">Blog</h1>
+      <section className="pt-32 pb-16 bg-primary relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="container mx-auto px-4 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-8"
+          >
+            <div className="max-w-2xl">
+              <p className="text-gold font-body text-sm tracking-[0.3em] uppercase mb-3">
+                Market Insights
+              </p>
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
+                OMNIS <span className="text-gradient-gold">Perspectives</span>
+              </h1>
+              <p className="text-primary-foreground/60 font-body text-lg mt-6">
+                Deep dives into Dubai's real estate trends, investment guides,
+                and regulatory updates from our local experts.
+              </p>
+            </div>
+
+            <div className="relative w-full md:w-80">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-foreground/40" />
+              <input
+                type="text"
+                placeholder="Search articles..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white font-body outline-none focus:ring-1 ring-gold transition-all"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-20 lg:py-28">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, i) => (
-              <motion.article
-                key={post.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group bg-card rounded-xl overflow-hidden shadow-luxury hover:shadow-xl transition-all duration-500"
+          {loading ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="h-[450px] bg-muted/20 animate-pulse rounded-2xl border border-border"
+                />
+              ))}
+            </div>
+          ) : filteredPosts.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredPosts.map((post, i) => (
+                <motion.article
+                  key={post._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Link
+                    to={`/blog/${post.slug}`}
+                    className="group bg-background rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-xl transition-all duration-500 block h-full flex flex-col"
+                  >
+                    <div className="h-60 overflow-hidden relative">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        loading="lazy"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-primary/90 backdrop-blur-md text-gold text-[10px] font-black uppercase tracking-widest rounded-full border border-white/10">
+                          {post.category}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-6 flex flex-col flex-1">
+                      <div className="flex items-center gap-2 mb-4 text-muted-foreground font-body text-xs">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {new Date(post.publishedAt).toLocaleDateString(
+                          "en-US",
+                          { month: "short", day: "numeric", year: "numeric" },
+                        )}
+                      </div>
+                      <h2 className="font-display text-xl font-bold text-foreground mb-3 group-hover:text-gold transition-colors line-clamp-2">
+                        {post.title}
+                      </h2>
+                      <p className="text-muted-foreground font-body text-sm leading-relaxed mb-6 line-clamp-2">
+                        {post.excerpt}
+                      </p>
+                      <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
+                        <span className="text-foreground font-display font-bold text-xs uppercase tracking-widest group-hover:text-gold transition-colors flex items-center gap-2">
+                          Explore Article <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.article>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-muted/5 rounded-[2.5rem] border-2 border-dashed border-border/50">
+              <Search className="w-12 h-12 mx-auto text-muted-foreground/20 mb-4" />
+              <h3 className="font-display text-2xl font-bold text-foreground mb-2">
+                No articles found
+              </h3>
+              <p className="text-muted-foreground font-body">
+                Refine your search parameters and try again.
+              </p>
+              <button
+                onClick={() => setSearchTerm("")}
+                className="mt-6 text-gold font-display font-black text-xs uppercase tracking-widest hover:tracking-[0.15em] transition-all"
               >
-                <div className="h-52 overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-gold font-body text-xs font-semibold uppercase tracking-wider">
-                      {post.category}
-                    </span>
-                    <span className="flex items-center gap-1 text-muted-foreground font-body text-xs">
-                      <Calendar className="w-3 h-3" /> {post.date}
-                    </span>
-                  </div>
-                  <h2 className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-emerald transition-colors line-clamp-2">
-                    {post.title}
-                  </h2>
-                  <p className="text-muted-foreground font-body text-sm leading-relaxed mb-4 line-clamp-2">
-                    {post.excerpt}
-                  </p>
-                  <span className="text-gold font-body text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
-                    Read More <ArrowRight className="w-4 h-4" />
-                  </span>
-                </div>
-              </motion.article>
-            ))}
-          </div>
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </Layout>
