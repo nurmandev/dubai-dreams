@@ -13,11 +13,21 @@ const request = async (
   const token = localStorage.getItem("accessToken");
   const isFormData = options.data instanceof FormData;
 
-  const headers: HeadersInit = {
-    ...(isFormData ? {} : { "Content-Type": "application/json" }),
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...(options.headers || {}),
-  };
+  const headers = new Headers();
+  if (!isFormData) {
+    headers.set("Content-Type", "application/json");
+  }
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  if (options.headers) {
+    Object.entries(options.headers).forEach(([key, value]) => {
+      headers.set(key, value as string);
+    });
+  }
+
+  const { data: requestData, headers: _, ...fetchOptions } = options;
 
   try {
     const baseUrl = API_BASE_URL.replace(/\/$/, "");
@@ -25,12 +35,12 @@ const request = async (
     const response = await fetch(`${baseUrl}${cleanPath}`, {
       method,
       headers,
-      body: options.data
+      body: requestData
         ? isFormData
-          ? options.data
-          : JSON.stringify(options.data)
+          ? (requestData as any)
+          : JSON.stringify(requestData)
         : undefined,
-      ...options,
+      ...fetchOptions,
     });
 
     // Handle No Content cases (204)
