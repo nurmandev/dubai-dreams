@@ -111,50 +111,167 @@ const KYCManagement = () => {
   };
 
   const generatePDFSummary = (sub: KYCSubmission) => {
-    // Note: We use jspdf if installed, otherwise falling back to a clean text-based report
-    // This provides a high-fidelity summary for official compliance records
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      toast.error("Popup blocked! Please allow popups for summary generation.");
+      return;
+    }
 
-    const summaryContent = `
-      KYC COMPLIANCE SUMMARY REPORT
-      =============================
-      Generation Date: ${new Date().toLocaleString()}
-      
-      Subject Details:
-      - Full Name: ${sub.fullName}
-      - Nationality: ${sub.nationality}
-      - Account Email: ${sub.userId?.email || "N/A"}
-      
-      Identification Verification:
-      - Identification Type: ${sub.idType.toUpperCase()}
-      - Document Number: ${sub.idNumber}
-      - Current Status: ${sub.status.toUpperCase()}
-      
-      Submission Timeline:
-      - Lodged On: ${new Date(sub.createdAt).toLocaleString()}
-      
-      Reviewer Notes:
-      ${sub.remarks || "No administrative remarks logged."}
-      
-      --
-      OMNIS Properties - Internal Compliance Engine
+    const content = `
+      <html>
+        <head>
+          <title>KYC Summary - ${sub.fullName}</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+            body { 
+              font-family: 'Inter', sans-serif; 
+              padding: 60px; 
+              color: #1a1a2e; 
+              background: #fff;
+              line-height: 1.6;
+            }
+            .header { 
+              border-bottom: 3px solid #C19E67; 
+              padding-bottom: 30px; 
+              margin-bottom: 50px; 
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+            }
+            .brand { 
+              color: #C19E67; 
+              font-size: 32px; 
+              font-weight: 900; 
+              letter-spacing: 2px;
+              text-transform: uppercase;
+            }
+            .report-title {
+              font-size: 14px;
+              font-weight: 700;
+              color: #64748b;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+            }
+            .section { 
+              margin-bottom: 40px; 
+              background: #f8fafc;
+              padding: 30px;
+              border-radius: 12px;
+            }
+            .section-title {
+              font-size: 12px;
+              font-weight: 900;
+              color: #C19E67;
+              text-transform: uppercase;
+              letter-spacing: 2px;
+              margin-bottom: 20px;
+              border-bottom: 1px solid #e2e8f0;
+              padding-bottom: 10px;
+            }
+            .row {
+              display: flex;
+              margin-bottom: 12px;
+            }
+            .label { 
+              font-weight: 700; 
+              color: #64748b; 
+              width: 180px; 
+              font-size: 13px;
+            }
+            .value { 
+              color: #1e293b; 
+              font-weight: 500;
+              font-size: 14px;
+            }
+            .status { 
+              display: inline-block; 
+              padding: 6px 16px; 
+              border-radius: 30px; 
+              font-size: 11px; 
+              font-weight: 900; 
+              text-transform: uppercase; 
+              letter-spacing: 1px;
+            }
+            .status-approved { background: #dcfce7; color: #166534; }
+            .status-pending { background: #fef3c7; color: #92400e; }
+            .status-rejected { background: #fee2e2; color: #991b1b; }
+            .footer {
+              margin-top: 100px;
+              text-align: center;
+              font-size: 10px;
+              color: #94a3b8;
+              border-top: 1px solid #e2e8f0;
+              padding-top: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="brand">OMNIS PROPERTIES</div>
+            <div class="report-title">KYC Compliance Summary</div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Identity Profile</div>
+            <div class="row">
+              <div class="label">Full Name</div>
+              <div class="value">${sub.fullName}</div>
+            </div>
+            <div class="row">
+              <div class="label">Nationality</div>
+              <div class="value">${sub.nationality}</div>
+            </div>
+            <div class="row">
+              <div class="label">Account Email</div>
+              <div class="value">${sub.userId?.email || "N/A"}</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Verification Details</div>
+            <div class="row">
+              <div class="label">Identification Type</div>
+              <div class="value">${sub.idType.toUpperCase()}</div>
+            </div>
+            <div class="row">
+              <div class="label">Document ID</div>
+              <div class="value">${sub.idNumber}</div>
+            </div>
+            <div class="row">
+              <div class="label">Submission Date</div>
+              <div class="value">${new Date(sub.createdAt).toLocaleString()}</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Compliance Status</div>
+            <div class="row">
+              <div class="label">Current Appraisal</div>
+              <div class="value"><span class="status status-${sub.status}">${sub.status}</span></div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+              <div class="label">Reviewer Remarks</div>
+              <div class="value" style="font-style: italic;">${sub.remarks || "No administrative remarks logged."}</div>
+            </div>
+          </div>
+
+          <div class="footer">
+            CONFIDENTIAL - Internal Use Only &bull; Generated via OMNIS Compliance Engine &bull; ${new Date().toLocaleString()}
+          </div>
+
+          <script>
+            window.onload = function() {
+              window.print();
+              setTimeout(function() { window.close(); }, 500);
+            };
+          </script>
+        </body>
+      </html>
     `;
 
-    const blob = new Blob([summaryContent], {
-      type: "text/plain;charset=utf-8;",
-    });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute(
-      "download",
-      `KYC_Summary_${sub.fullName.replace(/\s+/g, "_")}_${sub.idNumber}.txt`,
-    );
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    toast.success("Summary report generated");
+    printWindow.document.write(content);
+    printWindow.document.close();
+    toast.success("Generating compliance summary...");
   };
 
   useEffect(() => {
