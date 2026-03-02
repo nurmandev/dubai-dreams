@@ -22,6 +22,7 @@ import AddProperty from "./pages/admin/AddProperty";
 import ManageBlogs from "./pages/admin/ManageBlogs";
 import BlogForm from "./pages/admin/BlogForm";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
