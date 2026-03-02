@@ -38,6 +38,7 @@ router.post(
     { name: "images", maxCount: 10 },
     { name: "video", maxCount: 1 },
     { name: "floorPlans", maxCount: 5 },
+    { name: "technicalPdf", maxCount: 1 },
   ]),
   PropertyController.createProperty,
 );
@@ -49,6 +50,7 @@ router.patch(
     { name: "images", maxCount: 10 },
     { name: "video", maxCount: 1 },
     { name: "floorPlans", maxCount: 5 },
+    { name: "technicalPdf", maxCount: 1 },
   ]),
   PropertyController.updateProperty,
 );

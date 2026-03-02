@@ -20,6 +20,7 @@ export interface Property {
   garageSize?: number;
   floorsNo?: number;
   videoUrl?: string;
+  technicalPdf?: string;
   floorPlans?: string[];
   featured?: boolean;
 }

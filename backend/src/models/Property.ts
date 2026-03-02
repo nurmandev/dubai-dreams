@@ -34,6 +34,7 @@ export interface IProperty extends Document {
   zipCode?: string;
   country?: string;
   videoUrl?: string;
+  technicalPdf?: string;
   floorPlans?: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -66,6 +67,7 @@ const PropertySchema = new Schema<IProperty>(
     favouritedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
     images: [{ type: String }],
     videoUrl: { type: String },
+    technicalPdf: { type: String },
     floorPlans: [{ type: String }],
     bedrooms: { type: Number },
     bathrooms: { type: Number },

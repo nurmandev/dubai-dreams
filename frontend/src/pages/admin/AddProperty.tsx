@@ -42,6 +42,8 @@ const AddProperty = () => {
   const [floorPlans, setFloorPlans] = useState<File[]>([]);
   const [floorPlanPreviews, setFloorPlanPreviews] = useState<string[]>([]);
 
+  const [technicalPdf, setTechnicalPdf] = useState<File | null>(null);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -128,6 +130,7 @@ const AddProperty = () => {
       // Files
       images.forEach((file) => data.append("images", file));
       floorPlans.forEach((file) => data.append("floorPlans", file));
+      if (technicalPdf) data.append("technicalPdf", technicalPdf);
 
       await api.post("/api/dashboard/properties", { data });
       toast.success("New property listed successfully");
@@ -302,6 +305,53 @@ const AddProperty = () => {
                     />
                   </label>
                 </div>
+              </div>
+
+              {/* Official Brochure (PDF) */}
+              <div className="space-y-4 pt-6 border-t border-border">
+                <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-gold" /> Official Brochure
+                  (PDF)
+                </label>
+                <div className="flex items-center gap-4">
+                  {technicalPdf ? (
+                    <div className="flex-1 flex items-center justify-between bg-gold/10 border border-gold/20 rounded-xl px-4 py-3">
+                      <div className="flex items-center gap-2 overflow-hidden">
+                        <FileText className="w-5 h-5 text-gold shrink-0" />
+                        <span className="text-xs font-bold text-foreground truncate">
+                          {technicalPdf.name}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setTechnicalPdf(null)}
+                        className="p-1 hover:bg-gold/20 rounded-full transition-colors"
+                      >
+                        <X className="w-4 h-4 text-gold" />
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="flex-1 border-2 border-dashed border-border hover:border-gold rounded-xl py-4 flex flex-col items-center justify-center bg-muted/5 cursor-pointer transition-all hover:bg-gold/5">
+                      <Upload className="w-6 h-6 text-gold mb-1" />
+                      <span className="text-[10px] text-muted-foreground font-black tracking-tighter uppercase">
+                        Attach Technical PDF
+                      </span>
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="application/pdf"
+                        onChange={(e) => {
+                          if (e.target.files?.[0])
+                            setTechnicalPdf(e.target.files[0]);
+                        }}
+                      />
+                    </label>
+                  )}
+                </div>
+                <p className="text-[9px] text-muted-foreground opacity-60 italic">
+                  This file will be used for the "Download High-Res PDF" button
+                  on the details page.
+                </p>
               </div>
             </div>
 

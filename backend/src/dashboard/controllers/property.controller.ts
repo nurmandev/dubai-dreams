@@ -43,6 +43,9 @@ export class PropertyController {
       const uploadedFloorPlans = files["floorPlans"]
         ? files["floorPlans"].map((file) => file.path)
         : [];
+      const uploadedTechnicalPdf = files["technicalPdf"]
+        ? files["technicalPdf"][0].path
+        : undefined;
 
       if (!title || !description || !price || !location) {
         return res.status(400).json({
@@ -70,6 +73,7 @@ export class PropertyController {
         status: status || "pending",
         images: uploadedImages,
         videoUrl: uploadedVideo,
+        technicalPdf: uploadedTechnicalPdf,
         floorPlans: uploadedFloorPlans,
         bedrooms: parseNum(bedrooms),
         bathrooms: parseNum(bathrooms),
@@ -150,6 +154,9 @@ export class PropertyController {
       const newFloorPlans = files?.["floorPlans"]
         ? files["floorPlans"].map((file) => file.path)
         : [];
+      const newTechnicalPdf = files?.["technicalPdf"]
+        ? files["technicalPdf"][0].path
+        : undefined;
 
       // If body.images is present (it's the list of existing images to keep),
       // we need to ensure it's an array and merge with new ones.
@@ -173,6 +180,8 @@ export class PropertyController {
           ...newFloorPlans,
         ];
       }
+
+      if (newTechnicalPdf) updateData.technicalPdf = newTechnicalPdf;
 
       fieldsToParse.forEach((field) => {
         if (updateData[field] !== undefined) {
