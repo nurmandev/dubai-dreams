@@ -77,20 +77,18 @@ const KYCManagement = () => {
     }
   };
 
-  const handleStatusUpdate = async (id: string, status: string) => {
+  const handleStatusUpdate = async (
+    id: string,
+    status: "pending" | "approved" | "rejected",
+  ) => {
     try {
-      // In a real app we would call the API here
-      try {
-        await api.patch(`/api/dashboard/kyc/${id}/status`, { status });
-      } catch (e) {
-        // Silently fallback if mock data
-      }
-
+      await api.patch(`/api/dashboard/kyc/${id}/status`, { data: { status } });
       toast.success(`KYC marked as ${status}`);
       setSubmissions((prev) =>
         prev.map((sub) => (sub._id === id ? { ...sub, status } : sub)),
       );
     } catch (err) {
+      console.error(err);
       toast.error("Failed to update status");
     }
   };
