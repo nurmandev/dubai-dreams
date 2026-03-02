@@ -11,6 +11,7 @@ router.get("/properties/:id", PublicController.getPropertyById);
 // Blogs
 router.get("/blogs", BlogController.getAllBlogs);
 router.get("/blogs/:slug", BlogController.getBlogBySlug);
+router.get("/blogs/id/:id", BlogController.getBlogById);
 
 // POST /api/public/inquiry (Contact Us)
 router.post("/inquiry", PublicController.submitInquiry);

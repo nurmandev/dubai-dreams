@@ -19,6 +19,8 @@ import KYCManagement from "./pages/admin/KYC";
 import AdminProfile from "./pages/admin/Profile";
 import EditProperty from "./pages/admin/EditProperty";
 import AddProperty from "./pages/admin/AddProperty";
+import ManageBlogs from "./pages/admin/ManageBlogs";
+import BlogForm from "./pages/admin/BlogForm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +48,9 @@ const App = () => (
           <Route path="/admin/profile" element={<AdminProfile />} />
           <Route path="/admin/properties/edit/:id" element={<EditProperty />} />
           <Route path="/admin/properties/add" element={<AddProperty />} />
+          <Route path="/admin/blogs" element={<ManageBlogs />} />
+          <Route path="/admin/blogs/add" element={<BlogForm />} />
+          <Route path="/admin/blogs/edit/:id" element={<BlogForm />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

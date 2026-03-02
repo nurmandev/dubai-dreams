@@ -27,6 +27,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobile }: AdminSidebarProps) => {
     { label: "Properties", icon: Building2, path: "/admin/properties" },
     { label: "Lead Management", icon: MessageSquare, path: "/admin/inquiries" },
     { label: "KYC Management", icon: FileText, path: "/admin/kyc" },
+    { label: "Blogs", icon: FileText, path: "/admin/blogs" },
     { label: "Profile", icon: User, path: "/admin/profile" },
   ];
 

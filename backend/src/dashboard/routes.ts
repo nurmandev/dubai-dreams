@@ -56,4 +56,12 @@ router.patch(
 // DELETE /api/dashboard/properties/:id — delete a property
 router.delete("/properties/:id", PropertyController.deleteProperty);
 
+import { BlogAdminController } from "./controllers/blog.controller";
+
+// Blog Management
+router.get("/blogs", BlogAdminController.getAllBlogs);
+router.post("/blogs", BlogAdminController.createBlog);
+router.patch("/blogs/:id", BlogAdminController.updateBlog);
+router.delete("/blogs/:id", BlogAdminController.deleteBlog);
+
 export default router;
