@@ -158,20 +158,20 @@ const ManageInquiries = () => {
           </p>
         </div>
         {!loading && (
-          <div className="flex gap-4">
-            <div className="px-4 py-2 bg-muted/20 rounded-xl border border-border flex flex-col items-center justify-center">
+          <div className="flex items-center gap-3">
+            <div className="px-3 py-1.5 bg-muted/20 rounded-lg border border-border flex items-center justify-center gap-2">
               <span className="text-[10px] uppercase font-black tracking-widest text-muted-foreground/70">
                 Total Leads
               </span>
-              <span className="text-lg font-display font-bold text-foreground">
+              <span className="text-sm font-display font-bold text-foreground bg-muted/30 px-2 py-0.5 rounded-md">
                 {filteredInquiries.length}
               </span>
             </div>
             <button
               onClick={handleExport}
-              className="px-5 py-2 rounded-xl bg-gold text-white font-display font-bold text-xs uppercase tracking-widest hover:bg-gold/90 transition-all flex items-center gap-2 active:scale-95 shadow-md shadow-gold/20"
+              className="px-4 py-1.5 rounded-lg bg-gold text-white font-display font-bold text-[10px] uppercase tracking-widest hover:bg-gold/90 transition-all flex items-center gap-2 active:scale-95 shadow-md shadow-gold/20"
             >
-              <Download className="w-4 h-4" /> Export CSV
+              <Download className="w-3.5 h-3.5" /> Export CSV
             </button>
           </div>
         )}
