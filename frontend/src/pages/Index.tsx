@@ -21,6 +21,7 @@ import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { Property as PropertyType } from "@/data/properties";
+import { toast } from "sonner";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -89,7 +90,7 @@ const Index = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="relative h-screen min-h-[700px] flex items-center">
+      <section className="relative min-h-[100svh] flex items-center py-20 lg:py-0">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/images/hero-dubai.jpg')" }}
@@ -136,12 +137,12 @@ const Index = () => {
             className="mt-12 max-w-4xl"
           >
             <div className="bg-primary-foreground/10 backdrop-blur-xl rounded-xl p-2 border border-primary-foreground/10">
-              <div className="flex gap-1 mb-3 px-2">
+              <div className="flex flex-wrap gap-1 mb-3 px-1 sm:px-2">
                 {["buy", "rent", "off-plan"].map((t) => (
                   <button
                     key={t}
                     onClick={() => setSearchType(t)}
-                    className={`font-body text-sm px-4 py-2 rounded-lg transition-all ${
+                    className={`font-body text-[10px] sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all ${
                       searchType === t
                         ? "bg-gold text-accent-foreground"
                         : "text-primary-foreground/70 hover:text-primary-foreground"
@@ -153,7 +154,7 @@ const Index = () => {
                   </button>
                 ))}
               </div>
-              <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex flex-col md:flex-row gap-2">
                 <div className="flex-1 flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 min-w-0">
                   <MapPin className="w-4 h-4 text-gold shrink-0" />
                   <input
@@ -164,45 +165,56 @@ const Index = () => {
                     className="bg-transparent text-primary-foreground placeholder:text-primary-foreground/40 font-body text-sm w-full outline-none"
                   />
                 </div>
-                <div className="flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 shrink-0">
-                  <select
-                    value={propType}
-                    onChange={(e) => setPropType(e.target.value)}
-                    className="bg-transparent text-primary-foreground font-body text-sm outline-none cursor-pointer appearance-none pr-6"
-                    style={{
-                      backgroundImage:
-                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.4)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "right center",
-                      backgroundSize: "1rem",
-                    }}
+                <div className="flex gap-2 w-full md:w-auto">
+                  <div className="flex-1 md:flex-initial flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 min-w-0">
+                    <select
+                      value={propType}
+                      onChange={(e) => setPropType(e.target.value)}
+                      className="bg-transparent text-primary-foreground font-body text-sm outline-none cursor-pointer appearance-none pr-6 w-full"
+                      style={{
+                        backgroundImage:
+                          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.4)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "right center",
+                        backgroundSize: "1rem",
+                      }}
+                    >
+                      <option value="all" className="bg-primary text-white">
+                        All Types
+                      </option>
+                      <option
+                        value="apartment"
+                        className="bg-primary text-white"
+                      >
+                        Apartment
+                      </option>
+                      <option value="villa" className="bg-primary text-white">
+                        Villa
+                      </option>
+                      <option
+                        value="townhouse"
+                        className="bg-primary text-white"
+                      >
+                        Townhouse
+                      </option>
+                      <option
+                        value="penthouse"
+                        className="bg-primary text-white"
+                      >
+                        Penthouse
+                      </option>
+                    </select>
+                  </div>
+                  <Button
+                    variant="gold"
+                    size="lg"
+                    className="flex-1 md:flex-initial shrink-0"
+                    onClick={handleSearch}
                   >
-                    <option value="all" className="bg-primary text-white">
-                      All Types
-                    </option>
-                    <option value="apartment" className="bg-primary text-white">
-                      Apartment
-                    </option>
-                    <option value="villa" className="bg-primary text-white">
-                      Villa
-                    </option>
-                    <option value="townhouse" className="bg-primary text-white">
-                      Townhouse
-                    </option>
-                    <option value="penthouse" className="bg-primary text-white">
-                      Penthouse
-                    </option>
-                  </select>
+                    <Search className="w-4 h-4" />
+                    Search
+                  </Button>
                 </div>
-                <Button
-                  variant="gold"
-                  size="lg"
-                  className="shrink-0"
-                  onClick={handleSearch}
-                >
-                  <Search className="w-4 h-4" />
-                  Search
-                </Button>
               </div>
             </div>
           </motion.div>
@@ -305,12 +317,12 @@ const Index = () => {
             <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-2">
               Browse By Category
             </p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
               What Are You Looking For?
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
               {
                 title: "Off-Plan",
@@ -381,7 +393,7 @@ const Index = () => {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
               {
                 name: "Downtown Dubai",
@@ -508,7 +520,7 @@ const Index = () => {
       <section className="py-20 bg-primary overflow-hidden relative">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gold/5 skew-x-12 translate-x-20" />
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto bg-card/10 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-16 text-center">
+          <div className="max-w-4xl mx-auto bg-card/10 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-16 text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -631,24 +643,35 @@ const Index = () => {
           style={{ backgroundImage: "url('/images/about-dubai.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-hero" />
-        <div className="relative z-10 container mx-auto px-4 lg:px-8 text-center">
+        <div className="relative z-10 container mx-auto px-4 lg:px-8 text-center sm:text-left">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="flex flex-col items-center"
           >
-            <h2 className="font-display text-3xl md:text-5xl font-bold text-primary-foreground mb-4">
+            <h2 className="font-display text-2xl md:text-5xl font-bold text-primary-foreground mb-4 max-w-2xl px-4">
               Ready to Invest in Dubai?
             </h2>
-            <p className="text-primary-foreground/70 font-body text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-primary-foreground/70 font-body text-sm md:text-lg max-w-2xl mx-auto mb-8 px-4">
               Let our team of experts guide you through Dubai's dynamic real
               estate market. Schedule a free consultation today.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button variant="hero" size="xl" asChild>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 w-full sm:w-auto px-4">
+              <Button
+                variant="hero"
+                size="xl"
+                asChild
+                className="w-full sm:w-auto"
+              >
                 <Link to="/contact">Get In Touch</Link>
               </Button>
-              <Button variant="hero-outline" size="xl" asChild>
+              <Button
+                variant="hero-outline"
+                size="xl"
+                asChild
+                className="w-full sm:w-auto"
+              >
                 <a
                   href="https://wa.me/971000000000"
                   target="_blank"
