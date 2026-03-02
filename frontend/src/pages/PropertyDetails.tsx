@@ -26,6 +26,7 @@ import {
   X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
 const PropertyDetails = () => {
@@ -34,6 +35,39 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // Enquiry Form State
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleEnquiry = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!property) return;
+
+    setSubmitting(true);
+    try {
+      await api.post("/api/public/inquiry", {
+        data: {
+          ...form,
+          propertyId: property.id,
+          propertyTitle: property.title,
+        },
+      });
+      toast.success(
+        "Enquiry securely transmitted. Our brokers will contact you shortly.",
+      );
+      setForm({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      toast.error("Failed to submit enquiry. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -544,42 +578,71 @@ const PropertyDetails = () => {
                   )}
 
                   <div className="space-y-4">
-                    <Button
-                      variant="gold"
-                      size="xl"
-                      className="w-full rounded-2xl py-8 shadow-xl shadow-gold/20"
-                      asChild
+                    <form
+                      onSubmit={handleEnquiry}
+                      className="flex flex-col gap-3"
                     >
-                      <Link to="/contact">
-                        <MessageCircle className="w-5 h-5 mr-3" /> Get Official
-                        Brochure
-                      </Link>
-                    </Button>
-                    <Button
-                      variant="hero-outline"
-                      size="xl"
-                      className="w-full rounded-2xl py-8 border-2"
-                      asChild
-                    >
-                      <Link to="/contact">
-                        <Phone className="w-5 h-5 mr-3" /> Schedule Private
-                        Viewing
-                      </Link>
-                    </Button>
+                      <input
+                        required
+                        value={form.name}
+                        onChange={(e) =>
+                          setForm({ ...form, name: e.target.value })
+                        }
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-gold transition-colors"
+                        placeholder="Full Name *"
+                      />
+                      <input
+                        required
+                        type="email"
+                        value={form.email}
+                        onChange={(e) =>
+                          setForm({ ...form, email: e.target.value })
+                        }
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-gold transition-colors"
+                        placeholder="Email Address *"
+                      />
+                      <input
+                        required
+                        type="tel"
+                        value={form.phone}
+                        onChange={(e) =>
+                          setForm({ ...form, phone: e.target.value })
+                        }
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-gold transition-colors"
+                        placeholder="Phone (with country code) *"
+                      />
+                      <textarea
+                        required
+                        rows={3}
+                        value={form.message}
+                        onChange={(e) =>
+                          setForm({ ...form, message: e.target.value })
+                        }
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-gold transition-colors resize-none mb-1"
+                        placeholder="I am interested in this property..."
+                      />
+                      <Button
+                        variant="gold"
+                        size="xl"
+                        type="submit"
+                        disabled={submitting}
+                        className="w-full rounded-2xl py-6 shadow-xl shadow-gold/20 font-bold uppercase tracking-wider text-xs"
+                      >
+                        {submitting
+                          ? "Sending..."
+                          : "Request Details & Availability"}
+                      </Button>
+                    </form>
 
-                    <div className="pt-6 flex justify-center gap-6">
+                    <div className="pt-4 flex justify-center gap-6 border-t border-border mt-2">
                       <a
-                        href="https://wa.me/971000000000"
+                        href={`https://wa.me/971000000000?text=${encodeURIComponent(`Hi, I'm interested in the property: ${property.title}`)}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-muted-foreground hover:text-emerald transition-colors"
+                        className="text-muted-foreground hover:text-emerald transition-colors flex items-center gap-2 font-black uppercase text-[10px] tracking-widest"
                       >
-                        <MessageCircle className="w-6 h-6" />
+                        <MessageCircle className="w-5 h-5" /> Chat via WhatsApp
                       </a>
-                      <div className="w-px h-6 bg-border" />
-                      <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest py-1">
-                        Share Asset
-                      </span>
                     </div>
                   </div>
                 </div>

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Property from "../../models/Property";
 import Inquiry from "../../models/Inquiry";
 import KYC from "../../models/KYC";
+import { sendAdminNotification } from "../../utils/mailer";
 
 export class PublicController {
   /**
@@ -224,6 +225,22 @@ export class PublicController {
 
       await inquiry.save();
 
+      // Dispatch admin email
+      const emailContent = `
+        <h2>New Inquiry Received</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone (With Country Code):</strong> ${phone}</p>
+        ${propertyTitle ? `<p><strong>Property Interest:</strong> ${propertyTitle}</p>` : `<p><strong>Type:</strong> General Inquiry</p>`}
+        <p><strong>Budget:</strong> ${budget || "Not Specified"}</p>
+        <p><strong>Message:</strong></p>
+        <blockquote style="border-left: 3px solid #C19E67; padding-left: 10px;">${message}</blockquote>
+      `;
+      await sendAdminNotification(
+        `New Real Estate Lead: ${name}`,
+        emailContent,
+      );
+
       res.status(201).json({ message: "Inquiry submitted successfully" });
     } catch (error: any) {
       console.error("Error submitting inquiry:", error);
@@ -282,12 +299,10 @@ export class PublicController {
 
       await kyc.save();
 
-      res
-        .status(201)
-        .json({
-          message:
-            "KYC onboarding documents successfully submitted. Our specialized team will review them shortly.",
-        });
+      res.status(201).json({
+        message:
+          "KYC onboarding documents successfully submitted. Our specialized team will review them shortly.",
+      });
     } catch (error: any) {
       console.error("Error submitting KYC:", error);
       res.status(500).json({ message: "Failed to process KYC onboarding" });

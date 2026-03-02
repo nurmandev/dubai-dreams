@@ -98,7 +98,7 @@ const Contact = () => {
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="font-body text-sm text-foreground mb-1 block">
-                      Phone *
+                      Phone (with country code) *
                     </label>
                     <input
                       required
