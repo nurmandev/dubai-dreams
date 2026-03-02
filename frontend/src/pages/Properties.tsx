@@ -19,13 +19,18 @@ const Properties = () => {
   const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
   const [propertyType, setPropertyType] = useState(initialType);
-  const [bedrooms, setBedrooms] = useState("all");
+  const [bedrooms, setBedrooms] = useState(searchParams.get("beds") || "all");
+  const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
+  const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     setCategory(searchParams.get("category") || "all");
     setSearch(searchParams.get("search") || "");
     setPropertyType(searchParams.get("type") || "all");
+    setBedrooms(searchParams.get("beds") || "all");
+    setMinPrice(searchParams.get("minPrice") || "");
+    setMaxPrice(searchParams.get("maxPrice") || "");
   }, [searchParams]);
 
   useEffect(() => {
@@ -75,15 +80,28 @@ const Properties = () => {
       )
         return false;
       if (bedrooms === "4" && p.bedrooms < 4) return false;
+      if (minPrice && p.price < Number(minPrice)) return false;
+      if (maxPrice && p.price > Number(maxPrice)) return false;
       if (
         search &&
         !p.title.toLowerCase().includes(search.toLowerCase()) &&
-        !p.location.toLowerCase().includes(search.toLowerCase())
+        !p.location.toLowerCase().includes(search.toLowerCase()) &&
+        !p.amenities?.some((a) =>
+          a.toLowerCase().includes(search.toLowerCase()),
+        )
       )
         return false;
       return true;
     });
-  }, [properties, search, category, propertyType, bedrooms]);
+  }, [
+    properties,
+    search,
+    category,
+    propertyType,
+    bedrooms,
+    minPrice,
+    maxPrice,
+  ]);
 
   const categories = [
     { value: "all", label: "All" },
@@ -97,6 +115,8 @@ const Properties = () => {
     setCategory("all");
     setPropertyType("all");
     setBedrooms("all");
+    setMinPrice("");
+    setMaxPrice("");
   };
 
   return (
@@ -192,6 +212,23 @@ const Properties = () => {
                 <option value="3">3 Bedrooms</option>
                 <option value="4">4+ Bedrooms</option>
               </select>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  placeholder="Min AED"
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(e.target.value)}
+                  className="bg-muted text-foreground font-body text-sm rounded-lg px-4 py-2 outline-none border border-border w-32"
+                />
+                <input
+                  type="number"
+                  placeholder="Max AED"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                  className="bg-muted text-foreground font-body text-sm rounded-lg px-4 py-2 outline-none border border-border w-32"
+                />
+              </div>
 
               <Button variant="ghost" size="sm" onClick={resetFilters}>
                 <X className="w-4 h-4" /> Clear All

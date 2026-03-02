@@ -23,8 +23,11 @@ import {
   Upload,
   X,
   Image as ImageIcon,
+  CheckCircle2,
+  Trash2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AMENITIES_LIST } from "@/data/properties";
 
 interface Property {
   id: string;
@@ -62,6 +65,7 @@ const EditProperty = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [amenitiesText, setAmenitiesText] = useState("");
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
   // File handling
   const [newImages, setNewImages] = useState<File[]>([]);
@@ -114,7 +118,14 @@ const EditProperty = () => {
           setExistingImages(found.images || []);
           setExistingFloorPlans(found.floorPlans || []);
           if (found.amenities && Array.isArray(found.amenities)) {
-            setAmenitiesText(found.amenities.join(", "));
+            const predefined = found.amenities.filter((a: string) =>
+              AMENITIES_LIST.includes(a),
+            );
+            const custom = found.amenities.filter(
+              (a: string) => !AMENITIES_LIST.includes(a),
+            );
+            setSelectedAmenities(predefined);
+            setAmenitiesText(custom.join(", "));
           }
         } else {
           toast.error("Property not found");
@@ -178,10 +189,14 @@ const EditProperty = () => {
     setSaving(true);
 
     try {
-      const amenitiesArray = amenitiesText
+      const tagsArray = amenitiesText
         .split(",")
         .map((a) => a.trim())
         .filter((a) => a !== "");
+
+      const allAmenities = Array.from(
+        new Set([...selectedAmenities, ...tagsArray]),
+      );
 
       // Use FormData for file updates
       const data = new FormData();
@@ -207,7 +222,7 @@ const EditProperty = () => {
       });
 
       // Special handling for arrays
-      amenitiesArray.forEach((a) => data.append("amenities", a));
+      allAmenities.forEach((a) => data.append("amenities", a));
 
       // Existing files to KEEP
       existingImages.forEach((img) => data.append("images", img));
@@ -595,6 +610,45 @@ const EditProperty = () => {
               </div>
             </div>
 
+            {/* Lifestyle Amenities Selection */}
+            <div className="bg-background rounded-xl p-6 shadow-sm border border-border space-y-4">
+              <div className="flex items-center gap-2 text-gold">
+                <CheckCircle2 className="w-4 h-4" />
+                <h3 className="font-display font-bold text-xs uppercase tracking-widest">
+                  Lifestyle Amenities
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {AMENITIES_LIST.map((amenity) => (
+                  <label
+                    key={amenity}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/20 border border-border/50 cursor-pointer hover:bg-gold/5 transition-colors group"
+                  >
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4 rounded border-border text-gold focus:ring-gold"
+                      checked={selectedAmenities.includes(amenity)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedAmenities((prev) => [...prev, amenity]);
+                        } else {
+                          setSelectedAmenities((prev) =>
+                            prev.filter((a) => a !== amenity),
+                          );
+                        }
+                      }}
+                    />
+                    <span className="text-xs font-bold text-foreground/80 group-hover:text-gold transition-colors">
+                      {amenity}
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p className="text-[10px] text-muted-foreground">
+                Standardized features for search optimization.
+              </p>
+            </div>
+
             <div className="bg-background rounded-xl p-6 shadow-sm border border-border space-y-4">
               <div className="flex items-center gap-2 text-gold">
                 <Tag className="w-4 h-4" />
@@ -620,7 +674,6 @@ const EditProperty = () => {
   );
 };
 
-// Add missing imports
-import { Trash2 } from "lucide-react";
+// Redundant import removed
 
 export default EditProperty;

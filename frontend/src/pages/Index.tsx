@@ -14,6 +14,8 @@ import {
   Zap,
   Award,
   Quote,
+  Bed,
+  DollarSign,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import PropertyCard from "@/components/PropertyCard";
@@ -30,6 +32,9 @@ const Index = () => {
   const [searchType, setSearchType] = useState("buy");
   const [locationValue, setLocationValue] = useState("");
   const [propType, setPropType] = useState("all");
+  const [beds, setBeds] = useState("all");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
   const [homeStats, setHomeStats] = useState<any[]>([]);
   const [homeHotspots, setHomeHotspots] = useState<any[]>([]);
 
@@ -37,6 +42,9 @@ const Index = () => {
     const params = new URLSearchParams();
     if (locationValue) params.set("search", locationValue);
     if (propType !== "all") params.set("type", propType);
+    if (beds !== "all") params.set("beds", beds);
+    if (minPrice) params.set("minPrice", minPrice);
+    if (maxPrice) params.set("maxPrice", maxPrice);
 
     // Map searchType to category
     let category = "all";
@@ -167,8 +175,9 @@ const Index = () => {
                   </button>
                 ))}
               </div>
-              <div className="flex flex-col md:flex-row gap-2">
-                <div className="flex-1 flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 min-w-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
+                {/* Location */}
+                <div className="flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 min-w-0 lg:col-span-2">
                   <MapPin className="w-4 h-4 text-gold shrink-0" />
                   <input
                     type="text"
@@ -178,55 +187,109 @@ const Index = () => {
                     className="bg-transparent text-primary-foreground placeholder:text-primary-foreground/40 font-body text-sm w-full outline-none"
                   />
                 </div>
-                <div className="flex gap-2 w-full md:w-auto">
-                  <div className="flex-1 md:flex-initial flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 min-w-0">
-                    <select
-                      value={propType}
-                      onChange={(e) => setPropType(e.target.value)}
-                      className="bg-transparent text-primary-foreground font-body text-sm outline-none cursor-pointer appearance-none pr-6 w-full"
-                      style={{
-                        backgroundImage:
-                          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.4)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "right center",
-                        backgroundSize: "1rem",
-                      }}
-                    >
-                      <option value="all" className="bg-primary text-white">
-                        All Types
-                      </option>
-                      <option
-                        value="apartment"
-                        className="bg-primary text-white"
-                      >
-                        Apartment
-                      </option>
-                      <option value="villa" className="bg-primary text-white">
-                        Villa
-                      </option>
-                      <option
-                        value="townhouse"
-                        className="bg-primary text-white"
-                      >
-                        Townhouse
-                      </option>
-                      <option
-                        value="penthouse"
-                        className="bg-primary text-white"
-                      >
-                        Penthouse
-                      </option>
-                    </select>
-                  </div>
-                  <Button
-                    variant="gold"
-                    size="lg"
-                    className="flex-1 md:flex-initial shrink-0"
-                    onClick={handleSearch}
+
+                {/* Property Type */}
+                <div className="flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 min-w-0">
+                  <Building2 className="w-4 h-4 text-gold shrink-0" />
+                  <select
+                    value={propType}
+                    onChange={(e) => setPropType(e.target.value)}
+                    className="bg-transparent text-primary-foreground font-body text-sm outline-none cursor-pointer appearance-none pr-6 w-full"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.4)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right center",
+                      backgroundSize: "1rem",
+                    }}
                   >
-                    <Search className="w-4 h-4" />
-                    Search
-                  </Button>
+                    <option value="all" className="bg-primary text-white">
+                      All Types
+                    </option>
+                    <option value="apartment" className="bg-primary text-white">
+                      Apartment
+                    </option>
+                    <option value="villa" className="bg-primary text-white">
+                      Villa
+                    </option>
+                    <option value="townhouse" className="bg-primary text-white">
+                      Townhouse
+                    </option>
+                    <option value="penthouse" className="bg-primary text-white">
+                      Penthouse
+                    </option>
+                  </select>
+                </div>
+
+                {/* Bedrooms */}
+                <div className="flex items-center gap-2 bg-primary-foreground/10 rounded-lg px-4 py-3 min-w-0">
+                  <Bed className="w-4 h-4 text-gold shrink-0" />
+                  <select
+                    value={beds}
+                    onChange={(e) => setBeds(e.target.value)}
+                    className="bg-transparent text-primary-foreground font-body text-sm outline-none cursor-pointer appearance-none pr-6 w-full"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.4)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E\")",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right center",
+                      backgroundSize: "1rem",
+                    }}
+                  >
+                    <option value="all" className="bg-primary text-white">
+                      Beds (All)
+                    </option>
+                    <option value="0" className="bg-primary text-white">
+                      Studio
+                    </option>
+                    <option value="1" className="bg-primary text-white">
+                      1 Bed
+                    </option>
+                    <option value="2" className="bg-primary text-white">
+                      2 Beds
+                    </option>
+                    <option value="3" className="bg-primary text-white">
+                      3 Beds
+                    </option>
+                    <option value="4" className="bg-primary text-white">
+                      4+ Beds
+                    </option>
+                  </select>
+                </div>
+
+                {/* Search Button */}
+                <Button
+                  variant="gold"
+                  size="lg"
+                  className="w-full h-full min-h-[50px] font-bold"
+                  onClick={handleSearch}
+                >
+                  <Search className="w-4 h-4 mr-2" />
+                  Search
+                </Button>
+              </div>
+
+              {/* Price Range - Hidden on tiny screens, flex on small+ */}
+              <div className="mt-3 flex flex-wrap items-center gap-4 px-2">
+                <span className="text-primary-foreground/40 text-xs font-body uppercase tracking-wider">
+                  Price Range (AED):
+                </span>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    placeholder="Min"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                    className="w-24 bg-primary-foreground/5 border border-primary-foreground/10 rounded-md px-3 py-1.5 text-xs text-primary-foreground outline-none focus:ring-1 ring-gold/50 transition-all"
+                  />
+                  <span className="text-primary-foreground/20">—</span>
+                  <input
+                    type="number"
+                    placeholder="Max"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                    className="w-24 bg-primary-foreground/5 border border-primary-foreground/10 rounded-md px-3 py-1.5 text-xs text-primary-foreground outline-none focus:ring-1 ring-gold/50 transition-all"
+                  />
                 </div>
               </div>
             </div>

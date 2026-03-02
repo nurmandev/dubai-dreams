@@ -24,13 +24,16 @@ import {
   X,
   Image as ImageIcon,
   Trash2,
+  CheckCircle2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { AMENITIES_LIST } from "@/data/properties";
 
 const AddProperty = () => {
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
   const [amenitiesText, setAmenitiesText] = useState("");
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
   // File handling for New Assets
   const [images, setImages] = useState<File[]>([]);
@@ -103,11 +106,6 @@ const AddProperty = () => {
     setSaving(true);
 
     try {
-      const amenitiesArray = amenitiesText
-        .split(",")
-        .map((a) => a.trim())
-        .filter((a) => a !== "");
-
       const data = new FormData();
 
       // Basic fields
@@ -116,7 +114,16 @@ const AddProperty = () => {
       });
 
       // Arrays
-      amenitiesArray.forEach((a) => data.append("amenities", a));
+      const tagsArray = amenitiesText
+        .split(",")
+        .map((a) => a.trim())
+        .filter((a) => a !== "");
+
+      const allAmenities = Array.from(
+        new Set([...selectedAmenities, ...tagsArray]),
+      );
+
+      allAmenities.forEach((a) => data.append("amenities", a));
 
       // Files
       images.forEach((file) => data.append("images", file));
@@ -442,6 +449,45 @@ const AddProperty = () => {
                   <Link to="/admin/properties">Abort & Exit</Link>
                 </Button>
               </div>
+            </div>
+
+            {/* Lifestyle Amenities Selection */}
+            <div className="bg-background rounded-2xl p-6 shadow-sm border border-border space-y-4">
+              <div className="flex items-center gap-2 text-gold">
+                <CheckCircle2 className="w-4 h-4" />
+                <h3 className="font-display font-black text-[10px] uppercase tracking-widest">
+                  Lifestyle Amenities
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {AMENITIES_LIST.map((amenity) => (
+                  <label
+                    key={amenity}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-muted/20 border border-border/50 cursor-pointer hover:bg-gold/5 transition-colors group"
+                  >
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4 rounded border-border text-gold focus:ring-gold"
+                      checked={selectedAmenities.includes(amenity)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedAmenities((prev) => [...prev, amenity]);
+                        } else {
+                          setSelectedAmenities((prev) =>
+                            prev.filter((a) => a !== amenity),
+                          );
+                        }
+                      }}
+                    />
+                    <span className="text-xs font-bold text-foreground/70 group-hover:text-gold transition-colors">
+                      {amenity}
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p className="text-[10px] text-muted-foreground opacity-60">
+                Select standardized features for high-visibility filtering.
+              </p>
             </div>
 
             <div className="bg-background rounded-2xl p-6 shadow-sm border border-border space-y-4">

@@ -24,6 +24,28 @@ export interface Property {
   featured?: boolean;
 }
 
+export const AMENITIES_LIST = [
+  "Fireplace",
+  "Garages",
+  "Swimming Pool",
+  "Pet Friendly",
+  "Parking",
+  "Ceiling Height",
+  "TV Cable",
+  "Elevator",
+  "Barbeque",
+  "Outdoor Shower",
+  "Lake View",
+  "Wifi",
+  "Lawn",
+  "Dryer",
+  "Disabled Access",
+  "A/C & Heating",
+  "Refrigerator",
+  "Garden",
+  "Laundry",
+];
+
 export const sampleProperties: Property[] = [
   {
     id: "1",
