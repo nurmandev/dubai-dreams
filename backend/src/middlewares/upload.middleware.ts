@@ -15,7 +15,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "omnis_properties",
-    allowed_formats: ["jpg", "png", "jpeg", "webp", "mp4"],
+    allowed_formats: ["jpg", "png", "jpeg", "webp", "mp4", "pdf"],
   } as any,
 });
 
