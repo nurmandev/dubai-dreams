@@ -239,7 +239,7 @@ const Index = () => {
               [1, 2, 3].map((n) => (
                 <div
                   key={n}
-                  className="h-[400px] w-full bg-muted/20 animate-pulse rounded-lg"
+                  className="h-[400px] w-full bg-muted/20 animate-pulse rounded-xl"
                 />
               ))
             ) : featuredProperties.length > 0 ? (
@@ -414,7 +414,7 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group relative h-[400px] rounded-3xl overflow-hidden cursor-pointer"
+                className="group relative h-[400px] rounded-xl overflow-hidden cursor-pointer"
               >
                 <img
                   src={area.img}
@@ -508,7 +508,7 @@ const Index = () => {
       <section className="py-20 bg-primary overflow-hidden relative">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gold/5 skew-x-12 translate-x-20" />
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto bg-card/10 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-16 text-center">
+          <div className="max-w-4xl mx-auto bg-card/10 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-16 text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -563,7 +563,7 @@ const Index = () => {
                 Clients Say
               </h2>
               <div className="flex gap-4">
-                <div className="p-4 bg-primary rounded-2xl border border-white/5">
+                <div className="p-4 bg-primary rounded-xl border border-white/5">
                   <div className="text-2xl font-display font-bold text-white mb-1">
                     98%
                   </div>
@@ -571,7 +571,7 @@ const Index = () => {
                     Satisfaction
                   </div>
                 </div>
-                <div className="p-4 bg-primary rounded-2xl border border-white/5">
+                <div className="p-4 bg-primary rounded-xl border border-white/5">
                   <div className="text-2xl font-display font-bold text-white mb-1">
                     5.0
                   </div>
@@ -603,7 +603,7 @@ const Index = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.2 }}
-                  className="bg-background p-8 rounded-[2rem] border border-border shadow-luxury relative"
+                  className="bg-background p-8 rounded-xl border border-border shadow-luxury relative"
                 >
                   <Quote className="absolute top-6 right-8 w-10 h-10 text-gold/10" />
                   <p className="text-foreground/80 font-body text-lg italic mb-6 leading-relaxed">

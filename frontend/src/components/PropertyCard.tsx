@@ -25,7 +25,7 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
     >
       <Link
         to={`/properties/${property.id}`}
-        className="group block bg-card rounded-lg overflow-hidden shadow-luxury hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+        className="group block bg-card rounded-xl overflow-hidden shadow-luxury hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
       >
         {/* Image */}
         <div className="relative h-64 overflow-hidden">
