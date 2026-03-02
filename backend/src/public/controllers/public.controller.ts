@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Property from "../../models/Property";
 import Inquiry from "../../models/Inquiry";
+import KYC from "../../models/KYC";
 
 export class PublicController {
   /**
@@ -227,6 +228,69 @@ export class PublicController {
     } catch (error: any) {
       console.error("Error submitting inquiry:", error);
       res.status(500).json({ message: "Failed to submit inquiry" });
+    }
+  }
+
+  /**
+   * Submit KYC Onboarding Documents
+   * POST /api/public/kyc
+   */
+  static async submitKyc(req: Request, res: Response) {
+    try {
+      const {
+        fullName,
+        email,
+        phone,
+        nationality,
+        address,
+        idType = "passport",
+        idNumber,
+      } = req.body;
+
+      if (!fullName || !email || !phone || !nationality || !address) {
+        return res.status(400).json({ message: "Missing required KYC fields" });
+      }
+
+      // Ensure req.files is safely handled
+      const files =
+        (req.files as { [fieldname: string]: Express.Multer.File[] }) || {};
+
+      const passportCopy = files["passportCopy"]
+        ? files["passportCopy"][0].path
+        : undefined;
+      const emiratesIdCopy = files["emiratesIdCopy"]
+        ? files["emiratesIdCopy"][0].path
+        : undefined;
+      const supportingDocuments = files["supportingDocuments"]
+        ? files["supportingDocuments"].map((f) => f.path)
+        : [];
+
+      const kyc = new KYC({
+        fullName,
+        email,
+        phone,
+        nationality,
+        address,
+        idType,
+        idNumber,
+        documentUrls: {
+          passportCopy,
+          emiratesIdCopy,
+          supportingDocuments,
+        },
+      });
+
+      await kyc.save();
+
+      res
+        .status(201)
+        .json({
+          message:
+            "KYC onboarding documents successfully submitted. Our specialized team will review them shortly.",
+        });
+    } catch (error: any) {
+      console.error("Error submitting KYC:", error);
+      res.status(500).json({ message: "Failed to process KYC onboarding" });
     }
   }
   private static getFullUrl(path: string) {

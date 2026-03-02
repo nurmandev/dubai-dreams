@@ -23,6 +23,7 @@ import ManageBlogs from "./pages/admin/ManageBlogs";
 import BlogForm from "./pages/admin/BlogForm";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
+import KycOnboarding from "./pages/KycOnboarding";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/kyc" element={<KycOnboarding />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/properties" element={<ManageProperties />} />
           <Route path="/admin/inquiries" element={<ManageInquiries />} />
