@@ -58,6 +58,8 @@ const AddProperty = () => {
     area: "",
     city: "",
     state: "",
+    region: "",
+    areaLocation: "",
     zipCode: "",
     country: "United Arab Emirates",
     yearBuilt: new Date().getFullYear().toString(),
@@ -220,6 +222,70 @@ const AddProperty = () => {
                       setFormData({ ...formData, address: e.target.value })
                     }
                   />
+                </div>
+
+                {/* Geographical Taxonomy */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      Location
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Palm Jumeirah"
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                      value={formData.location}
+                      onChange={(e) =>
+                        setFormData({ ...formData, location: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      Region
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Dubai Marina Area"
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                      value={formData.region}
+                      onChange={(e) =>
+                        setFormData({ ...formData, region: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      Area
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. West Crescent"
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                      value={formData.areaLocation}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          areaLocation: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Dubai"
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                      value={formData.city}
+                      onChange={(e) =>
+                        setFormData({ ...formData, city: e.target.value })
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             </div>

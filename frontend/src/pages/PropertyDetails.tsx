@@ -50,6 +50,9 @@ const PropertyDetails = () => {
             bedrooms: p.property_info?.bed || 0,
             bathrooms: p.property_info?.bath || 0,
             location: p.location || p.address,
+            region: p.region,
+            areaLocation: p.areaLocation,
+            city: p.city,
             type: p.type?.toLowerCase() || "apartment",
             category:
               p.listedIn === "Off-Plan"
@@ -219,12 +222,19 @@ const PropertyDetails = () => {
                     <h1 className="font-display text-4xl md:text-5xl font-black text-foreground tracking-tighter mb-4">
                       {property.title}
                     </h1>
-                    <div className="flex items-center gap-2 text-muted-foreground font-body">
-                      <div className="p-2 rounded-lg bg-gold/10">
+                    <div className="flex flex-wrap items-center gap-2 text-muted-foreground font-body">
+                      <div className="p-2 rounded-lg bg-gold/10 shrink-0">
                         <MapPin className="w-4 h-4 text-gold" />
                       </div>
                       <span className="text-sm font-medium tracking-wide">
-                        {property.location}
+                        {[
+                          property.location,
+                          property.areaLocation,
+                          property.region,
+                          property.city,
+                        ]
+                          .filter(Boolean)
+                          .join(" • ")}
                       </span>
                     </div>
                   </div>

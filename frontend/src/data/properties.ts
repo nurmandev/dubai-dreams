@@ -9,6 +9,9 @@ export interface Property {
   type: string;
   category: "off-plan" | "secondary" | "rental";
   location: string;
+  region?: string;
+  areaLocation?: string;
+  city?: string;
   developer?: string;
   status: "off-plan" | "ready";
   image: string;

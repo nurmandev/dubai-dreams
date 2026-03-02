@@ -31,6 +31,8 @@ export interface IProperty extends Document {
   yearlyTaxRate?: number;
   city?: string;
   state?: string;
+  region?: string;
+  areaLocation?: string;
   zipCode?: string;
   country?: string;
   videoUrl?: string;
@@ -82,6 +84,8 @@ const PropertySchema = new Schema<IProperty>(
     yearlyTaxRate: { type: Number },
     city: { type: String },
     state: { type: String },
+    region: { type: String },
+    areaLocation: { type: String },
     zipCode: { type: String },
     country: { type: String },
   },

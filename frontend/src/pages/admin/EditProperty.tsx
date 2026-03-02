@@ -335,6 +335,65 @@ const EditProperty = () => {
                     }
                   />
                 </div>
+
+                {/* Geographical Taxonomy */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                      Location
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full bg-muted/30 border border-border rounded-lg px-4 py-2.5 outline-none font-body text-sm focus:border-gold transition-colors"
+                      value={formData.location || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, location: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                      Region
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full bg-muted/30 border border-border rounded-lg px-4 py-2.5 outline-none font-body text-sm focus:border-gold transition-colors"
+                      value={formData.region || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, region: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                      Area
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full bg-muted/30 border border-border rounded-lg px-4 py-2.5 outline-none font-body text-sm focus:border-gold transition-colors"
+                      value={formData.areaLocation || ""}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          areaLocation: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full bg-muted/30 border border-border rounded-lg px-4 py-2.5 outline-none font-body text-sm focus:border-gold transition-colors"
+                      value={formData.city || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, city: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 

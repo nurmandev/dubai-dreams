@@ -30,8 +30,11 @@ export class PropertyController {
         yearlyTaxRate,
         city,
         state,
+        region,
+        areaLocation,
         zipCode,
         country,
+        address,
       } = req.body;
 
       // Extract uploaded files
@@ -68,6 +71,7 @@ export class PropertyController {
         title,
         description,
         price: parseNum(price) || 0,
+        address,
         location,
         propertyType: propertyType || "apartment",
         status: status || "pending",
@@ -88,6 +92,8 @@ export class PropertyController {
         yearlyTaxRate: parseNum(yearlyTaxRate),
         city,
         state,
+        region,
+        areaLocation,
         zipCode,
         country,
       });
