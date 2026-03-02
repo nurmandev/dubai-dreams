@@ -7,6 +7,7 @@ const router = Router();
 // GET /api/public/properties
 router.get("/properties", PublicController.getProperties);
 router.get("/properties/:id", PublicController.getPropertyById);
+router.get("/stats", PublicController.getPublicStats);
 
 // Blogs
 router.get("/blogs", BlogController.getAllBlogs);

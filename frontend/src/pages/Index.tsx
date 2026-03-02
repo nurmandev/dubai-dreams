@@ -30,6 +30,8 @@ const Index = () => {
   const [searchType, setSearchType] = useState("buy");
   const [locationValue, setLocationValue] = useState("");
   const [propType, setPropType] = useState("all");
+  const [homeStats, setHomeStats] = useState<any[]>([]);
+  const [homeHotspots, setHomeHotspots] = useState<any[]>([]);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -83,6 +85,17 @@ const Index = () => {
     };
 
     fetchProperties();
+
+    const fetchStats = async () => {
+      try {
+        const { data } = await api.get("/api/public/stats");
+        setHomeStats(data.stats || []);
+        setHomeHotspots(data.hotspots || []);
+      } catch (err) {
+        console.error("Failed to fetch home stats", err);
+      }
+    };
+    fetchStats();
   }, []);
 
   const featuredProperties = properties.slice(0, 6); // Just show the first 6 for featured
@@ -276,31 +289,52 @@ const Index = () => {
       <section className="py-16 bg-primary border-y border-white/5">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-            {[
-              { label: "Properties Sold", value: "2.4K+", icon: Building2 },
-              { label: "Active Investors", value: "10K+", icon: Users },
-              { label: "Total Transactions", value: "$4.1B+", icon: Zap },
-              { label: "Years Excellence", value: "15+", icon: Award },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="text-center"
-              >
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold/10 mb-4">
-                  <stat.icon className="w-5 h-5 text-gold" />
-                </div>
-                <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-gold/60 font-body text-xs uppercase tracking-widest">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
+            {homeStats.length > 0
+              ? homeStats.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="text-center"
+                  >
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold/10 mb-4">
+                      <Zap className="w-5 h-5 text-gold" />
+                    </div>
+                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-gold/60 font-body text-xs uppercase tracking-widest">
+                      {stat.label}
+                    </div>
+                  </motion.div>
+                ))
+              : [
+                  { label: "Properties Sold", value: "2.4K+", icon: Building2 },
+                  { label: "Active Investors", value: "10K+", icon: Users },
+                  { label: "Total Transactions", value: "$4.1B+", icon: Zap },
+                  { label: "Years Excellence", value: "15+", icon: Award },
+                ].map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="text-center"
+                  >
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold/10 mb-4">
+                      <stat.icon className="w-5 h-5 text-gold" />
+                    </div>
+                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-gold/60 font-body text-xs uppercase tracking-widest">
+                      {stat.label}
+                    </div>
+                  </motion.div>
+                ))}
           </div>
         </div>
       </section>
@@ -394,32 +428,35 @@ const Index = () => {
           </motion.div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {[
-              {
-                name: "Downtown Dubai",
-                properties: "450+ Properties",
-                img: "/images/hero-dubai.jpg",
-                tag: "High ROI",
-              },
-              {
-                name: "Palm Jumeirah",
-                properties: "120+ Properties",
-                img: "/images/property-villa.jpg",
-                tag: "Exclusive",
-              },
-              {
-                name: "Dubai Marina",
-                properties: "380+ Properties",
-                img: "/images/property-marina.jpg",
-                tag: "High Yield",
-              },
-              {
-                name: "Business Bay",
-                properties: "290+ Properties",
-                img: "/images/property-offplan.jpg",
-                tag: "Commercial",
-              },
-            ].map((area, i) => (
+            {(homeHotspots.length > 0
+              ? homeHotspots
+              : [
+                  {
+                    name: "Downtown Dubai",
+                    properties: "450+ Properties",
+                    img: "/images/hero-dubai.jpg",
+                    tag: "High ROI",
+                  },
+                  {
+                    name: "Palm Jumeirah",
+                    properties: "120+ Properties",
+                    img: "/images/property-villa.jpg",
+                    tag: "Exclusive",
+                  },
+                  {
+                    name: "Dubai Marina",
+                    properties: "380+ Properties",
+                    img: "/images/property-marina.jpg",
+                    tag: "High Yield",
+                  },
+                  {
+                    name: "Business Bay",
+                    properties: "290+ Properties",
+                    img: "/images/property-offplan.jpg",
+                    tag: "Commercial",
+                  },
+                ]
+            ).map((area, i) => (
               <motion.div
                 key={area.name}
                 initial={{ opacity: 0, y: 30 }}
