@@ -44,33 +44,33 @@ const Blog = () => {
 
   return (
     <Layout>
-      <section className="pt-32 pb-16 bg-primary relative overflow-hidden">
+      <section className="pt-24 pb-12 md:pt-32 md:pb-16 bg-primary relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col md:flex-row md:items-end justify-between gap-8"
+            className="flex flex-col lg:flex-row lg:items-end justify-between gap-8"
           >
-            <div className="max-w-2xl">
-              <p className="text-gold font-body text-sm tracking-[0.3em] uppercase mb-3">
+            <div className="max-w-2xl text-center md:text-left">
+              <p className="text-gold font-body text-xs md:text-sm tracking-[0.3em] uppercase mb-3">
                 Market Insights
               </p>
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight">
+              <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground leading-[1.1]">
                 OMNIS <span className="text-gradient-gold">Perspectives</span>
               </h1>
-              <p className="text-primary-foreground/60 font-body text-lg mt-6">
+              <p className="text-primary-foreground/60 font-body text-base md:text-lg mt-4 md:mt-6">
                 Deep dives into Dubai's real estate trends, investment guides,
                 and regulatory updates from our local experts.
               </p>
             </div>
 
-            <div className="relative w-full md:w-80">
+            <div className="relative w-full lg:w-80">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-foreground/40" />
               <input
                 type="text"
                 placeholder="Search articles..."
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white font-body outline-none focus:ring-1 ring-gold transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white font-body text-sm outline-none focus:ring-1 ring-gold transition-all"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -79,19 +79,19 @@ const Blog = () => {
         </div>
       </section>
 
-      <section className="py-20 lg:py-28">
+      <section className="py-12 md:py-20 lg:py-28">
         <div className="container mx-auto px-4 lg:px-8">
           {loading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {[1, 2, 3].map((n) => (
                 <div
                   key={n}
-                  className="h-[450px] bg-muted/20 animate-pulse rounded-2xl border border-border"
+                  className="h-[400px] md:h-[450px] bg-muted/20 animate-pulse rounded-2xl border border-border"
                 />
               ))}
             </div>
           ) : filteredPosts.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {filteredPosts.map((post, i) => (
                 <motion.article
                   key={post._id}
@@ -104,7 +104,7 @@ const Blog = () => {
                     to={`/blog/${post.slug}`}
                     className="group bg-background rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-xl transition-all duration-500 block h-full flex flex-col"
                   >
-                    <div className="h-60 overflow-hidden relative">
+                    <div className="h-52 md:h-60 overflow-hidden relative">
                       <img
                         src={post.previewImage}
                         alt={post.title}
@@ -117,22 +117,22 @@ const Blog = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="p-6 flex flex-col flex-1">
-                      <div className="flex items-center gap-2 mb-4 text-muted-foreground font-body text-xs">
+                    <div className="p-5 md:p-6 flex flex-col flex-1">
+                      <div className="flex items-center gap-2 mb-3 md:mb-4 text-muted-foreground font-body text-xs">
                         <Calendar className="w-3.5 h-3.5" />
                         {new Date(post.publishedAt).toLocaleDateString(
                           "en-US",
                           { month: "short", day: "numeric", year: "numeric" },
                         )}
                       </div>
-                      <h2 className="font-display text-xl font-bold text-foreground mb-3 group-hover:text-gold transition-colors line-clamp-2">
+                      <h2 className="font-display text-lg md:text-xl font-bold text-foreground mb-3 group-hover:text-gold transition-colors line-clamp-2 leading-tight">
                         {post.title}
                       </h2>
-                      <p className="text-muted-foreground font-body text-sm leading-relaxed mb-6 line-clamp-2">
+                      <p className="text-muted-foreground font-body text-xs md:text-sm leading-relaxed mb-4 md:mb-6 line-clamp-2">
                         {post.excerpt}
                       </p>
-                      <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
-                        <span className="text-foreground font-display font-bold text-xs uppercase tracking-widest group-hover:text-gold transition-colors flex items-center gap-2">
+                      <div className="mt-auto pt-4 md:pt-6 border-t border-border flex items-center justify-between">
+                        <span className="text-foreground font-display font-bold text-[10px] md:text-xs uppercase tracking-widest group-hover:text-gold transition-colors flex items-center gap-2">
                           Explore Article <ArrowRight className="w-4 h-4" />
                         </span>
                       </div>

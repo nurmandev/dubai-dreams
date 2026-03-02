@@ -84,7 +84,7 @@ const BlogDetails = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative pt-40 pb-20 overflow-hidden">
+      <section className="relative pt-32 md:pt-40 pb-12 md:pb-20 overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -93,16 +93,16 @@ const BlogDetails = () => {
           >
             <Link
               to="/blog"
-              className="inline-flex items-center gap-2 text-gold font-body text-sm font-medium mb-8 hover:gap-3 transition-all"
+              className="inline-flex items-center gap-2 text-gold font-body text-xs md:text-sm font-medium mb-6 md:mb-8 hover:gap-3 transition-all"
             >
               <ArrowLeft className="w-4 h-4" /> Back to Insights
             </Link>
 
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-4 md:mb-6">
               <span className="px-3 py-1 bg-gold/10 text-gold text-[10px] font-black uppercase tracking-widest rounded-full border border-gold/20">
                 {post.category}
               </span>
-              <span className="flex items-center gap-1.5 text-muted-foreground font-body text-xs">
+              <span className="flex items-center gap-1.5 text-muted-foreground font-body text-[10px] md:text-xs">
                 <Calendar className="w-3.5 h-3.5" />{" "}
                 {new Date(post.publishedAt).toLocaleDateString("en-US", {
                   month: "long",
@@ -112,24 +112,26 @@ const BlogDetails = () => {
               </span>
             </div>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-8">
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.15] mb-6 md:mb-8">
               {post.title}
             </h1>
 
-            <div className="flex items-center gap-4 mb-12 py-6 border-y border-border">
-              <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary shrink-0 border border-primary/10 font-display font-bold">
-                {post.author.charAt(0)}
-              </div>
-              <div>
-                <div className="font-display font-bold text-foreground">
-                  {post.author}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-4 mb-8 md:mb-12 py-6 border-y border-border">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary shrink-0 border border-primary/10 font-display font-bold text-sm md:text-base">
+                  {post.author.charAt(0)}
                 </div>
-                <div className="text-muted-foreground text-xs font-body">
-                  Market Insight Expert
+                <div>
+                  <div className="font-display font-bold text-foreground text-sm md:text-base">
+                    {post.author}
+                  </div>
+                  <div className="text-muted-foreground text-[10px] md:text-xs font-body">
+                    Market Insight Expert
+                  </div>
                 </div>
               </div>
 
-              <div className="ml-auto flex items-center gap-2 md:gap-4">
+              <div className="sm:ml-auto flex items-center gap-3 md:gap-4">
                 <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
                   target="_blank"
@@ -165,14 +167,14 @@ const BlogDetails = () => {
       </section>
 
       {/* Content Section */}
-      <section className="pb-20">
+      <section className="pb-16 md:pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="rounded-3xl overflow-hidden shadow-luxury mb-16 h-[500px]"
+              className="rounded-2xl md:rounded-3xl overflow-hidden shadow-luxury mb-10 md:mb-16 h-[250px] sm:h-[400px] md:h-[500px]"
             >
               <img
                 src={post.coverImage}
@@ -182,32 +184,34 @@ const BlogDetails = () => {
             </motion.div>
 
             <div
-              className="prose prose-lg prose-gold max-w-none font-body text-foreground/80 leading-relaxed
+              className="prose prose-sm sm:prose-base md:prose-lg prose-gold max-w-none font-body text-foreground/80 leading-relaxed
                 prose-headings:font-display prose-headings:font-bold prose-headings:text-foreground
-                prose-h3:text-2xl prose-p:mb-6"
+                prose-h3:text-xl md:text-2xl prose-p:mb-5 md:mb-6"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
             {/* Newsletter Integration */}
-            <div className="mt-20 p-8 md:p-12 bg-primary rounded-3xl border border-white/5 relative overflow-hidden">
+            <div className="mt-16 md:mt-20 p-6 md:p-12 bg-primary rounded-2xl md:rounded-3xl border border-white/5 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                  <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-4">
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 md:mb-4">
                     Stay Informed
                   </h3>
-                  <p className="text-white/60 font-body">
+                  <p className="text-white/60 font-body text-sm md:text-base">
                     Get the latest Dubai real estate market reports and
                     investment opportunities delivered to your inbox.
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                   <input
                     type="email"
                     placeholder="Your email address"
-                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:ring-1 ring-gold"
+                    className="flex-1 md:w-64 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:ring-1 ring-gold"
                   />
-                  <Button variant="gold">Subscribe</Button>
+                  <Button variant="gold" className="w-full sm:w-auto">
+                    Subscribe
+                  </Button>
                 </div>
               </div>
             </div>
