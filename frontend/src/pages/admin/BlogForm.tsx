@@ -99,7 +99,6 @@ const BlogForm = () => {
       if (isEdit) {
         await api.patch(`/api/dashboard/blogs/${id}`, {
           data: submitData,
-          headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Blog post updated successfully");
       } else {
@@ -110,7 +109,6 @@ const BlogForm = () => {
         }
         await api.post("/api/dashboard/blogs", {
           data: submitData,
-          headers: { "Content-Type": "multipart/form-data" },
         });
         toast.success("Blog post created successfully");
       }

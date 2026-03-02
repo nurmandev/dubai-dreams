@@ -129,20 +129,30 @@ const BlogDetails = () => {
               </div>
 
               <div className="ml-auto flex items-center gap-2 md:gap-4">
-                <button
-                  className="p-2.5 rounded-full bg-muted/30 hover:bg-muted transition-colors"
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-full bg-muted/30 hover:bg-muted transition-colors flex items-center justify-center"
                   title="Share on Facebook"
                 >
                   <Facebook className="w-4 h-4 text-muted-foreground" />
-                </button>
-                <button
-                  className="p-2.5 rounded-full bg-muted/30 hover:bg-muted transition-colors"
+                </a>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-full bg-muted/30 hover:bg-muted transition-colors flex items-center justify-center"
                   title="Share on LinkedIn"
                 >
                   <Linkedin className="w-4 h-4 text-muted-foreground" />
-                </button>
+                </a>
                 <button
-                  className="p-2.5 rounded-full bg-muted/30 hover:bg-muted transition-colors"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    toast.success("Link copied to clipboard!");
+                  }}
+                  className="p-2.5 rounded-full bg-muted/30 hover:bg-muted transition-colors flex items-center justify-center"
                   title="Copy Link"
                 >
                   <Share2 className="w-4 h-4 text-muted-foreground" />

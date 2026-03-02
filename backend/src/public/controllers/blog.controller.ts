@@ -4,7 +4,9 @@ import Blog from "../../models/Blog";
 export class BlogController {
   static async getAllBlogs(req: Request, res: Response) {
     try {
-      const blogs = await Blog.find({ status: "published" }).sort({
+      const blogs = await Blog.find({
+        $or: [{ status: "published" }, { status: { $exists: false } }],
+      }).sort({
         publishedAt: -1,
       });
 
@@ -17,7 +19,10 @@ export class BlogController {
   static async getBlogBySlug(req: Request, res: Response) {
     try {
       const { slug } = req.params;
-      const blog = await Blog.findOne({ slug, status: "published" });
+      const blog = await Blog.findOne({
+        slug,
+        $or: [{ status: "published" }, { status: { $exists: false } }],
+      });
 
       if (!blog) {
         return res.status(404).json({ message: "Blog not found" });
