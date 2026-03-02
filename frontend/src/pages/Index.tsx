@@ -35,6 +35,7 @@ const Index = () => {
   const [beds, setBeds] = useState("all");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [homeStats, setHomeStats] = useState<any[]>([]);
   const [homeHotspots, setHomeHotspots] = useState<any[]>([]);
 
@@ -269,28 +270,44 @@ const Index = () => {
                 </Button>
               </div>
 
-              {/* Price Range - Hidden on tiny screens, flex on small+ */}
-              <div className="mt-3 flex flex-wrap items-center gap-4 px-2">
-                <span className="text-primary-foreground/40 text-xs font-body uppercase tracking-wider">
-                  Price Range (AED):
-                </span>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    value={minPrice}
-                    onChange={(e) => setMinPrice(e.target.value)}
-                    className="w-24 bg-primary-foreground/5 border border-primary-foreground/10 rounded-md px-3 py-1.5 text-xs text-primary-foreground outline-none focus:ring-1 ring-gold/50 transition-all"
+              {/* Advanced Search Toggle */}
+              <div className="mt-3 flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAdvanced(!showAdvanced)}
+                  className="flex items-center gap-2 text-xs font-body uppercase tracking-widest text-primary-foreground/70 hover:text-gold transition-colors font-bold"
+                >
+                  Advanced Search
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform ${showAdvanced ? "rotate-180" : ""}`}
                   />
-                  <span className="text-primary-foreground/20">—</span>
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(e.target.value)}
-                    className="w-24 bg-primary-foreground/5 border border-primary-foreground/10 rounded-md px-3 py-1.5 text-xs text-primary-foreground outline-none focus:ring-1 ring-gold/50 transition-all"
-                  />
-                </div>
+                </button>
+
+                {/* Expanded Filters */}
+                {showAdvanced && (
+                  <div className="flex flex-wrap items-center gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <span className="text-primary-foreground/40 text-xs font-body uppercase tracking-wider">
+                      Price Range (AED):
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        placeholder="Min"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
+                        className="w-24 bg-primary-foreground/5 border border-primary-foreground/10 rounded-md px-3 py-1.5 text-xs text-primary-foreground outline-none focus:ring-1 ring-gold/50 transition-all"
+                      />
+                      <span className="text-primary-foreground/20">—</span>
+                      <input
+                        type="number"
+                        placeholder="Max"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(e.target.value)}
+                        className="w-24 bg-primary-foreground/5 border border-primary-foreground/10 rounded-md px-3 py-1.5 text-xs text-primary-foreground outline-none focus:ring-1 ring-gold/50 transition-all"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
