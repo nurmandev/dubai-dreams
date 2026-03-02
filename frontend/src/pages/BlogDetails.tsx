@@ -89,7 +89,7 @@ const BlogDetails = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto"
+            className="max-w-3xl mx-auto"
           >
             <Link
               to="/blog"
@@ -169,7 +169,7 @@ const BlogDetails = () => {
       {/* Content Section */}
       <section className="pb-16 md:pb-20">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -184,7 +184,7 @@ const BlogDetails = () => {
             </motion.div>
 
             <div
-              className="prose prose-sm sm:prose-base md:prose-lg prose-gold max-w-none font-body text-foreground/80 leading-relaxed
+              className="prose prose-sm sm:prose-base md:prose-lg prose-gold mx-auto font-body text-foreground/80 leading-relaxed
                 prose-headings:font-display prose-headings:font-bold prose-headings:text-foreground
                 prose-h3:text-xl md:text-2xl prose-p:mb-5 md:mb-6"
               dangerouslySetInnerHTML={{ __html: post.content }}
