@@ -180,7 +180,11 @@ export class PropertyController {
       }
       updateData.images = finalImages;
 
-      if (newVideo) updateData.videoUrl = newVideo;
+      if (newVideo) {
+        updateData.videoUrl = newVideo;
+      } else if (updateData.videoUrl && Array.isArray(updateData.videoUrl)) {
+        updateData.videoUrl = updateData.videoUrl[0];
+      }
 
       if (newFloorPlans.length > 0) {
         updateData.floorPlans = [
@@ -189,7 +193,14 @@ export class PropertyController {
         ];
       }
 
-      if (newTechnicalPdf) updateData.technicalPdf = newTechnicalPdf;
+      if (newTechnicalPdf) {
+        updateData.technicalPdf = newTechnicalPdf;
+      } else if (
+        updateData.technicalPdf &&
+        Array.isArray(updateData.technicalPdf)
+      ) {
+        updateData.technicalPdf = updateData.technicalPdf[0];
+      }
 
       fieldsToParse.forEach((field) => {
         if (updateData[field] !== undefined) {

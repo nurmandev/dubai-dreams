@@ -64,16 +64,20 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
           <div className="flex items-center gap-5 mt-4 pt-4 border-t border-border">
             <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
               <Bed className="w-4 h-4 text-gold" />
-              {property.bedrooms}
+              {property.bedrooms === 0 ? "Studio" : property.bedrooms}
             </span>
-            <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
-              <Bath className="w-4 h-4 text-gold" />
-              {property.bathrooms}
-            </span>
-            <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
-              <Maximize className="w-4 h-4 text-gold" />
-              {property.area.toLocaleString()} sq.ft
-            </span>
+            {Number(property.bathrooms) > 0 && (
+              <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+                <Bath className="w-4 h-4 text-gold" />
+                {property.bathrooms}
+              </span>
+            )}
+            {Number(property.area) > 0 && (
+              <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+                <Maximize className="w-4 h-4 text-gold" />
+                {property.area.toLocaleString()} sq.ft
+              </span>
+            )}
           </div>
         </div>
       </Link>

@@ -300,34 +300,38 @@ const PropertyDetails = () => {
                       <Bed className="w-5 h-5 text-gold" />
                     </div>
                     <p className="font-display text-xl font-black text-foreground">
-                      {property.bedrooms}
+                      {property.bedrooms === 0 ? "Studio" : property.bedrooms}
                     </p>
                     <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
-                      Bedrooms
+                      {property.bedrooms === 0 ? "Unit Type" : "Bedrooms"}
                     </p>
                   </div>
-                  <div className="flex flex-col items-center border-l border-border/50">
-                    <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
-                      <Bath className="w-5 h-5 text-gold" />
+                  {Number(property.bathrooms) > 0 && (
+                    <div className="flex flex-col items-center border-l border-border/50">
+                      <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
+                        <Bath className="w-5 h-5 text-gold" />
+                      </div>
+                      <p className="font-display text-xl font-black text-foreground">
+                        {property.bathrooms}
+                      </p>
+                      <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+                        Bathrooms
+                      </p>
                     </div>
-                    <p className="font-display text-xl font-black text-foreground">
-                      {property.bathrooms}
-                    </p>
-                    <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
-                      Bathrooms
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center border-l border-border/50">
-                    <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
-                      <Maximize className="w-5 h-5 text-gold" />
+                  )}
+                  {Number(property.area) > 0 && (
+                    <div className="flex flex-col items-center border-l border-border/50">
+                      <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
+                        <Maximize className="w-5 h-5 text-gold" />
+                      </div>
+                      <p className="font-display text-xl font-black text-foreground">
+                        {property.area.toLocaleString()}
+                      </p>
+                      <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+                        Sq. Ft.
+                      </p>
                     </div>
-                    <p className="font-display text-xl font-black text-foreground">
-                      {property.area.toLocaleString()}
-                    </p>
-                    <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
-                      Sq. Ft.
-                    </p>
-                  </div>
+                  )}
                   <div className="flex flex-col items-center border-l border-border/50">
                     <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
                       <Home className="w-5 h-5 text-gold" />
@@ -361,12 +365,12 @@ const PropertyDetails = () => {
                     Technical Profile
                   </h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-                    {property.yearBuilt && (
+                    {Number(property.yearBuilt) > 0 && (
                       <div className="flex items-center gap-4">
                         <Calendar className="w-5 h-5 text-gold/50" />
                         <div>
                           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-                            Built Year
+                            Handover Year
                           </p>
                           <p className="text-sm font-bold">
                             {property.yearBuilt}
@@ -374,7 +378,7 @@ const PropertyDetails = () => {
                         </div>
                       </div>
                     )}
-                    {property.kitchens && (
+                    {Number(property.kitchens) > 0 && (
                       <div className="flex items-center gap-4">
                         <Utensils className="w-5 h-5 text-gold/50" />
                         <div>
@@ -387,7 +391,7 @@ const PropertyDetails = () => {
                         </div>
                       </div>
                     )}
-                    {property.garages && (
+                    {Number(property.garages) > 0 && (
                       <div className="flex items-center gap-4">
                         <Car className="w-5 h-5 text-gold/50" />
                         <div>
@@ -403,7 +407,7 @@ const PropertyDetails = () => {
                         </div>
                       </div>
                     )}
-                    {property.floorsNo && (
+                    {Number(property.floorsNo) > 0 && (
                       <div className="flex items-center gap-4">
                         <Layers className="w-5 h-5 text-gold/50" />
                         <div>

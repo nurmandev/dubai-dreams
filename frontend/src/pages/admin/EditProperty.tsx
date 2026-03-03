@@ -218,6 +218,7 @@ const EditProperty = () => {
         favouritedBy,
         images,
         floorPlans,
+        technicalPdf: ___,
         ...updateFields
       } = formData as any;
 
@@ -237,9 +238,11 @@ const EditProperty = () => {
       // NEW files to upload
       newImages.forEach((file) => data.append("images", file));
       newFloorPlans.forEach((file) => data.append("floorPlans", file));
-      if (newTechnicalPdf) data.append("technicalPdf", newTechnicalPdf);
-      if (existingTechnicalPdf)
+      if (newTechnicalPdf) {
+        data.append("technicalPdf", newTechnicalPdf);
+      } else if (existingTechnicalPdf) {
         data.append("technicalPdf", existingTechnicalPdf);
+      }
 
       await api.patch(`/api/dashboard/properties/${id}`, { data });
       toast.success("Property updated successfully");
