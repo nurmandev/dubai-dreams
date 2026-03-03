@@ -136,6 +136,17 @@ const PropertyDetails = () => {
     }
   };
 
+  // Auto-slide effect
+  useEffect(() => {
+    if (!property?.images || property.images.length <= 1) return;
+
+    const timer = setInterval(() => {
+      nextImage();
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [activeImage, property?.images]);
+
   if (loading) {
     return (
       <Layout>
