@@ -227,17 +227,33 @@ export class PublicController {
 
       // Dispatch admin email
       const emailContent = `
-        <h2>New Inquiry Received</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone (With Country Code):</strong> ${phone}</p>
-        ${propertyTitle ? `<p><strong>Property Interest:</strong> ${propertyTitle}</p>` : `<p><strong>Type:</strong> General Inquiry</p>`}
-        <p><strong>Budget:</strong> ${budget || "Not Specified"}</p>
-        <p><strong>Message:</strong></p>
-        <blockquote style="border-left: 3px solid #C19E67; padding-left: 10px;">${message}</blockquote>
+        <div style="font-family: sans-serif; max-width: 600px; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+          <div style="background: #06201e; padding: 20px; text-align: center;">
+            <h1 style="color: #C19E67; margin: 0; font-size: 20px; text-transform: uppercase; letter-spacing: 2px;">New Property Inquiry</h1>
+          </div>
+          <div style="padding: 30px; color: #1e293b;">
+            <p>You have received a new inquiry from the website contact channel.</p>
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            ${propertyTitle ? `<p><strong>Property Interest:</strong> <span style="color: #C19E67; font-weight: bold;">${propertyTitle}</span></p>` : `<p><strong>Type:</strong> General Inquiry</p>`}
+            <p><strong>Budget:</strong> ${budget || "Not Specified"}</p>
+            <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-top: 20px;">
+              <p style="margin-top: 0; font-weight: bold; color: #64748b; font-size: 12px; text-transform: uppercase;">Message Reference:</p>
+              <p style="margin-bottom: 0; font-style: italic;">"${message}"</p>
+            </div>
+            <div style="margin-top: 30px; text-align: center;">
+              <a href="${process.env.FRONTEND_URL}/admin/inquiries" style="background: #C19E67; color: #06201e; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">View in CRM</a>
+            </div>
+          </div>
+          <div style="background: #f8fafc; padding: 15px; text-align: center; color: #64748b; font-size: 11px;">
+            Omnis Properties &bull; Lead Generation System
+          </div>
+        </div>
       `;
-      await sendAdminNotification(
-        `New Real Estate Lead: ${name}`,
+      sendAdminNotification(
+        `New Lead: ${name}${propertyTitle ? ` (${propertyTitle})` : ""}`,
         emailContent,
       );
 
@@ -298,6 +314,33 @@ export class PublicController {
       });
 
       await kyc.save();
+
+      // Notify Admin of new KYC submission
+      const kycEmailContent = `
+        <div style="font-family: sans-serif; max-width: 600px; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+          <div style="background: #06201e; padding: 20px; text-align: center;">
+            <h1 style="color: #C19E67; margin: 0; font-size: 20px; text-transform: uppercase; letter-spacing: 2px;">New KYC Submission</h1>
+          </div>
+          <div style="padding: 30px; color: #1e293b;">
+            <p>A new investor has submitted their onboarding documents for review.</p>
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
+            <p><strong>Full Name:</strong> ${fullName}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <p><strong>Nationality:</strong> ${nationality}</p>
+            <p><strong>ID Type:</strong> ${idType.toUpperCase()}</p>
+            <p><strong>Address:</strong> ${address}</p>
+            <div style="margin-top: 30px; text-align: center;">
+              <a href="${process.env.FRONTEND_URL}/admin/kyc" style="background: #C19E67; color: #06201e; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Review in Admin Panel</a>
+            </div>
+          </div>
+          <div style="background: #f8fafc; padding: 15px; text-align: center; color: #64748b; font-size: 11px;">
+            Confidential - OMNIS Compliance Engine
+          </div>
+        </div>
+      `;
+
+      sendAdminNotification(`New KYC Onboarding: ${fullName}`, kycEmailContent);
 
       res.status(201).json({
         message:

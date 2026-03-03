@@ -27,7 +27,9 @@ export const sendAdminNotification = async (
     }
 
     await transporter.sendMail({
-      from: `"Omnis Engine" <${process.env.SMTP_USER}>`,
+      from:
+        process.env.SMTP_FROM ||
+        `"Omnis Properties" <${process.env.SMTP_USER}>`,
       to: process.env.ADMIN_EMAIL,
       subject,
       html: htmlContent,
