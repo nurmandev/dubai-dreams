@@ -371,56 +371,76 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Stats Counter */}
-      <section className="py-16 bg-primary border-y border-white/5">
+      {/* Partners & Developers */}
+      <section className="py-16 bg-primary border-y border-white/5 overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-            {homeStats.length > 0
-              ? homeStats.map((stat, i) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="text-center"
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Registered Partners */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-gold font-body text-[10px] uppercase tracking-[0.3em] mb-4">
+                Regulatory Compliance
+              </p>
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-8">
+                Registered Partners
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { name: "RERA", label: "Real Estate Regulatory Agency" },
+                  { name: "DLD", label: "Dubai Land Department" },
+                  { name: "DIB", label: "Dubai Islamic Bank" },
+                  { name: "ADCB", label: "Abu Dhabi Commercial Bank" },
+                ].map((partner) => (
+                  <div
+                    key={partner.name}
+                    className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors group"
                   >
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold/10 mb-4">
-                      <Zap className="w-5 h-5 text-gold" />
+                    <div className="text-gold font-display font-black text-xl mb-1 group-hover:scale-110 transition-transform">
+                      {partner.name}
                     </div>
-                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
-                      {stat.value}
+                    <div className="text-white/40 font-body text-[10px] uppercase tracking-wider">
+                      {partner.label}
                     </div>
-                    <div className="text-gold/60 font-body text-xs uppercase tracking-widest">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                ))
-              : [
-                  { label: "Properties Sold", value: "2.4K+", icon: Building2 },
-                  { label: "Active Investors", value: "10K+", icon: Users },
-                  { label: "Total Transactions", value: "$4.1B+", icon: Zap },
-                  { label: "Years Excellence", value: "15+", icon: Award },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="text-center"
-                  >
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold/10 mb-4">
-                      <stat.icon className="w-5 h-5 text-gold" />
-                    </div>
-                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
-                      {stat.value}
-                    </div>
-                    <div className="text-gold/60 font-body text-xs uppercase tracking-widest">
-                      {stat.label}
-                    </div>
-                  </motion.div>
+                  </div>
                 ))}
+              </div>
+            </motion.div>
+
+            {/* Developers List */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-gold font-body text-[10px] uppercase tracking-[0.3em] mb-4">
+                Strategic Network
+              </p>
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-8">
+                Key Developers
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-6">
+                {[
+                  { name: "Emaar", img: "/images/logos/emaar.png" },
+                  { name: "Damac", img: "/images/logos/damac.png" },
+                  { name: "Sobha", img: "/images/logos/sobha.png" },
+                  { name: "Nakheel", img: "/images/logos/nakheel.png" },
+                ].map((dev) => (
+                  <div
+                    key={dev.name}
+                    className="bg-white rounded-2xl p-6 flex items-center justify-center h-24 shadow-luxury hover:scale-105 transition-transform"
+                  >
+                    <img
+                      src={dev.img}
+                      alt={dev.name}
+                      className="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
