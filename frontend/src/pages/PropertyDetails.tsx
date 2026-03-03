@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { api } from "@/lib/api";
-import { type Property as PropertyType, formatPrice } from "@/data/properties";
+import {
+  type Property as PropertyType,
+  formatPrice,
+  AMENITIES_LIST,
+} from "@/data/properties";
 import { Button } from "@/components/ui/button";
 import {
   Bed,
@@ -424,26 +428,33 @@ const PropertyDetails = () => {
                 </div>
 
                 {/* Amenities */}
-                {property.amenities && property.amenities.length > 0 && (
-                  <div className="mt-12 pt-12 border-t border-border">
-                    <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter">
-                      Lifestyle Amenities
-                    </h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {property.amenities.map((amenity, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-3 p-3 rounded-xl bg-muted/20 border border-border/30"
-                        >
-                          <CheckCircle2 className="w-4 h-4 text-emerald shrink-0" />
-                          <span className="text-xs font-bold text-foreground/80 tracking-tight">
-                            {amenity}
-                          </span>
-                        </div>
-                      ))}
+                {(() => {
+                  const filteredAmenities = (property.amenities || []).filter(
+                    (a) => AMENITIES_LIST.includes(a),
+                  );
+                  if (filteredAmenities.length === 0) return null;
+
+                  return (
+                    <div className="mt-12 pt-12 border-t border-border">
+                      <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter">
+                        Lifestyle Amenities
+                      </h2>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {filteredAmenities.map((amenity, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center gap-3 p-3 rounded-xl bg-muted/20 border border-border/30"
+                          >
+                            <CheckCircle2 className="w-4 h-4 text-emerald shrink-0" />
+                            <span className="text-xs font-bold text-foreground/80 tracking-tight">
+                              {amenity}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
                 {/* Location Map */}
                 <div className="mt-12 pt-12 border-t border-border">
                   <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter flex items-center gap-3">

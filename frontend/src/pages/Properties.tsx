@@ -3,7 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PropertyCard from "@/components/PropertyCard";
 import { api } from "@/lib/api";
-import { type Property as PropertyType } from "@/data/properties";
+import {
+  type Property as PropertyType,
+  AMENITIES_LIST,
+} from "@/data/properties";
 import { motion } from "framer-motion";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -86,8 +89,10 @@ const Properties = () => {
         search &&
         !p.title.toLowerCase().includes(search.toLowerCase()) &&
         !p.location.toLowerCase().includes(search.toLowerCase()) &&
-        !p.amenities?.some((a) =>
-          a.toLowerCase().includes(search.toLowerCase()),
+        !p.amenities?.some(
+          (a) =>
+            AMENITIES_LIST.includes(a) &&
+            a.toLowerCase().includes(search.toLowerCase()),
         )
       )
         return false;
