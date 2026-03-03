@@ -64,7 +64,6 @@ const EditProperty = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [amenitiesText, setAmenitiesText] = useState("");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
   // File handling
@@ -127,11 +126,7 @@ const EditProperty = () => {
             const predefined = found.amenities.filter((a: string) =>
               AMENITIES_LIST.includes(a),
             );
-            const custom = found.amenities.filter(
-              (a: string) => !AMENITIES_LIST.includes(a),
-            );
             setSelectedAmenities(predefined);
-            setAmenitiesText(custom.join(", "));
           }
         } else {
           toast.error("Property not found");
@@ -195,14 +190,7 @@ const EditProperty = () => {
     setSaving(true);
 
     try {
-      const tagsArray = amenitiesText
-        .split(",")
-        .map((a) => a.trim())
-        .filter((a) => a !== "");
-
-      const allAmenities = Array.from(
-        new Set([...selectedAmenities, ...tagsArray]),
-      );
+      const allAmenities = selectedAmenities;
 
       // Use FormData for file updates
       const data = new FormData();
@@ -765,25 +753,6 @@ const EditProperty = () => {
               </div>
               <p className="text-[10px] text-muted-foreground">
                 Standardized features for search optimization.
-              </p>
-            </div>
-
-            <div className="bg-background rounded-xl p-6 shadow-sm border border-border space-y-4">
-              <div className="flex items-center gap-2 text-gold">
-                <Tag className="w-4 h-4" />
-                <h3 className="font-display font-bold text-xs uppercase tracking-widest">
-                  Additional Tags
-                </h3>
-              </div>
-              <textarea
-                rows={4}
-                placeholder="Separate with commas..."
-                className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
-                value={amenitiesText}
-                onChange={(e) => setAmenitiesText(e.target.value)}
-              />
-              <p className="text-[10px] text-muted-foreground">
-                Used for filtering and discovery.
               </p>
             </div>
           </div>

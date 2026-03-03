@@ -32,7 +32,6 @@ import { AMENITIES_LIST } from "@/data/properties";
 const AddProperty = () => {
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
-  const [amenitiesText, setAmenitiesText] = useState("");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
   // File handling for New Assets
@@ -118,16 +117,7 @@ const AddProperty = () => {
       });
 
       // Arrays
-      const tagsArray = amenitiesText
-        .split(",")
-        .map((a) => a.trim())
-        .filter((a) => a !== "");
-
-      const allAmenities = Array.from(
-        new Set([...selectedAmenities, ...tagsArray]),
-      );
-
-      allAmenities.forEach((a) => data.append("amenities", a));
+      selectedAmenities.forEach((a) => data.append("amenities", a));
 
       // Files
       images.forEach((file) => data.append("images", file));
@@ -603,25 +593,6 @@ const AddProperty = () => {
               </div>
               <p className="text-[10px] text-muted-foreground opacity-60">
                 Select standardized features for high-visibility filtering.
-              </p>
-            </div>
-
-            <div className="bg-background rounded-2xl p-6 shadow-sm border border-border space-y-4">
-              <div className="flex items-center gap-2 text-gold">
-                <Tag className="w-4 h-4" />
-                <h3 className="font-display font-black text-[10px] uppercase tracking-widest">
-                  Discovery Tags
-                </h3>
-              </div>
-              <textarea
-                rows={4}
-                placeholder="e.g. Marina View, Smart Home, Private Gym..."
-                className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold"
-                value={amenitiesText}
-                onChange={(e) => setAmenitiesText(e.target.value)}
-              />
-              <p className="text-[10px] text-muted-foreground opacity-60">
-                Separate with commas for dynamic filtering.
               </p>
             </div>
 
