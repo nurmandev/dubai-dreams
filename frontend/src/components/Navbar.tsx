@@ -67,9 +67,9 @@ const Navbar = () => {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <Button variant="hero-outline" size="sm" asChild>
-              <a href="tel:+971000000000">
+              <a href="tel:+971588251088">
                 <Phone className="w-4 h-4" />
-                Call Us
+                +971 58 825 1088
               </a>
             </Button>
 

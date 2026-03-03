@@ -113,10 +113,16 @@ const Index = () => {
     <Layout>
       {/* Hero */}
       <section className="relative min-h-[100svh] flex items-center py-20 lg:py-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/images/hero-dubai.jpg')" }}
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          poster="/images/hero-dubai.jpg"
+        >
+          <source src="/video/hero-intro-video.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-hero" />
 
         <div className="relative z-10 container mx-auto px-4 lg:px-8">

@@ -561,21 +561,17 @@ const PropertyDetails = () => {
                     Expert Consultation
                   </h3>
 
-                  {property.developer && (
-                    <div className="flex items-center gap-4 mb-8 pb-8 border-b border-border">
-                      <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center font-display font-black text-white text-xl">
-                        {property.developer.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-                          Portfolio Manager
-                        </p>
-                        <p className="font-bold text-foreground">
-                          {property.developer}
-                        </p>
-                      </div>
+                  <div className="flex items-center gap-4 mb-8 pb-8 border-b border-border">
+                    <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center font-display font-black text-white text-xl">
+                      V
                     </div>
-                  )}
+                    <div>
+                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                        Portfolio Manager
+                      </p>
+                      <p className="font-bold text-foreground">Vikas Kumar</p>
+                    </div>
+                  </div>
 
                   <div className="space-y-4">
                     <form
@@ -636,7 +632,7 @@ const PropertyDetails = () => {
 
                     <div className="pt-4 flex justify-center gap-6 border-t border-border mt-2">
                       <a
-                        href={`https://wa.me/971000000000?text=${encodeURIComponent(`Hi, I'm interested in the property: ${property.title}`)}`}
+                        href={`https://wa.me/971588251088?text=${encodeURIComponent(`Hi, I'm interested in the property: ${property.title}`)}`}
                         target="_blank"
                         rel="noreferrer"
                         className="text-muted-foreground hover:text-emerald transition-colors flex items-center gap-2 font-black uppercase text-[10px] tracking-widest"
@@ -682,9 +678,8 @@ const PropertyDetails = () => {
                     Investment Security
                   </h4>
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
-                    All transfers in the Dubai Dreams showcase are handled via
-                    RERA regulated Escrow accounts ensuring 100% investor
-                    protection.
+                    All property transactions are handled through RERA-regulated
+                    escrow accounts ensuring full investor protection.
                   </p>
                 </div>
               </div>

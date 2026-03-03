@@ -18,13 +18,17 @@ interface KYCSubmission {
   _id: string;
   userId: { name: string; email: string };
   fullName: string;
+  email: string;
+  phone: string;
   nationality: string;
+  address: string;
   idType: string;
   idNumber: string;
   documentUrls: {
     passportCopy?: string;
     visaCopy?: string;
     emiratesIdCopy?: string;
+    supportingDocuments?: string[];
   };
   status: "pending" | "approved" | "rejected";
   remarks?: string;
@@ -48,7 +52,10 @@ const KYCManagement = () => {
           _id: "demo1",
           userId: { name: "Alice Smith", email: "alice@example.com" },
           fullName: "Alice Smith",
+          email: "alice@example.com",
+          phone: "+971 50 123 4567",
           nationality: "British",
+          address: "123 Business Bay, Dubai",
           idType: "passport",
           idNumber: "UK123456789",
           documentUrls: {
@@ -61,7 +68,10 @@ const KYCManagement = () => {
           _id: "demo2",
           userId: { name: "Bob Jones", email: "bob@example.com" },
           fullName: "Robert Jones",
+          email: "bob@example.com",
+          phone: "+44 7700 900000",
           nationality: "American",
+          address: "456 Marina, Dubai",
           idType: "emirates_id",
           idNumber: "784-1234-5678901-2",
           documentUrls: {
@@ -151,13 +161,14 @@ const KYCManagement = () => {
               letter-spacing: 1px;
             }
             .section { 
-              margin-bottom: 40px; 
+              margin-bottom: 30px; 
               background: #f8fafc;
-              padding: 30px;
+              padding: 24px;
               border-radius: 12px;
+              border: 1px solid #e2e8f0;
             }
             .section-title {
-              font-size: 12px;
+              font-size: 11px;
               font-weight: 900;
               color: #C19E67;
               text-transform: uppercase;
@@ -174,12 +185,13 @@ const KYCManagement = () => {
               font-weight: 700; 
               color: #64748b; 
               width: 180px; 
-              font-size: 13px;
+              font-size: 12px;
             }
             .value { 
               color: #1e293b; 
               font-weight: 500;
-              font-size: 14px;
+              font-size: 13px;
+              flex: 1;
             }
             .status { 
               display: inline-block; 
@@ -194,12 +206,15 @@ const KYCManagement = () => {
             .status-pending { background: #fef3c7; color: #92400e; }
             .status-rejected { background: #fee2e2; color: #991b1b; }
             .footer {
-              margin-top: 100px;
+              margin-top: 60px;
               text-align: center;
               font-size: 10px;
               color: #94a3b8;
               border-top: 1px solid #e2e8f0;
               padding-top: 20px;
+            }
+            @media print {
+              .section { break-inside: avoid; }
             }
           </style>
         </head>
@@ -210,9 +225,9 @@ const KYCManagement = () => {
           </div>
 
           <div class="section">
-            <div class="section-title">Identity Profile</div>
+            <div class="section-title">Investor Identity Profile</div>
             <div class="row">
-              <div class="label">Full Name</div>
+              <div class="label">Full Legal Name</div>
               <div class="value">${sub.fullName}</div>
             </div>
             <div class="row">
@@ -220,29 +235,53 @@ const KYCManagement = () => {
               <div class="value">${sub.nationality}</div>
             </div>
             <div class="row">
-              <div class="label">Account Email</div>
-              <div class="value">${sub.userId?.email || "N/A"}</div>
+              <div class="label">Primary Email</div>
+              <div class="value">${sub.email || sub.userId?.email || "N/A"}</div>
+            </div>
+            <div class="row">
+              <div class="label">Contact Number</div>
+              <div class="value">${sub.phone || "N/A"}</div>
+            </div>
+            <div class="row">
+              <div class="label">Residential Address</div>
+              <div class="value">${sub.address || "N/A"}</div>
             </div>
           </div>
 
           <div class="section">
-            <div class="section-title">Verification Details</div>
+            <div class="section-title">Identification Protocols</div>
             <div class="row">
               <div class="label">Identification Type</div>
-              <div class="value">${sub.idType.toUpperCase()}</div>
+              <div class="value">${(sub.idType || "N/A").replace("_", " ").toUpperCase()}</div>
             </div>
             <div class="row">
-              <div class="label">Document ID</div>
-              <div class="value">${sub.idNumber}</div>
+              <div class="label">Document ID Number</div>
+              <div class="value">${sub.idNumber || "N/A"}</div>
             </div>
             <div class="row">
-              <div class="label">Submission Date</div>
+              <div class="label">Submission Timestamp</div>
               <div class="value">${new Date(sub.createdAt).toLocaleString()}</div>
             </div>
           </div>
 
           <div class="section">
-            <div class="section-title">Compliance Status</div>
+            <div class="section-title">Verified Artifacts</div>
+            <div class="row">
+              <div class="label">Passport Copy</div>
+              <div class="value">${sub.documentUrls?.passportCopy ? "Encrypted Link Available" : "Not Provided"}</div>
+            </div>
+            <div class="row">
+              <div class="label">Emirates ID</div>
+              <div class="value">${sub.documentUrls?.emiratesIdCopy ? "Encrypted Link Available" : "Not Provided"}</div>
+            </div>
+            <div class="row">
+              <div class="label">Supporting Docs</div>
+              <div class="value">${sub.documentUrls?.supportingDocuments?.length ? `${sub.documentUrls.supportingDocuments.length} Files Attached` : "None"}</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Compliance Evaluation</div>
             <div class="row">
               <div class="label">Current Appraisal</div>
               <div class="value"><span class="status status-${sub.status}">${sub.status}</span></div>
@@ -254,7 +293,7 @@ const KYCManagement = () => {
           </div>
 
           <div class="footer">
-            CONFIDENTIAL - Internal Use Only &bull; Generated via OMNIS Compliance Engine &bull; ${new Date().toLocaleString()}
+            CONFIDENTIAL - Internal Use Only &bull; Generated via OMNIS Compliance Engine &bull; Ref: ${sub._id} &bull; ${new Date().toLocaleString()}
           </div>
 
           <script>
@@ -371,7 +410,11 @@ const KYCManagement = () => {
                     </div>
                     <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-muted-foreground font-body">
                       <span>
-                        <strong>Email:</strong> {sub.userId?.email || "N/A"}
+                        <strong>Email:</strong>{" "}
+                        {sub.email || sub.userId?.email || "N/A"}
+                      </span>
+                      <span>
+                        <strong>Phone:</strong> {sub.phone || "N/A"}
                       </span>
                       <span>
                         <strong>Nationality:</strong> {sub.nationality}

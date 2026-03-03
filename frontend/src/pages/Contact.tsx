@@ -188,14 +188,32 @@ const Contact = () => {
                     </div>
                     <div>
                       <p className="font-body text-sm font-medium text-foreground">
-                        Phone
+                        Phone & WhatsApp
                       </p>
-                      <a
-                        href="tel:+971000000000"
-                        className="text-muted-foreground hover:text-gold font-body text-sm transition-colors"
-                      >
-                        +971 00 000 0000
-                      </a>
+                      <div className="flex flex-col gap-1">
+                        <a
+                          href="https://wa.me/971588251088"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-muted-foreground hover:text-gold font-body text-sm transition-colors"
+                        >
+                          +971 58 825 1088 (WhatsApp)
+                        </a>
+                        <a
+                          href="tel:+971581530100"
+                          className="text-muted-foreground hover:text-gold font-body text-sm transition-colors"
+                        >
+                          +971 58 153 0100 (UAE)
+                        </a>
+                        <a
+                          href="https://wa.me/917678651405"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-muted-foreground hover:text-gold font-body text-sm transition-colors mt-1"
+                        >
+                          +91 76786 51405 (India WhatsApp)
+                        </a>
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -219,7 +237,7 @@ const Contact = () => {
 
               <Button variant="whatsapp" size="xl" className="w-full" asChild>
                 <a
-                  href="https://wa.me/971000000000"
+                  href="https://wa.me/971588251088"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

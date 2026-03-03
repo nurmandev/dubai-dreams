@@ -10,6 +10,12 @@ import {
   TrendingUp,
   Globe2,
   Building,
+  CheckCircle2,
+  Search,
+  FileCheck,
+  ShieldCheck,
+  Linkedin,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -155,6 +161,76 @@ const About = () => {
         </div>
       </section>
 
+      {/* Our Process */}
+      <section className="py-20 lg:py-28 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-2">
+              Our Approach
+            </p>
+            <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-6">
+              Your Journey to Excellence
+            </h2>
+            <p className="text-muted-foreground font-body text-lg">
+              We've refined a seamless four-step process designed to take you
+              from initial curiosity to ultimate investment success.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8 relative">
+            <div className="hidden md:block absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2 z-0" />
+            {[
+              {
+                icon: Search,
+                step: "01",
+                title: "Discovery",
+                desc: "We begin by understanding your unique requirements, budget, and lifestyle aspirations.",
+              },
+              {
+                icon: CheckCircle2,
+                step: "02",
+                title: "Selection",
+                desc: "Our experts curate a bespoke shortlist of properties that align perfectly with your goals.",
+              },
+              {
+                icon: FileCheck,
+                step: "03",
+                title: "Acquisition",
+                desc: "We handle all negotiations and legal complexities to ensure a seamless transaction.",
+              },
+              {
+                icon: ShieldCheck,
+                step: "04",
+                title: "Succession",
+                desc: "Our relationship continues with property management and portfolio optimization services.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="relative z-10 bg-white p-6 text-center group"
+              >
+                <div className="w-16 h-16 rounded-full bg-background border-2 border-gold/20 flex items-center justify-center mx-auto mb-6 group-hover:border-gold transition-colors">
+                  <item.icon className="w-8 h-8 text-gold" />
+                </div>
+                <p className="text-gold font-display text-sm font-bold mb-2">
+                  {item.step}
+                </p>
+                <h3 className="font-display text-xl font-bold text-foreground mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-muted-foreground font-body text-sm leading-relaxed">
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Our Services */}
       <section className="py-20 lg:py-28 bg-white border-y border-border">
         <div className="container mx-auto px-4 lg:px-8">
@@ -200,6 +276,89 @@ const About = () => {
                 </h3>
                 <p className="text-muted-foreground font-body leading-relaxed">
                   {service.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Meet Our Team */}
+      <section className="py-20 lg:py-28 bg-card">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="text-center mb-16">
+            <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-2">
+              The Experts
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Meet Our Visionaries
+            </h2>
+            <p className="text-muted-foreground font-body max-w-2xl mx-auto">
+              Our leadership team combines decades of international real estate
+              experience with deep roots in the Dubai market.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              {
+                name: "Alexander Wright",
+                role: "Chief Executive Officer",
+                image: "/images/team-ceo.png",
+                bio: "A visionary leader with 20+ years in global luxury real estate.",
+              },
+              {
+                name: "Sarah Chen",
+                role: "Head of Investment",
+                image: "/images/team-investment.png",
+                bio: "Specializing in high-yield off-plan portfolios and market analysis.",
+              },
+              {
+                name: "Marcus Thorne",
+                role: "Client Relations Manager",
+                image: "/images/team-manager.png",
+                bio: "Dedicated to providing a bespoke experience for every client.",
+              },
+            ].map((member, i) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="group"
+              >
+                <div className="relative overflow-hidden rounded-2xl mb-6 shadow-luxury aspect-square">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center p-6">
+                    <div className="flex gap-4">
+                      <a
+                        href="#"
+                        className="w-10 h-10 rounded-full bg-gold/90 flex items-center justify-center text-primary hover:bg-white transition-colors"
+                      >
+                        <Linkedin className="w-5 h-5" />
+                      </a>
+                      <a
+                        href="#"
+                        className="w-10 h-10 rounded-full bg-gold/90 flex items-center justify-center text-primary hover:bg-white transition-colors"
+                      >
+                        <Mail className="w-5 h-5" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <h3 className="font-display text-2xl font-bold text-foreground mb-1 text-center">
+                  {member.name}
+                </h3>
+                <p className="text-gold font-body text-sm uppercase tracking-wider mb-3 text-center">
+                  {member.role}
+                </p>
+                <p className="text-muted-foreground font-body text-center text-sm leading-relaxed px-4">
+                  {member.bio}
                 </p>
               </motion.div>
             ))}
@@ -296,6 +455,45 @@ const About = () => {
               </div>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-primary rounded-[2rem] p-12 md:p-20 text-center relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl -mr-32 -mt-32" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl -ml-32 -mb-32" />
+
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <h2 className="font-display text-3xl md:text-5xl font-bold text-white mb-8">
+                Ready to Begin Your <br />
+                <span className="text-gold">Dubai Dream?</span>
+              </h2>
+              <p className="text-primary-foreground/70 font-body text-lg mb-10">
+                Whether you're looking for a luxury residence or a high-yield
+                investment, our team is here to guide you every step of the way.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button variant="gold" size="xl" asChild>
+                  <Link to="/properties">Explore Properties</Link>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="xl"
+                  className="border-white/20 text-white hover:bg-white/10"
+                  asChild
+                >
+                  <Link to="/contact">Book a Consultation</Link>
+                </Button>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </Layout>
