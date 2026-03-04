@@ -76,6 +76,7 @@ const Footer = () => {
                 },
                 { label: "Rentals", path: "/properties?category=rental" },
                 { label: "About Us", path: "/about" },
+                { label: "Our Services", path: "/services" },
                 { label: "Blog", path: "/blog" },
               ].map((link) => (
                 <li key={link.path}>

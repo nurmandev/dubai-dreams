@@ -10,6 +10,7 @@ import PropertyDetails from "./pages/PropertyDetails";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogDetails from "./pages/BlogDetails";
+import Services from "./pages/Services";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -37,6 +38,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/properties" element={<Properties />} />
           <Route path="/properties/:id" element={<PropertyDetails />} />
           <Route path="/contact" element={<Contact />} />

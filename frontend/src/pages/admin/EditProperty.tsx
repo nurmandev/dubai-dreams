@@ -266,7 +266,7 @@ const EditProperty = () => {
         data.append("technicalPdf", existingTechnicalPdf);
       }
 
-      await api.patch(`/api/dashboard/properties/${id}`, { data });
+      await api.patch(`/api/dashboard/properties/${id}`, data);
       toast.success(
         isOffPlan
           ? "Project updated successfully"
