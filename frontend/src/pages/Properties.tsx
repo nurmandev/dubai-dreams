@@ -319,7 +319,7 @@ const Properties = () => {
     <Layout>
       {/* Header */}
       <section className="pt-20 bg-primary">
-        <div className="container mx-auto px-4 lg:px-8 py-12">
+        <div className="max-w-[1920px] mx-auto px-4 lg:px-12 py-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -336,7 +336,7 @@ const Properties = () => {
 
       {/* Main content: sidebar + grid */}
       <section className="py-10">
-        <div className="container mx-auto px-4 lg:px-8">
+        <div className="max-w-[1920px] mx-auto px-4 lg:px-12">
           {/* Mobile top bar */}
           <div className="flex items-center justify-between mb-6 lg:hidden">
             <p className="text-muted-foreground font-body text-sm">
@@ -374,7 +374,7 @@ const Properties = () => {
               </p>
 
               {loading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {[1, 2, 3, 4, 5, 6].map((n) => (
                     <div
                       key={n}
@@ -383,7 +383,7 @@ const Properties = () => {
                   ))}
                 </div>
               ) : filtered.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filtered.map((property, i) => (
                     <PropertyCard
                       key={property.id}
