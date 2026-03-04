@@ -18,21 +18,43 @@ connectDB();
 
 // Middleware
 app.use(helmet());
+// CORS: explicit allowed origins + pattern matching for Vercel preview deployments
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   "http://localhost:3000",
   "http://localhost:8080",
+  "http://localhost:5173",
   "http://127.0.0.1:3000",
   "http://127.0.0.1:8080",
-  "https://omnis-real-estate.vercel.app", // Add a production URL just in case
-].map((url) => url?.replace(/\/$/, "")); // remove trailing slashes
+  "http://127.0.0.1:5173",
+  "https://omnis-real-estate.vercel.app",
+  "https://dubai-dreams.vercel.app",
+]
+  .filter(Boolean)
+  .map((url) => url!.replace(/\/$/, "")); // remove trailing slashes
+
+// Patterns to allow all Vercel preview URLs for this project
+const allowedPatterns = [
+  /^https:\/\/omnis-real-estate.*\.vercel\.app$/,
+  /^https:\/\/dubai-dreams.*\.vercel\.app$/,
+  /^https:\/\/nurmandev.*\.vercel\.app$/,
+];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (server-to-server, curl, Postman)
+      if (!origin) {
+        return callback(null, true);
+      }
+      const cleanOrigin = origin.replace(/\/$/, "");
+      if (
+        allowedOrigins.includes(cleanOrigin) ||
+        allowedPatterns.some((pattern) => pattern.test(cleanOrigin))
+      ) {
         callback(null, true);
       } else {
+        console.warn(`[CORS] Blocked origin: ${origin}`);
         callback(new Error("Not allowed by CORS"));
       }
     },
