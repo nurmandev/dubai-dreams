@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import Property from "../../models/Property";
+import {
+  deleteCloudinaryAsset,
+  deleteCloudinaryAssets,
+} from "../../utils/cloudinary";
 
 export class PropertyController {
   /**
@@ -225,6 +229,13 @@ export class PropertyController {
         const existingToKeep = Array.isArray(updateData.images)
           ? updateData.images
           : [updateData.images];
+        // Delete removed images from Cloudinary
+        const removedImages = property.images.filter(
+          (img) => !existingToKeep.includes(img),
+        );
+        if (removedImages.length > 0) {
+          deleteCloudinaryAssets(removedImages).catch(console.error);
+        }
         finalImages = [...existingToKeep, ...newImages];
       } else if (newImages.length > 0) {
         finalImages = [...property.images, ...newImages];
@@ -232,19 +243,37 @@ export class PropertyController {
       updateData.images = finalImages;
 
       if (newVideo) {
+        // Delete old video from Cloudinary if it's being replaced
+        if (property.videoUrl) {
+          deleteCloudinaryAsset(property.videoUrl).catch(console.error);
+        }
         updateData.videoUrl = newVideo;
       } else if (updateData.videoUrl && Array.isArray(updateData.videoUrl)) {
         updateData.videoUrl = updateData.videoUrl[0];
       }
 
-      if (newFloorPlans.length > 0) {
-        updateData.floorPlans = [
-          ...(property.floorPlans || []),
-          ...newFloorPlans,
-        ];
+      // Handle floor plans: find removed ones and delete from Cloudinary
+      if (newFloorPlans.length > 0 || updateData.floorPlans !== undefined) {
+        const oldFloorPlans = property.floorPlans || [];
+        const keptFloorPlans = updateData.floorPlans
+          ? Array.isArray(updateData.floorPlans)
+            ? updateData.floorPlans
+            : [updateData.floorPlans]
+          : oldFloorPlans;
+        const removedFloorPlans = oldFloorPlans.filter(
+          (fp) => !keptFloorPlans.includes(fp),
+        );
+        if (removedFloorPlans.length > 0) {
+          deleteCloudinaryAssets(removedFloorPlans).catch(console.error);
+        }
+        updateData.floorPlans = [...keptFloorPlans, ...newFloorPlans];
       }
 
       if (newTechnicalPdf) {
+        // Delete old brochure from Cloudinary if it's being replaced
+        if (property.technicalPdf) {
+          deleteCloudinaryAsset(property.technicalPdf).catch(console.error);
+        }
         updateData.technicalPdf = newTechnicalPdf;
       } else if (
         updateData.technicalPdf &&
@@ -352,15 +381,32 @@ export class PropertyController {
       const userId = (req as any).user.userId;
       const { id } = req.params;
 
-      const property = await Property.findOneAndDelete({
-        _id: id,
-        ownerId: userId,
-      });
+      const property = await Property.findOne({ _id: id, ownerId: userId });
       if (!property) {
         return res
           .status(404)
           .json({ message: "Property not found or unauthorized" });
       }
+
+      // Collect all Cloudinary assets attached to this property
+      const allAssets: string[] = [
+        ...(property.images || []),
+        ...(property.floorPlans || []),
+        property.videoUrl,
+        property.technicalPdf,
+      ].filter((url): url is string => Boolean(url));
+
+      // Delete all assets from Cloudinary (non-blocking – DB delete is the priority)
+      if (allAssets.length > 0) {
+        deleteCloudinaryAssets(allAssets).catch((err) =>
+          console.error(
+            "[Cloudinary] Cleanup error during property delete:",
+            err,
+          ),
+        );
+      }
+
+      await property.deleteOne();
 
       res.status(200).json({ message: "Property deleted successfully" });
     } catch (error: any) {
