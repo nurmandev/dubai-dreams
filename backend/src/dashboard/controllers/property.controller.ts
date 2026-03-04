@@ -35,6 +35,12 @@ export class PropertyController {
         zipCode,
         country,
         address,
+        unitTypes,
+        handoverYear,
+        totalFloors,
+        paymentPlanOnBooking,
+        paymentPlanDuringConstruction,
+        paymentPlanOnHandover,
       } = req.body;
 
       // Extract uploaded files safely
@@ -43,13 +49,17 @@ export class PropertyController {
       const uploadedImages = files["images"]
         ? files["images"].map((file) => file.path)
         : [];
-      const uploadedVideo = files["video"] ? files["video"][0].path : undefined;
+      const uploadedVideo =
+        files["video"] && files["video"][0]
+          ? files["video"][0].path
+          : undefined;
       const uploadedFloorPlans = files["floorPlans"]
         ? files["floorPlans"].map((file) => file.path)
         : [];
-      const uploadedTechnicalPdf = files["technicalPdf"]
-        ? files["technicalPdf"][0].path
-        : undefined;
+      const uploadedTechnicalPdf =
+        files["technicalPdf"] && files["technicalPdf"][0]
+          ? files["technicalPdf"][0].path
+          : undefined;
 
       if (!title || !description || !price || !location) {
         return res.status(400).json({
@@ -80,10 +90,25 @@ export class PropertyController {
         videoUrl: uploadedVideo,
         technicalPdf: uploadedTechnicalPdf,
         floorPlans: uploadedFloorPlans,
-        bedrooms: parseNum(bedrooms),
-        bathrooms: parseNum(bathrooms),
-        area: parseNum(area),
-        amenities: amenities || [],
+        bedrooms:
+          typeof bedrooms === "string" && bedrooms.includes("-")
+            ? bedrooms
+            : parseNum(bedrooms),
+        bathrooms:
+          typeof bathrooms === "string" && bathrooms.includes("-")
+            ? bathrooms
+            : parseNum(bathrooms),
+        area:
+          typeof area === "string" && area.includes("-")
+            ? area
+            : parseNum(area),
+        amenities: Array.isArray(amenities)
+          ? amenities
+          : typeof amenities === "string"
+            ? amenities.includes(",")
+              ? amenities.split(",").map((a) => a.trim())
+              : [amenities]
+            : [],
         yearBuilt: parseNum(yearBuilt),
         kitchens: parseNum(kitchens),
         garages: parseNum(garages),
@@ -97,6 +122,15 @@ export class PropertyController {
         areaLocation,
         zipCode,
         country,
+        // Off-plan fields
+        unitTypes,
+        handoverYear,
+        totalFloors: parseNum(totalFloors),
+        paymentPlan: {
+          onBooking: parseNum(paymentPlanOnBooking),
+          duringConstruction: parseNum(paymentPlanDuringConstruction),
+          onHandover: parseNum(paymentPlanOnHandover),
+        },
       });
 
       await newProperty.save();
@@ -107,6 +141,17 @@ export class PropertyController {
       });
     } catch (error: any) {
       console.error("Error creating property:", error);
+      require("fs").appendFileSync(
+        "error_log.txt",
+        (error.stack || error.message) + "\n",
+      );
+      if (error.name === "ValidationError") {
+        return res.status(400).json({
+          message: Object.values(error.errors)
+            .map((err: any) => err.message)
+            .join(", "),
+        });
+      }
       res
         .status(500)
         .json({ message: error.message || "Failed to create property" });
@@ -139,15 +184,17 @@ export class PropertyController {
 
       const fieldsToParse = [
         "price",
-        "bedrooms",
-        "bathrooms",
-        "area",
+        "price",
         "yearBuilt",
         "kitchens",
         "garages",
         "garageSize",
         "floorsNo",
         "yearlyTaxRate",
+        "totalFloors",
+        "paymentPlanOnBooking",
+        "paymentPlanDuringConstruction",
+        "paymentPlanOnHandover",
       ];
 
       const updateData = { ...req.body };
@@ -158,13 +205,17 @@ export class PropertyController {
       const newImages = files["images"]
         ? files["images"].map((file) => file.path)
         : [];
-      const newVideo = files["video"] ? files["video"][0].path : undefined;
+      const newVideo =
+        files["video"] && files["video"][0]
+          ? files["video"][0].path
+          : undefined;
       const newFloorPlans = files["floorPlans"]
         ? files["floorPlans"].map((file) => file.path)
         : [];
-      const newTechnicalPdf = files["technicalPdf"]
-        ? files["technicalPdf"][0].path
-        : undefined;
+      const newTechnicalPdf =
+        files["technicalPdf"] && files["technicalPdf"][0]
+          ? files["technicalPdf"][0].path
+          : undefined;
 
       // If body.images is present (it's the list of existing images to keep),
       // we need to ensure it's an array and merge with new ones.
@@ -208,6 +259,30 @@ export class PropertyController {
         }
       });
 
+      // Special handling for beds/baths/area to support ranges
+      ["bedrooms", "bathrooms", "area"].forEach((field) => {
+        if (updateData[field] !== undefined) {
+          if (
+            typeof updateData[field] === "string" &&
+            updateData[field].includes("-")
+          ) {
+            // Keep as string range
+          } else {
+            updateData[field] = parseNum(updateData[field]);
+          }
+        }
+      });
+
+      if (updateData.amenities) {
+        updateData.amenities = Array.isArray(updateData.amenities)
+          ? updateData.amenities
+          : typeof updateData.amenities === "string"
+            ? updateData.amenities.includes(",")
+              ? updateData.amenities.split(",").map((a) => a.trim())
+              : [updateData.amenities]
+            : [];
+      }
+
       // Update location summary if address components change
       if (updateData.address || updateData.city || updateData.country) {
         const addr = updateData.address || property.address || "";
@@ -218,6 +293,28 @@ export class PropertyController {
           locationParts.length > 0
             ? locationParts.join(", ")
             : property.location;
+      }
+
+      // Handle nested paymentPlan if individual fields are provided
+      if (
+        updateData.paymentPlanOnBooking !== undefined ||
+        updateData.paymentPlanDuringConstruction !== undefined ||
+        updateData.paymentPlanOnHandover !== undefined
+      ) {
+        updateData.paymentPlan = {
+          onBooking:
+            updateData.paymentPlanOnBooking !== undefined
+              ? updateData.paymentPlanOnBooking
+              : property.paymentPlan?.onBooking,
+          duringConstruction:
+            updateData.paymentPlanDuringConstruction !== undefined
+              ? updateData.paymentPlanDuringConstruction
+              : property.paymentPlan?.duringConstruction,
+          onHandover:
+            updateData.paymentPlanOnHandover !== undefined
+              ? updateData.paymentPlanOnHandover
+              : property.paymentPlan?.onHandover,
+        };
       }
 
       // Ensure ownerId is not changed
@@ -231,6 +328,17 @@ export class PropertyController {
         .json({ message: "Property updated successfully", property });
     } catch (error: any) {
       console.error("Update error:", error);
+      require("fs").appendFileSync(
+        "error_log.txt",
+        (error.stack || error.message) + "\n",
+      );
+      if (error.name === "ValidationError") {
+        return res.status(400).json({
+          message: Object.values(error.errors)
+            .map((err: any) => err.message)
+            .join(", "),
+        });
+      }
       res.status(500).json({ message: error.message });
     }
   }

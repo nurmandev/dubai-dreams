@@ -28,6 +28,7 @@ import {
   PlayCircle,
   FileText,
   X,
+  DollarSign,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -112,6 +113,11 @@ const PropertyDetails = () => {
             videoUrl: p.videoUrl,
             technicalPdf: p.technicalPdf,
             floorPlans: p.floorPlans || [],
+            // Off-plan fields
+            unitTypes: p.unitTypes,
+            handoverYear: p.handoverYear,
+            totalFloors: p.totalFloors,
+            paymentPlan: p.paymentPlan,
           };
           setProperty(mapped);
         }
@@ -175,6 +181,622 @@ const PropertyDetails = () => {
           <Button variant="gold" asChild>
             <Link to="/properties">Back to Properties</Link>
           </Button>
+        </div>
+      </Layout>
+    );
+  }
+
+  const isOffPlan = property.category === "off-plan";
+
+  if (isOffPlan) {
+    return (
+      <Layout>
+        <div className="pt-24 pb-20 bg-[#F9F9F7] font-body">
+          <div className="container mx-auto px-4 max-w-7xl">
+            {/* Breadcrumbs */}
+            <nav className="flex items-center gap-2 text-[10px] md:text-[11px] font-black tracking-[0.2em] text-stone-500 uppercase mb-6 md:mb-8">
+              <Link to="/" className="hover:text-[#0D3430] transition-colors">
+                HOME
+              </Link>
+              <ChevronRight className="w-3 h-3 text-stone-300" />
+              <Link
+                to="/properties"
+                className="hover:text-[#0D3430] transition-colors"
+              >
+                OFFLINE PROPERTIES
+              </Link>
+              <ChevronRight className="w-3 h-3 text-stone-300" />
+              <span className="text-[#0D3430] truncate max-w-[150px] md:max-w-none">
+                {property.title}
+              </span>
+            </nav>
+          </div>
+
+          {/* Wider Hero Section */}
+          <div className="max-w-[1440px] mx-auto px-2 md:px-4 mb-20 md:mb-24">
+            <div className="relative">
+              <div className="relative h-[450px] sm:h-[500px] md:h-[650px] w-full bg-stone-100 overflow-hidden shadow-2xl transition-all rounded-[1rem] md:rounded-[1.25rem]">
+                <img
+                  src={property.images?.[activeImage] || property.image}
+                  alt={property.title}
+                  className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
+                />
+
+                {/* Image display strictly 100% original as requested without overlays */}
+
+                {/* Top Right OFF-PLAN Badge */}
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 bg-[#0D3430] rounded-lg shadow-xl px-4 py-1.5 sm:px-6 sm:py-2">
+                  <span className="text-white text-[10px] font-bold uppercase tracking-widest">
+                    OFF-PLAN
+                  </span>
+                </div>
+
+                <div className="absolute top-16 md:top-24 left-4 sm:left-8 md:left-16 right-4 sm:right-8 md:right-16 drop-shadow-sm">
+                  <div className="max-w-4xl space-y-4 sm:space-y-6">
+                    <h1 className="font-display text-[2.5rem] leading-[1.1] sm:text-[3.5rem] md:text-[5rem] font-bold text-primary tracking-tight sm:leading-[1] md:leading-[0.9]">
+                      {property.title.split(" ").slice(0, 2).join(" ")}
+                      <br />
+                      {property.title.split(" ").slice(2).join(" ")}
+                    </h1>
+
+                    <div className="flex items-center gap-2 sm:gap-3 text-stone-800 font-bold bg-white/95 backdrop-blur-md w-full sm:w-max max-w-full px-3 py-2 sm:px-6 sm:py-3 rounded-[1rem] shadow-xl border border-stone-100/50 overflow-hidden">
+                      <div className="bg-[#EAD1B6]/30 p-1.5 sm:p-2 rounded-full shrink-0">
+                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-[#DDB57A]" />
+                      </div>
+                      <span className="font-body text-xs sm:text-sm md:text-base pr-2 truncate">
+                        {property.address || property.location}
+                      </span>
+                    </div>
+
+                    <div className="flex">
+                      <div className="bg-white px-6 py-2 sm:px-8 sm:py-3 shadow-sm rounded-sm text-primary text-xs sm:text-sm font-bold border-b-4 border-blue-400">
+                        {property.type.charAt(0).toUpperCase() +
+                          property.type.slice(1)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Specs Bar - Refined according to visual design */}
+              <div className="relative mx-auto -mt-16 z-20 md:mt-0 md:absolute md:-bottom-10 md:left-1/2 md:-translate-x-1/2 w-[95%] md:w-[90%] bg-white/95 backdrop-blur-3xl rounded-[1rem] md:rounded-[1.25rem] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] py-6 md:py-8 px-4 sm:px-6 md:px-12 grid grid-cols-2 md:grid-cols-4 gap-y-8 md:gap-y-0 md:divide-x divide-stone-100 transition-all border border-stone-100/50">
+                <div className="flex flex-col items-center md:items-start md:pl-4 justify-center">
+                  <div className="flex items-center gap-4 mb-1">
+                    <Bed
+                      className="w-5 h-5 md:w-6 md:h-6 text-[#DDB57A]"
+                      strokeWidth={1.5}
+                    />
+                    <span className="font-display font-medium text-[1.75rem] md:text-[2rem] text-[#0D3430] leading-none tracking-tight">
+                      {property.bedrooms}
+                    </span>
+                  </div>
+                  <span className="text-[12px] font-medium text-stone-600 capitalize md:ml-10">
+                    Bedrooms
+                  </span>
+                </div>
+
+                <div className="flex flex-col items-center md:items-start md:pl-12 justify-center">
+                  <div className="flex items-center gap-4 mb-1">
+                    <Bath
+                      className="w-5 h-5 md:w-6 md:h-6 text-[#DDB57A]"
+                      strokeWidth={1.5}
+                    />
+                    <span className="font-display font-medium text-[1.75rem] md:text-[2rem] text-[#0D3430] leading-none tracking-tight">
+                      {property.bathrooms}
+                    </span>
+                  </div>
+                  <span className="text-[12px] font-medium text-stone-600 capitalize md:ml-10">
+                    Bathrooms
+                  </span>
+                </div>
+
+                <div className="flex flex-col items-center md:items-start md:pl-12 justify-center">
+                  <div className="flex items-center gap-2 sm:gap-4 mb-1">
+                    <DollarSign
+                      className="w-5 h-5 md:w-6 md:h-6 text-[#DDB57A]"
+                      strokeWidth={1.5}
+                    />
+                    <div className="flex flex-col text-left">
+                      <span className="text-[10px] md:text-[11px] font-medium text-stone-600 mb-0.5 leading-none">
+                        Starting from
+                      </span>
+                      <span className="font-display font-medium text-[1.25rem] md:text-[1.5rem] text-[#0D3430] leading-none tracking-tight whitespace-nowrap">
+                        AED {property.price.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-center md:items-start md:pl-12 justify-center">
+                  <div className="flex items-center gap-4 mb-1">
+                    <Maximize
+                      className="w-5 h-5 md:w-6 md:h-6 text-[#DDB57A]"
+                      strokeWidth={1.5}
+                    />
+                    <span className="font-display font-medium text-[1.75rem] md:text-[2rem] text-[#0D3430] leading-none tracking-tight">
+                      {property.area}
+                    </span>
+                  </div>
+                  <span className="text-[12px] font-medium text-stone-600 lowercase md:ml-10">
+                    sq.ft.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="container mx-auto px-4 max-w-7xl">
+            {/* Content Section */}
+            <div className="mt-12 md:mt-20 space-y-16">
+              {/* Project Overview */}
+              <div className="space-y-4">
+                <h2 className="font-display text-[2.5rem] font-bold text-[#0D3430] tracking-tight">
+                  Project Overview
+                </h2>
+                <p className="text-stone-600 font-body leading-relaxed text-[15px] max-w-5xl whitespace-pre-line">
+                  {property.description}
+                </p>
+
+                {property.videoUrl && (
+                  <div className="mt-16 rounded-[1.5rem] overflow-hidden shadow-2xl border-8 border-white aspect-video relative group">
+                    <iframe
+                      className="w-full h-full"
+                      src={property.videoUrl.replace("watch?v=", "embed/")}
+                      title="Project Virtual Tour"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                    <div className="absolute top-10 left-10 bg-[#0D3430] text-white px-6 py-3 rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-2xl backdrop-blur-md">
+                      Interactive Cinematic Tour
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+                  {/* 1. Payment Plan */}
+                  <div className="bg-white rounded-[1rem] p-8 shadow-sm border border-stone-100 flex flex-col hover:shadow-lg transition-shadow">
+                    <h3 className="font-display text-[1.4rem] font-bold text-[#0D3430] mb-8 leading-none">
+                      Payment Plan
+                    </h3>
+                    <div className="space-y-6 flex-1">
+                      <div className="space-y-3 pb-3 border-b border-stone-100 group">
+                        <div className="flex justify-between items-center text-stone-800">
+                          <span className="text-[13px] font-medium text-stone-600">
+                            On Booking
+                          </span>
+                          <span className="font-display font-black text-xl text-stone-900 group-hover:text-gold transition-colors">
+                            {property.paymentPlan?.onBooking}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full bg-stone-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-[#0D3430]"
+                            style={{
+                              width: `${property.paymentPlan?.onBooking}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-3 pb-3 border-b border-stone-100 group">
+                        <div className="flex justify-between items-center text-stone-800">
+                          <span className="text-[13px] font-medium text-stone-600">
+                            During Construction
+                          </span>
+                          <span className="font-display font-black text-xl text-stone-900 group-hover:text-gold transition-colors">
+                            {property.paymentPlan?.duringConstruction ?? 40}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full bg-stone-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-[#0D3430]"
+                            style={{
+                              width: `${property.paymentPlan?.duringConstruction ?? 40}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-3 pb-3 group">
+                        <div className="flex justify-between items-center text-stone-800">
+                          <span className="text-[13px] font-medium text-stone-600">
+                            On Handover
+                          </span>
+                          <span className="font-display font-black text-xl text-stone-900 group-hover:text-gold transition-colors">
+                            {property.paymentPlan?.onHandover ?? 50}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full bg-stone-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-[#0D3430]"
+                            style={{
+                              width: `${property.paymentPlan?.onHandover ?? 50}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      asChild
+                      className="w-full mt-8 bg-[#0D3430] hover:bg-[#06201e] text-white rounded-[0.5rem] h-12 font-bold uppercase tracking-widest text-[11px] flex items-center justify-between px-6 transition-all border-none"
+                    >
+                      <a href="/contact">
+                        <span>ENQUIRE NOW</span>
+                        <ChevronRight
+                          className="w-[14px] h-[14px]"
+                          strokeWidth={3}
+                        />
+                      </a>
+                    </Button>
+                  </div>
+
+                  {/* 2. Technical Profile */}
+                  <div className="bg-white rounded-[1rem] p-8 shadow-sm border border-stone-100 h-full hover:shadow-lg transition-shadow">
+                    <h3 className="font-display text-[1.4rem] font-bold text-[#0D3430] mb-8 leading-none">
+                      Technical Profile
+                    </h3>
+                    <div className="space-y-6 mt-2">
+                      <div className="flex items-center justify-between border-b border-stone-100 pb-5">
+                        <div className="flex items-center gap-4">
+                          <Calendar className="w-5 h-5 text-[#DDB57A]" />
+                          <span className="text-[13px] font-medium text-stone-600">
+                            Handover Year
+                          </span>
+                        </div>
+                        <span className="font-display font-black text-xl text-stone-900">
+                          {property.handoverYear || "TBA"}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between border-b border-stone-100 pb-5">
+                        <div className="flex items-center gap-4">
+                          <Utensils className="w-5 h-5 text-[#DDB57A]" />
+                          <span className="text-[13px] font-medium text-stone-600">
+                            Kitchens
+                          </span>
+                        </div>
+                        <span className="font-display font-black text-xl text-stone-900">
+                          {property.kitchens || 1}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between pb-2">
+                        <div className="flex items-center gap-4">
+                          <Layers className="w-5 h-5 text-[#DDB57A]" />
+                          <span className="text-[13px] font-medium text-stone-600">
+                            Total Floors
+                          </span>
+                        </div>
+                        <span className="font-display font-black text-xl text-stone-900">
+                          {property.totalFloors || "N/A"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 3. Lifestyle Amenities */}
+                  {(() => {
+                    const filteredAmenities = (property.amenities || [])
+                      .flatMap((a) =>
+                        typeof a === "string" ? a.split(",") : [a],
+                      )
+                      .map((a) => (typeof a === "string" ? a.trim() : a))
+                      .filter((a) => AMENITIES_LIST.includes(a));
+
+                    if (filteredAmenities.length === 0) return null;
+
+                    return (
+                      <div className="bg-white rounded-[1rem] p-8 shadow-sm border border-stone-100 h-full hover:shadow-lg transition-shadow">
+                        <h3 className="font-display text-[1.4rem] font-bold text-[#0D3430] mb-8 leading-none">
+                          Lifestyle Amenities
+                        </h3>
+                        <div className="flex flex-col gap-5">
+                          {filteredAmenities.slice(0, 8).map((amenity, idx) => {
+                            const original = AMENITIES_LIST.find(
+                              (item) =>
+                                item.toLowerCase() ===
+                                amenity.toLowerCase().replace(/-/g, " "),
+                            );
+                            return (
+                              <div
+                                key={idx}
+                                className="flex items-center gap-4 group"
+                              >
+                                <svg
+                                  className="w-[14px] h-[14px] text-stone-700 shrink-0"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={3}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                                <span className="text-[14px] font-medium text-stone-600 truncate group-hover:text-[#0D3430] transition-colors">
+                                  {original || amenity.replace(/-/g, " ")}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* Extended Sections */}
+              <div className="mt-20 space-y-16">
+                {/* Location Map */}
+                <div className="bg-white rounded-[1.5rem] p-8 md:p-12 shadow-sm border border-stone-100">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-12 h-[3px] bg-gold rounded-full" />
+                    <h3 className="font-display text-3xl font-black text-stone-900 tracking-tight">
+                      Prime Location
+                    </h3>
+                  </div>
+                  <div className="h-[500px] w-full rounded-[1rem] overflow-hidden border border-stone-100 shadow-inner">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      frameBorder="0"
+                      scrolling="no"
+                      marginHeight={0}
+                      marginWidth={0}
+                      src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                        [
+                          property.location,
+                          property.areaLocation,
+                          property.region,
+                          property.city,
+                        ]
+                          .filter(Boolean)
+                          .join(", "),
+                      )}&t=&z=14&ie=UTF8&iwloc=B&output=embed`}
+                    ></iframe>
+                  </div>
+                </div>
+
+                {/* Gallery Showcase */}
+                {property.images && property.images.length > 0 && (
+                  <div className="bg-white rounded-[1.5rem] p-8 md:p-12 shadow-sm border border-stone-100">
+                    <div className="flex items-center gap-4 mb-10">
+                      <div className="w-12 h-[3px] bg-gold rounded-full" />
+                      <h3 className="font-display text-3xl font-black text-stone-900 tracking-tight">
+                        Project Visual Anthology
+                      </h3>
+                    </div>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                      {property.images.map((img, idx) => (
+                        <div
+                          key={idx}
+                          className="relative aspect-[4/3] group cursor-pointer overflow-hidden rounded-[1rem] border border-stone-50"
+                          onClick={() => {
+                            setActiveImage(idx);
+                            setPreviewImage(img);
+                          }}
+                        >
+                          <img
+                            src={img}
+                            alt={`${property.title} - Render ${idx + 1}`}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                            <span className="text-white text-[10px] font-black uppercase tracking-[0.3em] bg-[#0D3430]/90 backdrop-blur-md px-6 py-3 rounded-full shadow-2xl border border-white/10 scale-90 group-hover:scale-100 transition-transform">
+                              Expand View
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Floor Plans */}
+                {property.floorPlans && property.floorPlans.length > 0 && (
+                  <div className="bg-white rounded-[1.5rem] p-8 md:p-12 shadow-sm border border-stone-100">
+                    <div className="flex items-center gap-4 mb-10">
+                      <div className="w-12 h-[3px] bg-gold rounded-full" />
+                      <h3 className="font-display text-3xl font-black text-stone-900 tracking-tight">
+                        Architectural Blueprints
+                      </h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                      {property.floorPlans.map((plan, idx) => (
+                        <div
+                          key={idx}
+                          className="p-10 rounded-[1.25rem] border border-stone-100 bg-stone-50/50 flex flex-col items-center gap-6 group hover:border-gold/30 hover:bg-white transition-all cursor-pointer shadow-sm hover:shadow-xl"
+                          onClick={() => setPreviewImage(plan)}
+                        >
+                          <div className="w-full h-64 overflow-hidden rounded-xl">
+                            <img
+                              src={plan}
+                              alt={`Floor Plan ${idx + 1}`}
+                              className="w-full h-full object-contain group-hover:scale-110 transition-transform"
+                            />
+                          </div>
+                          <span className="text-[11px] font-black text-stone-400 group-hover:text-gold uppercase tracking-[0.3em] transition-colors">
+                            Floor Plan Layout Index 0{idx + 1}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Contact Section */}
+                {/* <div
+                  id="enquire"
+                  className="bg-[#0D3430] rounded-[2rem] p-10 md:p-20 text-white shadow-2xl relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full -mr-64 -mt-64 blur-[100px] pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gold/5 rounded-full -ml-64 -mb-64 blur-[100px] pointer-events-none" />
+
+                  <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                    <div>
+                      <h2 className="font-display text-4xl md:text-6xl font-black mb-8 leading-[1.1] tracking-tighter">
+                        Experience <br />{" "}
+                        <span className="text-gold">Dubai's Future</span>
+                      </h2>
+                      <p className="text-white/60 font-body text-xl mb-12 max-w-lg leading-relaxed">
+                        Register your interest today to receive exclusive
+                        whitepapers, private pricing tables, and VIP launch
+                        event access.
+                      </p>
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-6 group">
+                          <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-[#0D3430] transition-all border border-white/10">
+                            <Phone className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1">
+                              Call Expertise
+                            </p>
+                            <p className="font-display font-black text-xl">
+                              +971 4 123 4567
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-6 group">
+                          <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 flex items-center justify-center text-gold group-hover:bg-[#25D366] group-hover:text-white transition-all border border-white/10">
+                            <MessageCircle className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1">
+                              Instant Concierge
+                            </p>
+                            <p className="font-display font-black text-xl">
+                              WhatsApp Inquiry
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <form
+                      onSubmit={handleEnquiry}
+                      className="bg-white rounded-[2.5rem] p-8 md:p-12 space-y-6 shadow-2xl"
+                    >
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
+                            Full Name
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-6 py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
+                            value={form.name}
+                            onChange={(e) =>
+                              setForm({ ...form, name: e.target.value })
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
+                            Email Address
+                          </label>
+                          <input
+                            type="email"
+                            required
+                            className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-6 py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
+                            value={form.email}
+                            onChange={(e) =>
+                              setForm({ ...form, email: e.target.value })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
+                          Phone Number
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-6 py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
+                          value={form.phone}
+                          onChange={(e) =>
+                            setForm({ ...form, phone: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
+                          Personal Message
+                        </label>
+                        <textarea
+                          rows={3}
+                          className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-6 py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all resize-none shadow-inner"
+                          placeholder="I'm interested in this project..."
+                          value={form.message}
+                          onChange={(e) =>
+                            setForm({ ...form, message: e.target.value })
+                          }
+                        />
+                      </div>
+                      <Button
+                        disabled={submitting}
+                        className="w-full bg-[#0D3430] hover:bg-gold text-white rounded-[1.5rem] h-16 font-black uppercase tracking-[0.3em] shadow-xl shadow-[#0D3430]/10 transition-all active:scale-95"
+                      >
+                        {submitting
+                          ? "Establishing Connection..."
+                          : "Secure Priority Access"}
+                      </Button>
+                    </form>
+                  </div>
+                </div> */}
+              </div>
+
+              {/* Global Image Preview Lightbox */}
+              <AnimatePresence>
+                {previewImage && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-3xl p-4 md:p-10"
+                    onClick={() => setPreviewImage(null)}
+                  >
+                    <motion.button
+                      className="absolute top-10 right-10 p-5 text-white/30 hover:text-white transition-colors z-[110]"
+                      whileHover={{ rotate: 90, scale: 1.2 }}
+                      onClick={() => setPreviewImage(null)}
+                    >
+                      <X className="w-10 h-10" />
+                    </motion.button>
+
+                    <motion.div
+                      className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center p-4"
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.9, opacity: 0 }}
+                      transition={{
+                        type: "spring",
+                        damping: 30,
+                        stiffness: 200,
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <img
+                        src={previewImage}
+                        alt="High Definition Preview"
+                        className="max-w-full max-h-full object-contain rounded-2xl shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5"
+                      />
+
+                      {/* Overlay labels if it's a floor plan */}
+                      {property.floorPlans?.includes(previewImage) && (
+                        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-gold/90 backdrop-blur-xl px-10 py-4 rounded-full shadow-2xl border border-white/20">
+                          <span className="text-xs font-black text-[#0D3430] uppercase tracking-[0.3em]">
+                            Architectural Blueprint Overview
+                          </span>
+                        </div>
+                      )}
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </Layout>
     );
@@ -304,32 +926,57 @@ const PropertyDetails = () => {
                       <Bed className="w-5 h-5 text-gold" />
                     </div>
                     <p className="font-display text-xl font-black text-foreground">
-                      {property.bedrooms === 0 ? "Studio" : property.bedrooms}
+                      {property.category === "off-plan"
+                        ? property.unitTypes || "Various"
+                        : property.bedrooms === 0
+                          ? "Studio"
+                          : property.bedrooms}
                     </p>
                     <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
-                      {property.bedrooms === 0 ? "Unit Type" : "Bedrooms"}
+                      {property.category === "off-plan"
+                        ? "Unit Types"
+                        : property.bedrooms === 0
+                          ? "Unit Type"
+                          : "Bedrooms"}
                     </p>
                   </div>
-                  {Number(property.bathrooms) > 0 && (
-                    <div className="flex flex-col items-center border-l border-border/50">
-                      <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
-                        <Bath className="w-5 h-5 text-gold" />
+                  {property.category !== "off-plan" &&
+                    Number(property.bathrooms) > 0 && (
+                      <div className="flex flex-col items-center border-l border-border/50">
+                        <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
+                          <Bath className="w-5 h-5 text-gold" />
+                        </div>
+                        <p className="font-display text-xl font-black text-foreground">
+                          {property.bathrooms}
+                        </p>
+                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+                          Bathrooms
+                        </p>
                       </div>
-                      <p className="font-display text-xl font-black text-foreground">
-                        {property.bathrooms}
-                      </p>
-                      <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
-                        Bathrooms
-                      </p>
-                    </div>
-                  )}
+                    )}
+                  {property.category === "off-plan" &&
+                    property.handoverYear && (
+                      <div className="flex flex-col items-center border-l border-border/50">
+                        <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
+                          <Calendar className="w-5 h-5 text-gold" />
+                        </div>
+                        <p className="font-display text-xl font-black text-foreground">
+                          {property.handoverYear}
+                        </p>
+                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+                          Handover
+                        </p>
+                      </div>
+                    )}
                   {Number(property.area) > 0 && (
                     <div className="flex flex-col items-center border-l border-border/50">
                       <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
                         <Maximize className="w-5 h-5 text-gold" />
                       </div>
                       <p className="font-display text-xl font-black text-foreground">
-                        {property.area.toLocaleString()}
+                        {typeof property.area === "number"
+                          ? property.area.toLocaleString()
+                          : property.area}
                       </p>
                       <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
                         Sq. Ft.
@@ -355,13 +1002,49 @@ const PropertyDetails = () => {
                     <div className="w-8 h-1 bg-gold rounded-full" />
                     Property Narrative
                   </h2>
-                  <div className="prose prose-stone max-w-none">
-                    <p className="text-muted-foreground font-body leading-[1.8] text-base whitespace-pre-line">
+                  <div className="prose prose-stone max-w-none w-full">
+                    <p className="text-muted-foreground font-body leading-[1.8] text-base whitespace-pre-line text-justify w-full max-w-none">
                       {property.description ||
                         `Experience high-end urban living in this pristine ${property.type}. Located in the heart of ${property.location}, this residence combines architectural excellence with panoramic views.`}
                     </p>
                   </div>
                 </div>
+
+                {/* Payment Plan for Off-Plan */}
+                {property.category === "off-plan" && property.paymentPlan && (
+                  <div className="mt-12 pt-12 border-t border-border">
+                    <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter flex items-center gap-3">
+                      <DollarSign className="w-6 h-6 text-gold" /> Payment
+                      Strategy
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="p-6 rounded-2xl bg-gold/5 border border-gold/10">
+                        <p className="text-[10px] font-black text-gold uppercase tracking-[0.2em] mb-2">
+                          On Booking
+                        </p>
+                        <p className="font-display text-3xl font-black text-foreground">
+                          {property.paymentPlan.onBooking}%
+                        </p>
+                      </div>
+                      <div className="p-6 rounded-2xl bg-muted/30 border border-border text-center md:text-left">
+                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">
+                          During Construction
+                        </p>
+                        <p className="font-display text-3xl font-black text-foreground">
+                          {property.paymentPlan.duringConstruction}%
+                        </p>
+                      </div>
+                      <div className="p-6 rounded-2xl bg-muted/30 border border-border text-center md:text-left">
+                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">
+                          On Handover
+                        </p>
+                        <p className="font-display text-3xl font-black text-foreground">
+                          {property.paymentPlan.onHandover}%
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Technical Specs */}
                 <div className="mt-12 pt-12 border-t border-border">
@@ -371,20 +1054,24 @@ const PropertyDetails = () => {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
                     {Number(property.yearBuilt) > 0 && (
                       <div className="flex items-center gap-4">
-                        <Calendar className="w-5 h-5 text-gold/50" />
+                        <Calendar className="w-5 h-5 text-[#0D3430]" />
                         <div>
                           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
-                            Handover Year
+                            {property.category === "off-plan"
+                              ? "Target Handover"
+                              : "Year Built"}
                           </p>
                           <p className="text-sm font-bold">
-                            {property.yearBuilt}
+                            {property.category === "off-plan"
+                              ? property.handoverYear
+                              : property.yearBuilt}
                           </p>
                         </div>
                       </div>
                     )}
                     {Number(property.kitchens) > 0 && (
                       <div className="flex items-center gap-4">
-                        <Utensils className="w-5 h-5 text-gold/50" />
+                        <Utensils className="w-5 h-5 text-[#0D3430]" />
                         <div>
                           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
                             Kitchens
@@ -397,7 +1084,7 @@ const PropertyDetails = () => {
                     )}
                     {Number(property.garages) > 0 && (
                       <div className="flex items-center gap-4">
-                        <Car className="w-5 h-5 text-gold/50" />
+                        <Car className="w-5 h-5 text-[#0D3430]" />
                         <div>
                           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
                             Parking
@@ -413,7 +1100,7 @@ const PropertyDetails = () => {
                     )}
                     {Number(property.floorsNo) > 0 && (
                       <div className="flex items-center gap-4">
-                        <Layers className="w-5 h-5 text-gold/50" />
+                        <Layers className="w-5 h-5 text-[#0D3430]" />
                         <div>
                           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
                             Total Floors
@@ -429,9 +1116,13 @@ const PropertyDetails = () => {
 
                 {/* Amenities */}
                 {(() => {
-                  const filteredAmenities = (property.amenities || []).filter(
-                    (a) => AMENITIES_LIST.includes(a),
-                  );
+                  const filteredAmenities = (property.amenities || [])
+                    .flatMap((a) =>
+                      typeof a === "string" ? a.split(",") : [a],
+                    )
+                    .map((a) => (typeof a === "string" ? a.trim() : a))
+                    .filter((a) => AMENITIES_LIST.includes(a));
+
                   if (filteredAmenities.length === 0) return null;
 
                   return (
@@ -439,18 +1130,25 @@ const PropertyDetails = () => {
                       <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter">
                         Lifestyle Amenities
                       </h2>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {filteredAmenities.map((amenity, idx) => (
-                          <div
-                            key={idx}
-                            className="flex items-center gap-3 p-3 rounded-xl bg-muted/20 border border-border/30"
-                          >
-                            <CheckCircle2 className="w-4 h-4 text-emerald shrink-0" />
-                            <span className="text-xs font-bold text-foreground/80 tracking-tight">
-                              {amenity}
-                            </span>
-                          </div>
-                        ))}
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {filteredAmenities.map((amenity, idx) => {
+                          const original = AMENITIES_LIST.find(
+                            (item) =>
+                              item.toLowerCase() ===
+                              amenity.toLowerCase().replace(/-/g, " "),
+                          );
+                          return (
+                            <div
+                              key={idx}
+                              className="flex items-center gap-4 p-4 rounded-2xl bg-[#0D3430]/5 border border-[#0D3430]/10 group hover:border-gold/30 hover:bg-white transition-all shadow-sm"
+                            >
+                              <CheckCircle2 className="w-4 h-4 text-[#0D3430] shrink-0 fill-none" />
+                              <span className="text-[10px] font-black text-stone-600 group-hover:text-[#0D3430] transition-colors uppercase tracking-widest truncate">
+                                {original || amenity.replace(/-/g, " ")}
+                              </span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   );

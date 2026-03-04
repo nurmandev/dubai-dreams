@@ -59,6 +59,11 @@ const Properties = () => {
             status: p.status === "active" ? "ready" : "off-plan",
             image:
               p.carousel_thumb?.[0]?.img || "/images/property-placeholder.jpg",
+            // New Off-plan fields
+            unitTypes: p.unitTypes,
+            handoverYear: p.handoverYear,
+            totalFloors: p.totalFloors,
+            paymentPlan: p.paymentPlan,
           }));
           setProperties(mapped);
         }

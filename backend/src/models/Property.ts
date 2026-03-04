@@ -12,15 +12,17 @@ export interface IProperty extends Document {
     | "condo"
     | "house"
     | "villa"
+    | "townhouse"
+    | "penthouse"
     | "land"
     | "commercial";
   status: "active" | "pending" | "sold" | "rented";
   views: number;
   favouritedBy: mongoose.Types.ObjectId[];
   images: string[];
-  bedrooms?: number;
-  bathrooms?: number;
-  area?: number;
+  bedrooms?: number | string;
+  bathrooms?: number | string;
+  area?: number | string;
   amenities?: string[];
   yearBuilt?: number;
   kitchens?: number;
@@ -38,6 +40,15 @@ export interface IProperty extends Document {
   videoUrl?: string;
   technicalPdf?: string;
   floorPlans?: string[];
+  // Off-plan specific fields
+  unitTypes?: string;
+  handoverYear?: string;
+  totalFloors?: number;
+  paymentPlan?: {
+    onBooking?: number;
+    duringConstruction?: number;
+    onHandover?: number;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -57,7 +68,16 @@ const PropertySchema = new Schema<IProperty>(
     location: { type: String, required: true },
     propertyType: {
       type: String,
-      enum: ["apartment", "condo", "house", "villa", "land", "commercial"],
+      enum: [
+        "apartment",
+        "condo",
+        "house",
+        "villa",
+        "townhouse",
+        "penthouse",
+        "land",
+        "commercial",
+      ],
       default: "apartment",
     },
     status: {
@@ -71,9 +91,9 @@ const PropertySchema = new Schema<IProperty>(
     videoUrl: { type: String },
     technicalPdf: { type: String },
     floorPlans: [{ type: String }],
-    bedrooms: { type: Number },
-    bathrooms: { type: Number },
-    area: { type: Number },
+    bedrooms: { type: Schema.Types.Mixed },
+    bathrooms: { type: Schema.Types.Mixed },
+    area: { type: Schema.Types.Mixed },
     amenities: [{ type: String }],
     yearBuilt: { type: Number },
     kitchens: { type: Number },
@@ -88,6 +108,15 @@ const PropertySchema = new Schema<IProperty>(
     areaLocation: { type: String },
     zipCode: { type: String },
     country: { type: String },
+    // Off-plan fields
+    unitTypes: { type: String },
+    handoverYear: { type: String },
+    totalFloors: { type: Number },
+    paymentPlan: {
+      onBooking: { type: Number },
+      duringConstruction: { type: Number },
+      onHandover: { type: Number },
+    },
   },
   { timestamps: true },
 );

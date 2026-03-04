@@ -41,7 +41,7 @@ interface Property {
   status: string;
   bedrooms?: number;
   bathrooms?: number;
-  area?: number;
+  area?: number | string;
   amenities?: string[];
   yearBuilt?: number;
   kitchens?: number;
@@ -54,9 +54,20 @@ interface Property {
   state?: string;
   zipCode?: string;
   country?: string;
+  region?: string;
+  areaLocation?: string;
   videoUrl?: string;
   images: string[];
   floorPlans: string[];
+  // Off-plan fields
+  unitTypes?: string;
+  handoverYear?: string;
+  totalFloors?: number;
+  paymentPlan?: {
+    onBooking?: number;
+    duringConstruction?: number;
+    onHandover?: number;
+  };
 }
 
 const EditProperty = () => {
@@ -105,7 +116,18 @@ const EditProperty = () => {
     videoUrl: "",
     images: [],
     floorPlans: [],
+    // Off-plan fields
+    unitTypes: "",
+    handoverYear: "",
+    totalFloors: 0,
+    paymentPlan: {
+      onBooking: 0,
+      duringConstruction: 0,
+      onHandover: 0,
+    },
   });
+
+  const isOffPlan = formData.listedIn === "Off-Plan";
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -118,14 +140,25 @@ const EditProperty = () => {
           setFormData({
             ...found,
             id: found._id || found.id,
+            // Flatten payment plan for easier form handling if needed,
+            // but the controller handles paymentPlanOnBooking etc now
+            paymentPlanOnBooking: found.paymentPlan?.onBooking || "",
+            paymentPlanDuringConstruction:
+              found.paymentPlan?.duringConstruction || "",
+            paymentPlanOnHandover: found.paymentPlan?.onHandover || "",
           });
           setExistingImages(found.images || []);
           setExistingFloorPlans(found.floorPlans || []);
           setExistingTechnicalPdf(found.technicalPdf || null);
           if (found.amenities && Array.isArray(found.amenities)) {
-            const predefined = found.amenities.filter((a: string) =>
-              AMENITIES_LIST.includes(a),
-            );
+            const predefined = found.amenities
+              .map((a: string) => {
+                const normalized = a.toLowerCase().replace(/-/g, " ");
+                return AMENITIES_LIST.find(
+                  (item) => item.toLowerCase() === normalized,
+                );
+              })
+              .filter(Boolean) as string[];
             setSelectedAmenities(predefined);
           }
         } else {
@@ -207,6 +240,7 @@ const EditProperty = () => {
         images,
         floorPlans,
         technicalPdf: ___,
+        paymentPlan: ____, // Omit the object, use the flattened fields
         ...updateFields
       } = formData as any;
 
@@ -233,7 +267,11 @@ const EditProperty = () => {
       }
 
       await api.patch(`/api/dashboard/properties/${id}`, { data });
-      toast.success("Property updated successfully");
+      toast.success(
+        isOffPlan
+          ? "Project updated successfully"
+          : "Property updated successfully",
+      );
       navigate("/admin/properties");
     } catch (err: any) {
       console.error("Update error:", err);
@@ -265,10 +303,12 @@ const EditProperty = () => {
           </Link>
         </Button>
         <h1 className="font-display text-3xl font-bold text-foreground">
-          Advanced Editor
+          {isOffPlan ? "Project Architect" : "Advanced Editor"}
         </h1>
         <p className="text-muted-foreground font-body">
-          Managing assets and specifications for "{formData.title}"
+          {isOffPlan
+            ? `Managing master plan and specifications for "${formData.title}"`
+            : `Managing assets and specifications for "${formData.title}"`}
         </p>
       </div>
 
@@ -280,14 +320,14 @@ const EditProperty = () => {
               <div className="flex items-center gap-3 pb-4 border-b border-border">
                 <Building2 className="w-5 h-5 text-gold" />
                 <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
-                  General Content
+                  {isOffPlan ? "Project Vision" : "General Content"}
                 </h2>
               </div>
 
               <div className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-xs font-body font-bold text-muted-foreground uppercase">
-                    Property Title
+                    {isOffPlan ? "Project Title" : "Property Title"}
                   </label>
                   <input
                     type="text"
@@ -315,7 +355,8 @@ const EditProperty = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-body font-bold text-muted-foreground uppercase flex items-center gap-2">
-                    <MapPin className="w-3 h-3 text-gold" /> Street Address
+                    <MapPin className="w-3 h-3 text-gold" />{" "}
+                    {isOffPlan ? "Project Address" : "Street Address"}
                   </label>
                   <input
                     type="text"
@@ -393,14 +434,14 @@ const EditProperty = () => {
               <div className="flex items-center gap-3 pb-4 border-b border-border">
                 <ImageIcon className="w-5 h-5 text-gold" />
                 <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
-                  Asset Management
+                  {isOffPlan ? "Project Assets" : "Asset Management"}
                 </h2>
               </div>
 
               {/* Photos */}
               <div className="space-y-4">
                 <label className="text-xs font-body font-bold text-muted-foreground uppercase flex items-center gap-2">
-                  Images & Gallery
+                  {isOffPlan ? "Project Renders" : "Images & Gallery"}
                 </label>
 
                 {/* Existing Images */}
@@ -462,7 +503,9 @@ const EditProperty = () => {
               {/* Floor Plans */}
               <div className="space-y-4 pt-6 border-t border-border">
                 <label className="text-xs font-body font-bold text-muted-foreground uppercase flex items-center gap-2">
-                  Floor Plans (Blueprints)
+                  {isOffPlan
+                    ? "Floor Plans & Layouts"
+                    : "Floor Plans (Blueprints)"}
                 </label>
                 <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
                   {existingFloorPlans.map((plan, idx) => (
@@ -514,8 +557,8 @@ const EditProperty = () => {
               {/* Official Brochure (PDF) */}
               <div className="space-y-4 pt-6 border-t border-border">
                 <label className="text-xs font-body font-bold text-muted-foreground uppercase flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-gold" /> Official Brochure
-                  (PDF)
+                  <FileText className="w-4 h-4 text-gold" />{" "}
+                  {isOffPlan ? "Project Brochure" : "Official Brochure (PDF)"}
                 </label>
                 <div className="flex items-center gap-4">
                   {existingTechnicalPdf || newTechnicalPdf ? (
@@ -565,86 +608,245 @@ const EditProperty = () => {
               <div className="flex items-center gap-3 pb-4 border-b border-border">
                 <Square className="w-5 h-5 text-gold" />
                 <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
-                  Dimensions & Specs
+                  {isOffPlan ? "Project Specs" : "Dimensions & Specs"}
                 </h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-body font-bold text-muted-foreground uppercase">
-                    Beds
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
-                    value={formData.bedrooms || 0}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        bedrooms: Number(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-body font-bold text-muted-foreground uppercase">
-                    Baths
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
-                    value={formData.bathrooms || 0}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        bathrooms: Number(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-body font-bold text-muted-foreground uppercase">
-                    Kitchens
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
-                    value={formData.kitchens || 0}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        kitchens: Number(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-body font-bold text-muted-foreground uppercase">
-                    Area (SQFT)
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
-                    value={formData.area || 0}
-                    onChange={(e) =>
-                      setFormData({ ...formData, area: Number(e.target.value) })
-                    }
-                  />
-                </div>
+                {isOffPlan ? (
+                  <>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Bedrooms Range
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 1-3"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.bedrooms || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bedrooms: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Bathrooms Range
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 1-3"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.bathrooms || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bathrooms: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        SQFT Range
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 815 - 2350"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.area || ""}
+                        onChange={(e) =>
+                          setFormData({ ...formData, area: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Handover Year
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 2026"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.handoverYear || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            handoverYear: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Total Floors
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="e.g. 24"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.totalFloors || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            totalFloors: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Beds
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.bedrooms || 0}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bedrooms: Number(e.target.value),
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Baths
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.bathrooms || 0}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bathrooms: Number(e.target.value),
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Kitchens
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.kitchens || 0}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            kitchens: Number(e.target.value),
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Area (SQFT)
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.area || 0}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            area: Number(e.target.value),
+                          })
+                        }
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
+
+            {isOffPlan && (
+              <div className="bg-background rounded-xl p-8 shadow-sm border border-border space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-border">
+                  <DollarSign className="w-5 h-5 text-gold" />
+                  <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
+                    Payment Plan (%)
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                      On Booking
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 10"
+                      className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                      value={(formData as any).paymentPlanOnBooking || ""}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          ["paymentPlanOnBooking" as any]: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                      During Construction
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 40"
+                      className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                      value={
+                        (formData as any).paymentPlanDuringConstruction || ""
+                      }
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          ["paymentPlanDuringConstruction" as any]:
+                            e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                      On Handover
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 50"
+                      className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                      value={(formData as any).paymentPlanOnHandover || ""}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          ["paymentPlanOnHandover" as any]: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
             <div className="bg-background rounded-xl p-6 shadow-sm border border-border space-y-6">
-              <h3 className="font-display font-bold text-sm uppercase tracking-widest text-gold">
-                Project Status
+              <h3 className="font-display font-bold text-sm uppercase tracking-widest text-gold text-bold">
+                Project Control
               </h3>
 
               <div className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-xs font-body font-bold text-muted-foreground uppercase">
-                    Assigned Category*
+                    Portfolio Segment*
                   </label>
                   <select
                     className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
@@ -660,8 +862,27 @@ const EditProperty = () => {
                 </div>
 
                 <div className="space-y-2">
+                  <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                    Asset Class*
+                  </label>
+                  <select
+                    className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                    value={formData.propertyType}
+                    onChange={(e) =>
+                      setFormData({ ...formData, propertyType: e.target.value })
+                    }
+                  >
+                    <option value="apartment">Apartment</option>
+                    <option value="villa">Villa</option>
+                    <option value="townhouse">Townhouse</option>
+                    <option value="penthouse">Penthouse</option>
+                    <option value="commercial">Commercial</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
                   <label className="text-xs font-body font-bold text-muted-foreground uppercase text-gold font-bold">
-                    Price (AED)*
+                    {isOffPlan ? "Starting Price (AED)*" : "Price (AED)*"}
                   </label>
                   <input
                     type="number"
@@ -734,13 +955,16 @@ const EditProperty = () => {
                     <input
                       type="checkbox"
                       className="w-4 h-4 rounded border-border text-gold focus:ring-gold"
-                      checked={selectedAmenities.includes(amenity)}
+                      checked={(selectedAmenities || []).includes(amenity)}
                       onChange={(e) => {
                         if (e.target.checked) {
-                          setSelectedAmenities((prev) => [...prev, amenity]);
+                          setSelectedAmenities((prev) => [
+                            ...(prev || []),
+                            amenity,
+                          ]);
                         } else {
                           setSelectedAmenities((prev) =>
-                            prev.filter((a) => a !== amenity),
+                            (prev || []).filter((a) => a !== amenity),
                           );
                         }
                       }}

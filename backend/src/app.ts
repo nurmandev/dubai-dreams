@@ -63,6 +63,13 @@ app.use((req: Request, res: Response) => {
 // Global Error Handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
+
+  if (err.name === "MulterError") {
+    return res.status(400).json({
+      message: `File upload error: ${err.message}`,
+    });
+  }
+
   res.status(err.status || 500).json({
     message: err.message || "Something went wrong!",
     error: process.env.NODE_ENV === "development" ? err : {},

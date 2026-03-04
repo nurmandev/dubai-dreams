@@ -68,7 +68,16 @@ const AddProperty = () => {
     floorsNo: "1",
     yearlyTaxRate: "0",
     videoUrl: "",
+    // Off-plan fields
+    unitTypes: "",
+    handoverYear: new Date().getFullYear().toString(),
+    totalFloors: "",
+    paymentPlanOnBooking: "",
+    paymentPlanDuringConstruction: "",
+    paymentPlanOnHandover: "",
   });
+
+  const isOffPlan = formData.listedIn === "Off-Plan";
 
   const handleFilesChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -125,7 +134,11 @@ const AddProperty = () => {
       if (technicalPdf) data.append("technicalPdf", technicalPdf);
 
       await api.post("/api/dashboard/properties", { data });
-      toast.success("New property listed successfully");
+      toast.success(
+        isOffPlan
+          ? "New project launched successfully"
+          : "New property listed successfully",
+      );
       navigate("/admin/properties");
     } catch (err: any) {
       console.error("Create error:", err);
@@ -148,10 +161,12 @@ const AddProperty = () => {
           </Link>
         </Button>
         <h1 className="font-display text-2xl md:text-4xl font-black text-foreground tracking-tighter">
-          List New Property
+          {isOffPlan ? "Launch Off-Plan Project" : "List New Property"}
         </h1>
         <p className="text-muted-foreground font-body text-sm">
-          Create a premium showcase listing for your portfolio.
+          {isOffPlan
+            ? "Create a comprehensive project showcase with payment plans and unit types."
+            : "Create a premium showcase listing for your portfolio."}
         </p>
       </div>
 
@@ -163,19 +178,23 @@ const AddProperty = () => {
               <div className="flex items-center gap-3 pb-4 border-b border-border">
                 <Building2 className="w-5 h-5 text-gold" />
                 <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
-                  General Content
+                  {isOffPlan ? "Project Overview" : "General Content"}
                 </h2>
               </div>
 
               <div className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                    Property Title*
+                    {isOffPlan ? "Project Name*" : "Property Title*"}
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Ultra Luxury Penthouse at 22 Karat"
+                    placeholder={
+                      isOffPlan
+                        ? "e.g. Radisson Blu Residences"
+                        : "e.g. Ultra Luxury Penthouse at 22 Karat"
+                    }
                     className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
                     value={formData.title}
                     onChange={(e) =>
@@ -185,12 +204,16 @@ const AddProperty = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                    Full Description*
+                    {isOffPlan ? "Project Description*" : "Full Description*"}
                   </label>
                   <textarea
                     required
                     rows={6}
-                    placeholder="Describe the architectural marvel and exclusive amenities..."
+                    placeholder={
+                      isOffPlan
+                        ? "Describe the off-plan project, available units, and vision..."
+                        : "Describe the architectural marvel and exclusive amenities..."
+                    }
                     className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
                     value={formData.description}
                     onChange={(e) =>
@@ -200,8 +223,10 @@ const AddProperty = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-gold" /> Specific
-                    Location / Street
+                    <MapPin className="w-3.5 h-3.5 text-gold" />{" "}
+                    {isOffPlan
+                      ? "Project Location / Address"
+                      : "Specific Location / Street"}
                   </label>
                   <input
                     type="text"
@@ -218,7 +243,7 @@ const AddProperty = () => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="space-y-2">
                     <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                      Location
+                      Area/Community
                     </label>
                     <input
                       type="text"
@@ -247,7 +272,7 @@ const AddProperty = () => {
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                      Area
+                      District
                     </label>
                     <input
                       type="text"
@@ -285,14 +310,16 @@ const AddProperty = () => {
               <div className="flex items-center gap-3 pb-4 border-b border-border">
                 <ImageIcon className="w-5 h-5 text-gold" />
                 <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
-                  Gallery & Assets
+                  {isOffPlan ? "Project Visuals" : "Gallery & Assets"}
                 </h2>
               </div>
 
               {/* Photos */}
               <div className="space-y-4">
                 <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                  Exclusive Gallery (Max 10)
+                  {isOffPlan
+                    ? "Project Renders (Max 10)"
+                    : "Exclusive Gallery (Max 10)"}
                 </label>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                   {imagePreviews.map((prev, idx) => (
@@ -329,7 +356,9 @@ const AddProperty = () => {
               {/* Floor Plans */}
               <div className="space-y-4 pt-6 border-t border-border">
                 <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                  Technical Floor Plans
+                  {isOffPlan
+                    ? "Typical Floor Plans & Layouts"
+                    : "Technical Floor Plans"}
                 </label>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                   {floorPlanPreviews.map((prev, idx) => (
@@ -366,8 +395,10 @@ const AddProperty = () => {
               {/* Official Brochure (PDF) */}
               <div className="space-y-4 pt-6 border-t border-border">
                 <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-gold" /> Official Brochure
-                  (PDF)
+                  <FileText className="w-4 h-4 text-gold" />{" "}
+                  {isOffPlan
+                    ? "Project Brochure & Material"
+                    : "Official Brochure (PDF)"}
                 </label>
                 <div className="flex items-center gap-4">
                   {technicalPdf ? (
@@ -416,64 +447,220 @@ const AddProperty = () => {
               <div className="flex items-center gap-3 pb-4 border-b border-border">
                 <Square className="w-5 h-5 text-gold" />
                 <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
-                  Dimensions & Specs
+                  {isOffPlan ? "Project Profile" : "Dimensions & Specs"}
                 </h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                    Beds
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
-                    value={formData.bedrooms}
-                    onChange={(e) =>
-                      setFormData({ ...formData, bedrooms: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                    Baths
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
-                    value={formData.bathrooms}
-                    onChange={(e) =>
-                      setFormData({ ...formData, bathrooms: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                    Kitchens
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
-                    value={formData.kitchens}
-                    onChange={(e) =>
-                      setFormData({ ...formData, kitchens: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                    SQFT
-                  </label>
-                  <input
-                    type="number"
-                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
-                    value={formData.area}
-                    onChange={(e) =>
-                      setFormData({ ...formData, area: e.target.value })
-                    }
-                  />
-                </div>
+                {isOffPlan ? (
+                  <>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        Bedrooms Range
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 1-3"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.bedrooms}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bedrooms: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        Bathrooms Range
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 1-3"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.bathrooms}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bathrooms: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        SQFT Range
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 815 - 2350"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.area}
+                        onChange={(e) =>
+                          setFormData({ ...formData, area: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        Handover Year
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 2026"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.handoverYear}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            handoverYear: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        Total Floors
+                      </label>
+                      <input
+                        type="number"
+                        placeholder="e.g. 24"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.totalFloors}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            totalFloors: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        Beds
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.bedrooms}
+                        onChange={(e) =>
+                          setFormData({ ...formData, bedrooms: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        Baths
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.bathrooms}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            bathrooms: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        Kitchens
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.kitchens}
+                        onChange={(e) =>
+                          setFormData({ ...formData, kitchens: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        SQFT
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.area}
+                        onChange={(e) =>
+                          setFormData({ ...formData, area: e.target.value })
+                        }
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
+
+            {isOffPlan && (
+              <div className="bg-background rounded-2xl p-6 md:p-8 shadow-sm border border-border space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-border">
+                  <DollarSign className="w-5 h-5 text-gold" />
+                  <h2 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
+                    Payment Plan (%)
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      On Booking
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 10"
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                      value={formData.paymentPlanOnBooking}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          paymentPlanOnBooking: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      During Construction
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 40"
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                      value={formData.paymentPlanDuringConstruction}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          paymentPlanDuringConstruction: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      On Handover
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 50"
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                      value={formData.paymentPlanOnHandover}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          paymentPlanOnHandover: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Sidebar Area */}
@@ -503,7 +690,26 @@ const AddProperty = () => {
 
                 <div className="space-y-2">
                   <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest text-gold">
-                    Offer Value (AED)*
+                    Project Category
+                  </label>
+                  <select
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold appearance-none"
+                    value={formData.propertyType}
+                    onChange={(e) =>
+                      setFormData({ ...formData, propertyType: e.target.value })
+                    }
+                  >
+                    <option value="apartment">Apartment</option>
+                    <option value="villa">Villa</option>
+                    <option value="townhouse">Townhouse</option>
+                    <option value="penthouse">Penthouse</option>
+                    <option value="commercial">Commercial</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest text-gold">
+                    {isOffPlan ? "Starting Price (AED)*" : "Offer Value (AED)*"}
                   </label>
                   <input
                     type="number"
@@ -544,7 +750,11 @@ const AddProperty = () => {
                   disabled={saving}
                 >
                   <Save className="w-5 h-5 mr-3" />
-                  {saving ? "Finalizing..." : "Publish Listing"}
+                  {saving
+                    ? "Finalizing..."
+                    : isOffPlan
+                      ? "Launch Project"
+                      : "Publish Listing"}
                 </Button>
                 <Button
                   variant="outline"

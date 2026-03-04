@@ -3,9 +3,9 @@ export interface Property {
   title: string;
   description?: string;
   price: number;
-  area: number;
-  bedrooms: number;
-  bathrooms: number;
+  area: number | string;
+  bedrooms: number | string;
+  bathrooms: number | string;
   type: string;
   category: "off-plan" | "secondary" | "rental";
   location: string;
@@ -26,6 +26,15 @@ export interface Property {
   technicalPdf?: string;
   floorPlans?: string[];
   featured?: boolean;
+  // Off-plan fields
+  unitTypes?: string;
+  handoverYear?: string;
+  totalFloors?: number;
+  paymentPlan?: {
+    onBooking?: number;
+    duringConstruction?: number;
+    onHandover?: number;
+  };
 }
 
 export const AMENITIES_LIST = [
@@ -139,8 +148,12 @@ export const sampleProperties: Property[] = [
 ];
 
 export const formatPrice = (price: number, category: string) => {
+  const formatted = `AED ${price.toLocaleString()}`;
   if (category === "rental") {
-    return `AED ${price.toLocaleString()} /yr`;
+    return `${formatted} /yr`;
   }
-  return `AED ${price.toLocaleString()}`;
+  if (category === "off-plan") {
+    return `Starting from ${formatted}`;
+  }
+  return formatted;
 };

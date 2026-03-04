@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Bed, Bath, Maximize } from "lucide-react";
+import { Bed, Bath, Maximize, Calendar } from "lucide-react";
 import { Property, formatPrice } from "@/data/properties";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -54,7 +54,7 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
 
         {/* Details */}
         <div className="p-5">
-          <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-emerald transition-colors line-clamp-1">
+          <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-gold transition-colors line-clamp-1">
             {property.title}
           </h3>
           <p className="text-muted-foreground text-sm font-body mt-1">
@@ -62,20 +62,40 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
           </p>
 
           <div className="flex items-center gap-5 mt-4 pt-4 border-t border-border">
-            <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
-              <Bed className="w-4 h-4 text-gold" />
-              {property.bedrooms === 0 ? "Studio" : property.bedrooms}
-            </span>
-            {Number(property.bathrooms) > 0 && (
-              <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
-                <Bath className="w-4 h-4 text-gold" />
-                {property.bathrooms}
-              </span>
+            {property.category === "off-plan" ? (
+              <>
+                <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+                  <Bed className="w-4 h-4 text-gold" />
+                  {property.unitTypes || "Various Units"}
+                </span>
+                {property.handoverYear && (
+                  <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+                    <Calendar className="w-4 h-4 text-gold" />
+                    {property.handoverYear}
+                  </span>
+                )}
+              </>
+            ) : (
+              <>
+                <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+                  <Bed className="w-4 h-4 text-gold" />
+                  {property.bedrooms === 0 ? "Studio" : property.bedrooms}
+                </span>
+                {Number(property.bathrooms) > 0 && (
+                  <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
+                    <Bath className="w-4 h-4 text-gold" />
+                    {property.bathrooms}
+                  </span>
+                )}
+              </>
             )}
-            {Number(property.area) > 0 && (
+            {property.area && (
               <span className="flex items-center gap-1.5 text-muted-foreground text-sm font-body">
                 <Maximize className="w-4 h-4 text-gold" />
-                {property.area.toLocaleString()} sq.ft
+                {typeof property.area === "number"
+                  ? property.area.toLocaleString()
+                  : property.area}{" "}
+                sq.ft
               </span>
             )}
           </div>

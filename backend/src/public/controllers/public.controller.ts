@@ -72,6 +72,11 @@ export class PublicController {
         country: prop.country,
         amenities: prop.amenities,
         type: prop.propertyType,
+        // Off-plan fields
+        unitTypes: prop.unitTypes,
+        handoverYear: prop.handoverYear,
+        totalFloors: prop.totalFloors,
+        paymentPlan: prop.paymentPlan,
       }));
 
       res.status(200).json({ properties: formattedProperties });
@@ -140,6 +145,11 @@ export class PublicController {
         floorPlans: prop.floorPlans?.map((img: string) =>
           PublicController.getFullUrl(img),
         ),
+        // Off-plan fields
+        unitTypes: prop.unitTypes,
+        handoverYear: prop.handoverYear,
+        totalFloors: prop.totalFloors,
+        paymentPlan: prop.paymentPlan,
       };
 
       res.status(200).json({ property: formatted });
