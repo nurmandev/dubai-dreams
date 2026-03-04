@@ -25,6 +25,9 @@ const Properties = () => {
   const [bedrooms, setBedrooms] = useState(searchParams.get("beds") || "all");
   const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
   const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
+  const [handoverYear, setHandoverYear] = useState(
+    searchParams.get("handoverYear") || "all",
+  );
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
@@ -34,6 +37,7 @@ const Properties = () => {
     setBedrooms(searchParams.get("beds") || "all");
     setMinPrice(searchParams.get("minPrice") || "");
     setMaxPrice(searchParams.get("maxPrice") || "");
+    setHandoverYear(searchParams.get("handoverYear") || "all");
   }, [searchParams]);
 
   useEffect(() => {
@@ -91,6 +95,12 @@ const Properties = () => {
       if (minPrice && p.price < Number(minPrice)) return false;
       if (maxPrice && p.price > Number(maxPrice)) return false;
       if (
+        category === "off-plan" &&
+        handoverYear !== "all" &&
+        p.handoverYear !== handoverYear
+      )
+        return false;
+      if (
         search &&
         !p.title.toLowerCase().includes(search.toLowerCase()) &&
         !p.location.toLowerCase().includes(search.toLowerCase()) &&
@@ -111,6 +121,7 @@ const Properties = () => {
     bedrooms,
     minPrice,
     maxPrice,
+    handoverYear,
   ]);
 
   const categories = [
@@ -127,6 +138,7 @@ const Properties = () => {
     setBedrooms("all");
     setMinPrice("");
     setMaxPrice("");
+    setHandoverYear("all");
   };
 
   return (
@@ -192,61 +204,185 @@ const Properties = () => {
               Filters
             </Button>
           </div>
-
-          {showFilters && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              className="flex flex-wrap gap-4 mt-4 pt-4 border-t border-border"
-            >
-              <select
-                value={propertyType}
-                onChange={(e) => setPropertyType(e.target.value)}
-                className="bg-muted text-foreground font-body text-sm rounded-lg px-4 py-2 outline-none border border-border"
-              >
-                <option value="all">All Types</option>
-                <option value="apartment">Apartment</option>
-                <option value="villa">Villa</option>
-                <option value="townhouse">Townhouse</option>
-                <option value="penthouse">Penthouse</option>
-              </select>
-
-              <select
-                value={bedrooms}
-                onChange={(e) => setBedrooms(e.target.value)}
-                className="bg-muted text-foreground font-body text-sm rounded-lg px-4 py-2 outline-none border border-border"
-              >
-                <option value="all">Any Bedrooms</option>
-                <option value="1">1 Bedroom</option>
-                <option value="2">2 Bedrooms</option>
-                <option value="3">3 Bedrooms</option>
-                <option value="4">4+ Bedrooms</option>
-              </select>
-
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  placeholder="Min AED"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                  className="bg-muted text-foreground font-body text-sm rounded-lg px-4 py-2 outline-none border border-border w-32"
-                />
-                <input
-                  type="number"
-                  placeholder="Max AED"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                  className="bg-muted text-foreground font-body text-sm rounded-lg px-4 py-2 outline-none border border-border w-32"
-                />
-              </div>
-
-              <Button variant="ghost" size="sm" onClick={resetFilters}>
-                <X className="w-4 h-4" /> Clear All
-              </Button>
-            </motion.div>
-          )}
         </div>
       </section>
+
+      {/* Filters Modal Popup */}
+      {showFilters && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowFilters(false)}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+          >
+            <div className="flex items-center justify-between p-6 border-b border-stone-100 bg-stone-50/50">
+              <div>
+                <h2 className="font-display text-2xl font-bold text-[#0D3430]">
+                  Filter Properties
+                </h2>
+                <p className="text-stone-500 text-sm mt-1">
+                  Refine your search parameters
+                </p>
+              </div>
+              <button
+                onClick={() => setShowFilters(false)}
+                className="p-2 hover:bg-white rounded-full transition-colors"
+              >
+                <X className="w-5 h-5 text-stone-500" />
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto space-y-8 flex-1">
+              {/* Main Categories Section inside popup */}
+              <div className="space-y-4">
+                <label className="text-sm font-bold tracking-widest uppercase text-stone-400">
+                  Main Category
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat.value}
+                      onClick={() => setCategory(cat.value)}
+                      className={`font-body text-sm px-4 py-3 rounded-xl border transition-all ${
+                        category === cat.value
+                          ? "bg-[#0D3430] border-[#0D3430] text-white shadow-md"
+                          : "bg-white border-stone-200 text-stone-600 hover:border-gold hover:text-[#0D3430]"
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sub Categories based on Main Category */}
+              <div className="space-y-4">
+                <label className="text-sm font-bold tracking-widest uppercase text-stone-400">
+                  {category === "off-plan"
+                    ? "Off-Plan Sub Category (Type)"
+                    : "Property Type"}
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { v: "all", l: "All Types" },
+                    { v: "apartment", l: "Apartment" },
+                    { v: "villa", l: "Villa" },
+                    { v: "townhouse", l: "Townhouse" },
+                    { v: "penthouse", l: "Penthouse" },
+                  ].map((type) => (
+                    <button
+                      key={type.v}
+                      onClick={() => setPropertyType(type.v)}
+                      className={`font-body text-sm px-4 py-2.5 rounded-lg border transition-all ${
+                        propertyType === type.v
+                          ? "bg-gold/10 border-gold text-[#0D3430] font-bold"
+                          : "bg-stone-50 border-transparent text-stone-600 hover:bg-stone-100"
+                      }`}
+                    >
+                      {type.l}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Exclusive Off-Plan Filters */}
+              {category === "off-plan" && (
+                <div className="space-y-4 bg-stone-50 p-5 rounded-xl border border-stone-100">
+                  <label className="text-sm font-bold tracking-widest uppercase text-gold">
+                    Off-Plan Specifics
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <span className="text-xs font-semibold text-stone-500">
+                        Handover Year
+                      </span>
+                      <select
+                        value={handoverYear}
+                        onChange={(e) => setHandoverYear(e.target.value)}
+                        className="w-full bg-white text-stone-800 font-body text-sm rounded-lg px-4 py-3 outline-none border border-stone-200 focus:border-gold transition-colors"
+                      >
+                        <option value="all">Any Year</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028+</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                {/* Bedrooms */}
+                <div className="space-y-4">
+                  <label className="text-sm font-bold tracking-widest uppercase text-stone-400">
+                    Bedrooms
+                  </label>
+                  <select
+                    value={bedrooms}
+                    onChange={(e) => setBedrooms(e.target.value)}
+                    className="w-full bg-stone-50 text-stone-800 font-body text-sm rounded-xl px-4 py-3 outline-none border border-stone-200 focus:border-gold transition-colors"
+                  >
+                    <option value="all">Any Bedrooms</option>
+                    <option value="1">1 Bedroom</option>
+                    <option value="2">2 Bedrooms</option>
+                    <option value="3">3 Bedrooms</option>
+                    <option value="4">4+ Bedrooms</option>
+                  </select>
+                </div>
+
+                {/* Price */}
+                <div className="space-y-4">
+                  <label className="text-sm font-bold tracking-widest uppercase text-stone-400">
+                    Price Range (AED)
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                      className="w-full bg-stone-50 text-stone-800 font-body text-sm rounded-xl px-4 py-3 outline-none border border-stone-200 focus:border-gold transition-colors placeholder:text-stone-400"
+                    />
+                    <span className="text-stone-400">-</span>
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                      className="w-full bg-stone-50 text-stone-800 font-body text-sm rounded-xl px-4 py-3 outline-none border border-stone-200 focus:border-gold transition-colors placeholder:text-stone-400"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-stone-100 bg-stone-50/50 flex items-center justify-between">
+              <button
+                onClick={resetFilters}
+                className="text-stone-500 font-medium text-sm hover:text-stone-900 transition-colors"
+              >
+                Clear all filters
+              </button>
+              <Button
+                className="bg-[#0D3430] hover:bg-[#06201e] text-white px-8 h-12 rounded-xl rounded-bl-xl font-bold tracking-widest text-xs uppercase shadow-xl"
+                onClick={() => setShowFilters(false)}
+              >
+                Apply Filters
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* Results */}
       <section className="py-12">
