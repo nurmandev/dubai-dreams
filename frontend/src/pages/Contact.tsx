@@ -177,8 +177,12 @@ const Contact = () => {
                       <p className="font-body text-sm font-medium text-foreground">
                         Office Address
                       </p>
-                      <p className="text-muted-foreground font-body text-sm">
-                        Business Bay, Dubai, UAE
+                      <p className="text-muted-foreground font-body text-sm leading-relaxed">
+                        Office No. 301-21, DhanGuard Business Center
+                        <br />
+                        Khalid Bin Waleed Road
+                        <br />
+                        Mankhool, Dubai
                       </p>
                     </div>
                   </div>
