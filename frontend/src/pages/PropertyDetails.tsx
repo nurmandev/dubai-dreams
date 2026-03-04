@@ -57,11 +57,9 @@ const PropertyDetails = () => {
     setSubmitting(true);
     try {
       await api.post("/api/public/inquiry", {
-        data: {
-          ...form,
-          propertyId: property.id,
-          propertyTitle: property.title,
-        },
+        ...form,
+        propertyId: property.id,
+        propertyTitle: property.title,
       });
       toast.success(
         "Enquiry securely transmitted. Our brokers will contact you shortly.",
@@ -119,6 +117,7 @@ const PropertyDetails = () => {
             totalFloors: p.totalFloors,
             paymentPlan: p.paymentPlan,
           };
+          console.log("DEBUG property data:", data.property);
           setProperty(mapped);
         }
       } catch (err) {
@@ -130,6 +129,15 @@ const PropertyDetails = () => {
 
     if (id) fetchProperty();
   }, [id]);
+
+  const getDownloadUrl = (url: string) => {
+    if (!url) return "";
+    if (url.includes("cloudinary.com")) {
+      // Inject fl_attachment to force download
+      return url.replace("/upload/", "/upload/fl_attachment/");
+    }
+    return url;
+  };
 
   const nextImage = () => {
     if (property?.images) {
@@ -625,57 +633,32 @@ const PropertyDetails = () => {
 
                 {/* Official Brochure (PDF) - Off-Plan View */}
                 {property.technicalPdf && (
-                  <div className="bg-white rounded-[1.5rem] p-8 md:p-12 shadow-sm border border-stone-100">
-                    <div className="flex items-center gap-4 mb-10">
+                  <div className="bg-white rounded-[1.5rem] p-8 md:p-12 shadow-sm border border-stone-100 flex flex-col items-center text-center">
+                    <div className="flex items-center gap-4 mb-6 justify-center">
                       <div className="w-12 h-[3px] bg-gold rounded-full" />
                       <h3 className="font-display text-3xl font-black text-stone-900 tracking-tight">
-                        Official Brochure
+                        Project Brochure
                       </h3>
+                      <div className="w-12 h-[3px] bg-gold rounded-full" />
                     </div>
-                    <div className="flex flex-col gap-6">
-                      {/* PDF Embed Preview */}
-                      <div
-                        className="w-full rounded-[1rem] overflow-hidden border border-stone-100 shadow-inner bg-stone-50"
-                        style={{ height: "600px" }}
-                      >
-                        <iframe
-                          src={`${property.technicalPdf.startsWith("http") ? property.technicalPdf : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`}#toolbar=1&navpanes=1&scrollbar=1`}
-                          width="100%"
-                          height="100%"
-                          title="Official Property Brochure"
-                          className="w-full h-full"
-                        />
-                      </div>
-                      {/* Download Button */}
-                      <div className="flex flex-col sm:flex-row items-center gap-4">
-                        <a
-                          href={
-                            property.technicalPdf.startsWith("http")
-                              ? property.technicalPdf
-                              : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`
-                          }
-                          target="_blank"
-                          rel="noreferrer"
-                          download
-                          className="flex items-center gap-3 bg-[#0D3430] hover:bg-[#06201e] text-white font-bold uppercase tracking-widest text-[11px] px-8 py-4 rounded-[0.75rem] transition-all shadow-lg hover:shadow-xl"
-                        >
-                          <FileText className="w-4 h-4" />
-                          Download Official Brochure (PDF)
-                        </a>
-                        <a
-                          href={
-                            property.technicalPdf.startsWith("http")
-                              ? property.technicalPdf
-                              : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`
-                          }
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex items-center gap-3 border border-stone-200 hover:border-[#0D3430] text-stone-600 hover:text-[#0D3430] font-bold uppercase tracking-widest text-[11px] px-8 py-4 rounded-[0.75rem] transition-all"
-                        >
-                          Open in New Tab
-                        </a>
-                      </div>
-                    </div>
+                    <p className="text-stone-500 font-body text-sm mb-8 max-w-lg">
+                      Download the official project brochure to view full floor
+                      plans, payment details, and technical specifications.
+                    </p>
+                    <a
+                      href={getDownloadUrl(
+                        property.technicalPdf.startsWith("http")
+                          ? property.technicalPdf
+                          : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`,
+                      )}
+                      target="_blank"
+                      rel="noreferrer"
+                      download
+                      className="flex items-center gap-4 bg-[#0D3430] hover:bg-[#06201e] text-white font-bold uppercase tracking-[0.2em] text-[12px] px-12 py-5 rounded-full transition-all shadow-2xl hover:shadow-[0_20px_40px_-15px_rgba(13,52,48,0.4)] group"
+                    >
+                      <FileText className="w-5 h-5 text-gold group-hover:scale-110 transition-transform" />
+                      Download Official Brochure (PDF)
+                    </a>
                   </div>
                 )}
 
@@ -1306,66 +1289,37 @@ const PropertyDetails = () => {
 
               {/* Official Brochure (PDF) - Regular Property View */}
               {property.technicalPdf && (
-                <div className="bg-background/80 backdrop-blur-2xl rounded-3xl shadow-xl p-8 md:p-12 border border-white/10 mt-8">
-                  <h2 className="font-display text-2xl font-black text-foreground mb-8 flex items-center gap-3 uppercase tracking-tighter">
-                    <FileText className="w-6 h-6 text-gold" />
-                    Official Brochure
-                  </h2>
-                  {/* PDF Embed Preview */}
-                  <div
-                    className="w-full rounded-2xl overflow-hidden border border-border bg-muted/20 mb-6"
-                    style={{ height: "600px" }}
-                  >
-                    <iframe
-                      src={`${property.technicalPdf.startsWith("http") ? property.technicalPdf : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`}#toolbar=1&navpanes=1`}
-                      width="100%"
-                      height="100%"
-                      title="Official Property Brochure"
-                      className="w-full h-full"
-                    />
+                <div className="bg-background/80 backdrop-blur-2xl rounded-3xl shadow-xl p-8 md:p-12 border border-white/10 mt-8 flex flex-col items-center text-center">
+                  <div className="flex items-center gap-4 mb-6 justify-center">
+                    <div className="w-8 h-1 bg-gold rounded-full" />
+                    <h2 className="font-display text-2xl font-black text-foreground uppercase tracking-tighter">
+                      Official Brochure
+                    </h2>
+                    <div className="w-8 h-1 bg-gold rounded-full" />
                   </div>
-                  <p className="text-muted-foreground text-xs italic mb-6 text-center">
-                    Official property documentation and technical specifications
-                    available below.
+                  <p className="text-muted-foreground font-body text-sm mb-8 max-w-lg">
+                    Access the complete technical documentation and
+                    specifications for this property.
                   </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Button
-                      variant="gold"
-                      className="rounded-full px-12 py-6 font-bold uppercase tracking-widest text-[10px]"
-                      asChild
+                  <Button
+                    variant="gold"
+                    className="rounded-full px-16 py-8 font-bold uppercase tracking-[0.2em] text-[11px] shadow-2xl hover:shadow-gold/20 group"
+                    asChild
+                  >
+                    <a
+                      href={getDownloadUrl(
+                        property.technicalPdf.startsWith("http")
+                          ? property.technicalPdf
+                          : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`,
+                      )}
+                      target="_blank"
+                      rel="noreferrer"
+                      download
                     >
-                      <a
-                        href={
-                          property.technicalPdf.startsWith("http")
-                            ? property.technicalPdf
-                            : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`
-                        }
-                        target="_blank"
-                        rel="noreferrer"
-                        download
-                      >
-                        <FileText className="w-4 h-4 mr-2" />
-                        Download Brochure (PDF)
-                      </a>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="rounded-full px-12 py-6 font-bold uppercase tracking-widest text-[10px]"
-                      asChild
-                    >
-                      <a
-                        href={
-                          property.technicalPdf.startsWith("http")
-                            ? property.technicalPdf
-                            : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`
-                        }
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Open in New Tab
-                      </a>
-                    </Button>
-                  </div>
+                      <FileText className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                      Download Brochure (PDF)
+                    </a>
+                  </Button>
                 </div>
               )}
             </div>
