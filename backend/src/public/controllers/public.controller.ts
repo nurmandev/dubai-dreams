@@ -72,6 +72,7 @@ export class PublicController {
         country: prop.country,
         amenities: prop.amenities,
         type: prop.propertyType,
+        technicalPdf: PublicController.getFullUrl(prop.technicalPdf || ""),
         // Off-plan fields
         unitTypes: prop.unitTypes,
         handoverYear: prop.handoverYear,
@@ -142,6 +143,7 @@ export class PublicController {
         listedIn: prop.listedIn,
         owner: prop.ownerId,
         videoUrl: PublicController.getFullUrl(prop.videoUrl || ""),
+        technicalPdf: PublicController.getFullUrl(prop.technicalPdf || ""),
         floorPlans: prop.floorPlans?.map((img: string) =>
           PublicController.getFullUrl(img),
         ),
