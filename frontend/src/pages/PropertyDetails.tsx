@@ -333,7 +333,7 @@ const PropertyDetails = () => {
                 <h2 className="font-display text-[2.5rem] font-bold text-[#0D3430] tracking-tight">
                   Project Overview
                 </h2>
-                <p className="text-stone-600 font-body leading-relaxed text-[15px] max-w-5xl whitespace-pre-line">
+                <p className="text-stone-600 font-body leading-relaxed text-[15px] w-full max-w-none text-justify whitespace-pre-line">
                   {property.description}
                 </p>
 
