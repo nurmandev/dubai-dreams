@@ -307,7 +307,7 @@ export class PropertyController {
           ? updateData.amenities
           : typeof updateData.amenities === "string"
             ? updateData.amenities.includes(",")
-              ? updateData.amenities.split(",").map((a) => a.trim())
+              ? updateData.amenities.split(",").map((a: string) => a.trim())
               : [updateData.amenities]
             : [];
       }
