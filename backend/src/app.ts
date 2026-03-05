@@ -23,7 +23,6 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
  
   "http://localhost:8080",
-  "https://omnis-real-estate.vercel.app",
   "https://dubai-dreams.vercel.app",
 ]
   .filter(Boolean)

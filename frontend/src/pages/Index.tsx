@@ -16,13 +16,15 @@ import {
   Quote,
   Bed,
   DollarSign,
+  ChevronLeft,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import PropertyCard from "@/components/PropertyCard";
 import Layout from "@/components/Layout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { api } from "@/lib/api";
 import { Property as PropertyType } from "@/data/properties";
+import useEmblaCarousel from "embla-carousel-react";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -106,6 +108,28 @@ const Index = () => {
     };
     fetchStats();
   }, []);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    slidesToScroll: 1,
+  });
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const intervalId = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3000); // Scroll every 4 seconds for a professional pace
+    return () => clearInterval(intervalId);
+  }, [emblaApi]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
 
   const featuredProperties = properties.slice(0, 6); // Just show the first 6 for featured
 
@@ -372,77 +396,138 @@ const Index = () => {
       </section>
 
       {/* Partners & Developers */}
-      <section className="py-16 bg-primary border-y border-white/5 overflow-hidden">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Registered Partners */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-gold font-body text-[10px] uppercase tracking-[0.3em] mb-4">
-                Regulatory Compliance
-              </p>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-8">
-                Registered Partners
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { name: "RERA", label: "Real Estate Regulatory Agency" },
-                  { name: "DLD", label: "Dubai Land Department" },
-                  { name: "DIB", label: "Dubai Islamic Bank" },
-                  { name: "ADCB", label: "Abu Dhabi Commercial Bank" },
-                ].map((partner) => (
-                  <div
-                    key={partner.name}
-                    className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-colors group"
-                  >
-                    <div className="text-gold font-display font-black text-xl mb-1 group-hover:scale-110 transition-transform">
-                      {partner.name}
-                    </div>
-                    <div className="text-white/40 font-body text-[10px] uppercase tracking-wider">
-                      {partner.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+      <section className="py-32 bg-primary relative overflow-hidden">
+        {/* Subtle background element */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
 
-            {/* Developers List */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-gold font-body text-[10px] uppercase tracking-[0.3em] mb-4">
-                Strategic Network
-              </p>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-8">
-                Key Developers
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-6">
-                {[
-                  { name: "Emaar", img: "/images/logos/emaar.png" },
-                  { name: "Damac", img: "/images/logos/damac.png" },
-                  { name: "Sobha", img: "/images/logos/sobha.png" },
-                  { name: "Nakheel", img: "/images/logos/nakheel.png" },
-                ].map((dev) => (
-                  <div
-                    key={dev.name}
-                    className="bg-white rounded-2xl p-6 flex items-center justify-center h-24 shadow-luxury hover:scale-105 transition-transform"
-                  >
-                    <img
-                      src={dev.img}
-                      alt={dev.name}
-                      className="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500"
-                    />
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            {/* Header section with editorial feel */}
+            <div className="text-center mb-24">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="space-y-6"
+              >
+                <span className="inline-block text-gold font-body text-xs uppercase tracking-[0.5em] font-bold">
+                  Institutional Trust
+                </span>
+                <h2 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight">
+                  Regulatory{" "}
+                  <span className="italic text-white/90">Compliance</span>
+                </h2>
+                <div className="w-20 h-[1px] bg-gold mx-auto mt-8" />
+                <p className="text-white/40 font-body text-lg max-w-2xl mx-auto leading-relaxed mt-8">
+                  Licensed and regulated by the world's leading real estate
+                  authorities, ensuring your investments are protected by the
+                  highest legal standards.
+                </p>
+              </motion.div>
+            </div>
+
+            {/* Partners Grid - Minimalist Editorial Style */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-px bg-white/5 border border-white/5 mb-32 max-w-4xl mx-auto">
+              {[
+                {
+                  name: "RERA",
+                  label: "Real Estate Regulatory Agency",
+                  sub: "Licensing & Regulation",
+                },
+                {
+                  name: "DLD",
+                  label: "Dubai Land Department",
+                  sub: "Legal Registration",
+                },
+              ].map((partner, i) => (
+                <motion.div
+                  key={partner.name}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-primary p-16 flex flex-col items-center text-center group hover:bg-white/[0.02] transition-colors"
+                >
+                  <div className="text-gold font-display font-black text-5xl mb-6 tracking-tighter group-hover:scale-110 transition-transform duration-500">
+                    {partner.name}
                   </div>
-                ))}
+                  <div className="space-y-1">
+                    <p className="text-white font-display text-sm uppercase tracking-widest font-bold">
+                      {partner.label}
+                    </p>
+                    <p className="text-gold/40 font-body text-[10px] uppercase tracking-widest">
+                      {partner.sub}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Strategic Network Carousel */}
+            <div className="relative mt-24">
+              <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+                <div className="space-y-2">
+                  <span className="text-gold font-body text-[10px] uppercase tracking-[0.3em] font-bold">
+                    Strategic Network
+                  </span>
+                  <h3 className="font-display text-3xl md:text-5xl font-bold text-white leading-tight">
+                    Our Developer{" "}
+                    <span className="text-white/40 italic">Network</span>
+                  </h3>
+                </div>
+                <div className="flex gap-4">
+                  <Button
+                    variant="hero-outline"
+                    size="icon"
+                    onClick={scrollPrev}
+                    className="rounded-full w-14 h-14 border-white/10 hover:bg-gold hover:text-primary transition-all group"
+                  >
+                    <ChevronLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                  </Button>
+                  <Button
+                    variant="hero-outline"
+                    size="icon"
+                    onClick={scrollNext}
+                    className="rounded-full w-14 h-14 border-white/10 hover:bg-gold hover:text-primary transition-all group"
+                  >
+                    <ArrowRight className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                  </Button>
+                </div>
               </div>
-            </motion.div>
+
+              {/* Carousel container */}
+              <div className="relative">
+                {/* Visual fading masks */}
+                <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary via-primary/50 to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary via-primary/50 to-transparent z-10 pointer-events-none" />
+
+                <div
+                  className="overflow-hidden cursor-grab active:cursor-grabbing px-4"
+                  ref={emblaRef}
+                >
+                  <div className="flex gap-8 py-6">
+                    {[...Array(30)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="flex-[0_0_280px] min-w-0 bg-white rounded-2xl p-10 flex items-center justify-center h-48 shadow-luxury shrink-0 transition-all duration-500 hover:scale-[1.05] hover:shadow-gold/30 border border-white/10"
+                      >
+                        <img
+                          src={`/LOGOS/${i + 1}.png`}
+                          alt={`Developer ${i + 1}`}
+                          className="max-h-full max-w-full object-contain drop-shadow-sm"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Bottom border element */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/10 to-transparent" />
       </section>
 
       {/* Categories */}
