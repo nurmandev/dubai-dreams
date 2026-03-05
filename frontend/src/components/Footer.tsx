@@ -150,7 +150,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/privacy"
+                  to="/privacy-policy"
                   className="text-primary-foreground/60 hover:text-gold transition-colors text-sm font-body"
                 >
                   Privacy Policy
