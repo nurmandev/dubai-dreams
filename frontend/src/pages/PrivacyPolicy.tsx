@@ -8,42 +8,40 @@ const PrivacyPolicy = () => {
   const sections = [
     {
       icon: Eye,
-      title: "Information We Collect",
-      content: `We collect information that you provide directly to us, such as when you create an account, subscribe to our newsletter, or contact us about a property. This may include your name, email address, phone number, and any property preferences you share. We also automatically collect certain technical information when you browse our platform, including your IP address and browsing behavior through cookies and similar technologies.`,
+      title: "Data Minimization",
+      content: `We believe in protecting your digital footprint. Unlike many platforms, we do not collect broad 'user data'. We only collect the specific information you voluntarily provide to facilitate a real estate inquiry or service. This is limited to your contact details (name, email, phone) and your stated property preferences. We do not track your activity outside of our platform or build broad behavioral profiles.`,
     },
     {
       icon: Lock,
-      title: "How We Use Your Information",
-      content: `Your data is used to provide and enhance our real estate services. Specifically, we use it to:
-      • Facilitate property inquiries and viewings.
-      • Send personalized investment opportunities and market updates.
-      • Secure your account and prevent fraudulent activity.
-      • Analyze platform usage to improve our user interface and features.
-      • Comply with UAE legal and regulatory requirements for real estate transactions.`,
+      title: "Purpose-Driven Usage",
+      content: `Your information is used strictly for the specific purpose it was provided. We use it to:
+      • Connect you with the specific properties or developers you inquired about.
+      • Send requested luxury market insights and investment opportunities.
+      • Facilitate secure communication between you and our consultants.
+      We do not use your data for automated marketing profiles or sell it to third-party data brokers.`,
     },
     {
       icon: Shield,
-      title: "Data Protection & Security",
-      content: `We implement robust physical, technical, and administrative security measures designed to protect your personal information from unauthorized access, disclosure, or destruction. This includes end-to-end encryption for sensitive data and regular security audits of our infrastructure. However, please note that no method of transmission over the Internet is 100% secure.`,
+      title: "Focused Security",
+      content: `Because we collect so little data, your risk is inherently minimized. What we do hold is protected by modern encryption and strict access controls. Our team follows a 'need-to-know' protocol, ensuring your contact details are only visible to the professionals handled your specific inquiry.`,
     },
     {
       icon: Globe,
-      title: "Sharing Your Information",
-      content: `We do not sell your personal data. We may share your information with trusted partners only when necessary to fulfill your requests, such as:
-      • Registered Developers for off-plan project inquiries.
-      • Financial institutions for property financing applications.
-      • Legal advisors for transaction processing.
-      • Regulatory bodies like RERA or DLD when required by law.`,
+      title: "Selective Sharing",
+      content: `Sharing is restricted to the absolute essentials required to finalize a transaction or inquiry:
+      • The specific Developer of a project you've expressed interest in.
+      • Regulatory authorities (RERA/DLD) only when a formal transaction begins.
+      We do not share your data with 'partner networks' for unrelated advertising.`,
     },
     {
       icon: Scale,
-      title: "Your Rights & Choices",
-      content: `You have the right to access, correct, or delete your personal information at any time. You can also opt-out of marketing communications by clicking the 'unsubscribe' link in our emails or by contacting our support team. For EU residents, we comply with relevant GDPR provisions regarding data portability and the right to be forgotten.`,
+      title: "Your Privacy Rights",
+      content: `You have full control. You can request to view, update, or permanently delete your contact information from our records at any time. As we do not store secondary or 'hidden' metadata, a deletion request results in a complete removal of your presence from our active databases.`,
     },
     {
       icon: FileText,
-      title: "Updates to This Policy",
-      content: `We may update our Privacy Policy from time to time to reflect changes in our practices or the legal landscape. Any changes will be posted on this page with an updated 'Last Updated' date. We encourage you to review this policy periodically to stay informed about how we are protecting your privacy.`,
+      title: "Policy Updates",
+      content: `As we evolve, our commitment to collecting as little data as possible remains constant. Any refinements to our processes will be reflected here. We encourage you to check this page to see our continued dedication to your privacy.`,
     },
   ];
 
@@ -82,10 +80,11 @@ const PrivacyPolicy = () => {
               className="prose prose-lg max-w-none text-muted-foreground font-body"
             >
               <p className="text-lg leading-relaxed mb-12">
-                At Omnis Properties, your privacy is a cornerstone of our
-                service. This Privacy Policy explains how we collect, use, and
-                safeguard your personal information as you interact with our
-                platform and professionals across Dubai's real estate market.
+                At Omnis Properties, we operate on a principle of transparency
+                and minimalist data collection. This Privacy Policy outlines our
+                commitment to your privacy, explaining why we only collect the
+                absolute essentials necessary to connect you with Dubai's most
+                exclusive real estate opportunities.
               </p>
 
               <div className="grid gap-12">

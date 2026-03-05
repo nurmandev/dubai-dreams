@@ -158,7 +158,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/terms"
+                  to="/terms-conditions"
                   className="text-primary-foreground/60 hover:text-gold transition-colors text-sm font-body"
                 >
                   Terms & Conditions
