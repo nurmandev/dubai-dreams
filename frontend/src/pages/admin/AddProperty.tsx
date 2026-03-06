@@ -133,7 +133,7 @@ const AddProperty = () => {
       floorPlans.forEach((file) => data.append("floorPlans", file));
       if (technicalPdf) data.append("technicalPdf", technicalPdf);
 
-      await api.post("/api/dashboard/properties", data);
+      await api.post("/api/dashboard/properties", { data });
       toast.success(
         isOffPlan
           ? "New project launched successfully"
