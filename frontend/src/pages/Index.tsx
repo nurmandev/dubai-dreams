@@ -131,6 +131,28 @@ const Index = () => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
+  const [testimonialRef, testimonialApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    slidesToScroll: 1,
+  });
+
+  useEffect(() => {
+    if (!testimonialApi) return;
+    const intervalId = setInterval(() => {
+      testimonialApi.scrollNext();
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, [testimonialApi]);
+
+  const scrollTestimonialPrev = useCallback(() => {
+    if (testimonialApi) testimonialApi.scrollPrev();
+  }, [testimonialApi]);
+
+  const scrollTestimonialNext = useCallback(() => {
+    if (testimonialApi) testimonialApi.scrollNext();
+  }, [testimonialApi]);
+
   const featuredProperties = properties.slice(0, 6); // Just show the first 6 for featured
 
   return (
@@ -787,78 +809,146 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 lg:py-28 bg-card/50">
+      <section className="py-32 bg-primary relative overflow-hidden">
+        {/* Subtle background element */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-4">
-                Client Success
-              </p>
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-8 leading-tight">
-                What Our Elite <br />
-                Clients Say
-              </h2>
-              <div className="flex gap-4">
-                <div className="p-4 bg-primary rounded-xl border border-white/5">
-                  <div className="text-2xl font-display font-bold text-white mb-1">
-                    98%
-                  </div>
-                  <div className="text-gold/60 text-[10px] uppercase font-black">
-                    Satisfaction
-                  </div>
-                </div>
-                <div className="p-4 bg-primary rounded-xl border border-white/5">
-                  <div className="text-2xl font-display font-bold text-white mb-1">
-                    5.0
-                  </div>
-                  <div className="text-gold/60 text-[10px] uppercase font-black">
-                    Average Rating
-                  </div>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-24">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="space-y-6"
+              >
+                <span className="inline-block text-gold font-body text-xs uppercase tracking-[0.5em] font-bold">
+                  Client Success
+                </span>
+                <h2 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight">
+                  What Our Elite <br />
+                  <span className="italic text-white/90">Clients Say</span>
+                </h2>
+                <div className="w-20 h-[1px] bg-gold mx-auto mt-8" />
+              </motion.div>
+            </div>
+
+            <div className="relative">
+              {/* Navigation Buttons */}
+              <div className="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-12 z-10 hidden sm:block">
+                <Button
+                  variant="hero-outline"
+                  size="icon"
+                  onClick={scrollTestimonialPrev}
+                  className="rounded-full w-12 h-12 border-white/10 bg-primary hover:bg-gold hover:text-primary transition-all group shadow-xl"
+                >
+                  <ChevronLeft className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                </Button>
+              </div>
+              <div className="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-12 z-10 hidden sm:block">
+                <Button
+                  variant="hero-outline"
+                  size="icon"
+                  onClick={scrollTestimonialNext}
+                  className="rounded-full w-12 h-12 border-white/10 bg-primary hover:bg-gold hover:text-primary transition-all group shadow-xl"
+                >
+                  <ArrowRight className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                </Button>
+              </div>
+
+              {/* Slider Container */}
+              <div
+                className="overflow-hidden cursor-grab active:cursor-grabbing px-2"
+                ref={testimonialRef}
+              >
+                <div className="flex gap-4 md:gap-8 min-h-[350px]">
+                  {[
+                    {
+                      quote:
+                        "OMNIS Properties provided excellent guidance throughout my property investment in Dubai. The team handled everything from project selection to documentation, making the entire process smooth and transparent.",
+                      author: "Rahul Sharma",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "A very professional and reliable team. They explained every step clearly and helped me find the right property that matched my investment goals. I truly appreciate their end-to-end support.",
+                      author: "Priya Nair",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "My experience with OMNIS Properties was outstanding. From the initial consultation to final booking, the team ensured everything was handled efficiently and professionally.",
+                      author: "Amit Patel",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "The team at OMNIS Properties made the entire property buying process simple and stress-free. Their knowledge of the Dubai market and honest advice made a big difference.",
+                      author: "Sneha Reddy",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "I was impressed by the transparency and professionalism of OMNIS Properties. They provided detailed insights into the projects and helped me make a confident investment decision.",
+                      author: "Vikram Singh",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "OMNIS Properties provided great support throughout the investment process. Their team was very responsive and helped me understand the Dubai real estate market clearly before making my decision.",
+                      author: "Ahmed Khan",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "A very smooth experience from start to finish. The team guided me through every step and made the entire property purchase process simple and well organized.",
+                      author: "Usman Ali",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "OMNIS Properties delivered a very smooth and well-organized property investment experience. Their market knowledge and clear communication made the process extremely comfortable.",
+                      author: "Michael Thompson",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "The team was very supportive from start to finish. They provided valuable insights about the Dubai real estate market and helped me choose the right investment opportunity.",
+                      author: "Sarah Williams",
+                      role: "Investor",
+                    },
+                    {
+                      quote:
+                        "I appreciated the professionalism and structured approach of OMNIS Properties. Their team handled the entire process efficiently and ensured every detail was taken care of.",
+                      author: "Jhonson Anderson",
+                      role: "Investor",
+                    },
+                  ].map((t) => (
+                    <div
+                      key={t.author}
+                      className="flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.333%] h-auto flex"
+                    >
+                      <div className="bg-white/5 border border-white/10 p-8 flex flex-col justify-between group hover:bg-white/[0.08] transition-colors w-full h-full">
+                        <div>
+                          <Quote className="w-10 h-10 text-gold mb-8 opacity-50 group-hover:opacity-100 transition-opacity" />
+                          <p className="text-white/80 font-body text-base italic leading-relaxed mb-8">
+                            "{t.quote}"
+                          </p>
+                        </div>
+                        <div>
+                          <div className="w-10 h-[1px] bg-gold/30 mb-6 group-hover:bg-gold transition-colors" />
+                          <div className="font-display text-xl font-bold text-white mb-1">
+                            {t.author}
+                          </div>
+                          <div className="text-gold/60 text-[10px] uppercase font-black tracking-[0.2em]">
+                            {t.role}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </motion.div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  quote:
-                    "Omnis Properties transformed our investment strategy in Dubai. Their off-market access is truly unrivaled.",
-                  author: "Alexander Hartmann",
-                  role: "Portfolio Manager",
-                },
-                {
-                  quote:
-                    "Professionalism at its finest. They found us our dream penthouse in Palm Jumeirah within a week.",
-                  author: "Sarah Al-Maktoum",
-                  role: "Investor",
-                },
-              ].map((t, i) => (
-                <motion.div
-                  key={t.author}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.2 }}
-                  className="bg-background p-8 rounded-xl border border-border shadow-luxury relative"
-                >
-                  <Quote className="absolute top-6 right-8 w-10 h-10 text-gold/10" />
-                  <p className="text-foreground/80 font-body text-lg italic mb-6 leading-relaxed">
-                    "{t.quote}"
-                  </p>
-                  <div>
-                    <div className="font-display font-bold text-foreground">
-                      {t.author}
-                    </div>
-                    <div className="text-gold text-xs font-black uppercase tracking-widest">
-                      {t.role}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
             </div>
           </div>
         </div>
