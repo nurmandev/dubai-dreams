@@ -69,10 +69,10 @@ const About = () => {
         </motion.div>
       </section>
 
-      {/* Our Story - Editorial Layout */}
-      <section className="py-24 lg:py-32 bg-white">
+      {/* Our Story / Local Partner - Editorial Layout */}
+      <section className="py-24 lg:py-32 bg-white overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -88,11 +88,11 @@ const About = () => {
                 <div className="absolute inset-0 bg-primary/10" />
               </div>
               {/* Floating Stat Card */}
-              <div className="absolute -bottom-10 -right-10 bg-primary text-white p-8 rounded-2xl shadow-2xl border border-gold/20 max-w-[200px]">
-                <div className="text-gold font-display text-5xl font-bold mb-2">
+              <div className="absolute -bottom-6 right-2 sm:-right-6 md:-right-10 md:-bottom-10 bg-primary text-white p-6 md:p-8 rounded-2xl shadow-2xl border border-gold/20 max-w-[160px] md:max-w-[200px]">
+                <div className="text-gold font-display text-4xl md:text-5xl font-bold mb-2">
                   10+
                 </div>
-                <div className="text-white/70 font-body text-sm uppercase tracking-widest font-bold">
+                <div className="text-white/70 font-body text-[10px] md:text-sm uppercase tracking-widest font-bold">
                   Years of Excellence
                 </div>
               </div>
@@ -142,7 +142,7 @@ const About = () => {
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <div className="text-center mb-20">
             <span className="inline-block text-gold font-body text-xs uppercase tracking-[0.4em] font-bold mb-4">
-              Our Leadership
+              Our Leader
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
               The Visionaries Behind{" "}
@@ -151,7 +151,7 @@ const About = () => {
             <div className="w-16 h-[1px] bg-gold mx-auto mt-8" />
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 max-w-4xl mx-auto">
             {/* Team Members */}
             {[
               {
@@ -183,22 +183,6 @@ const About = () => {
                     className="w-full h-full object-cover object-top filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent opacity-80" />
-
-                  {/* Social Links on Hover */}
-                  <div className="absolute top-6 right-6 flex flex-col gap-3 opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
-                    <a
-                      href="#"
-                      className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-gold hover:text-primary transition-colors"
-                    >
-                      <Linkedin className="w-4 h-4" />
-                    </a>
-                    <a
-                      href="#"
-                      className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-gold hover:text-primary transition-colors"
-                    >
-                      <Mail className="w-4 h-4" />
-                    </a>
-                  </div>
 
                   <div className="absolute bottom-8 left-8 right-8">
                     <h3 className="font-display text-3xl font-bold text-white mb-2">
