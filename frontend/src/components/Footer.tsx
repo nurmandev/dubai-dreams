@@ -116,40 +116,61 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="w-4 h-4 text-gold shrink-0 mt-1" />
-                <div className="flex flex-col gap-1">
-                  <a
-                    href="https://wa.me/971588251088"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary-foreground/60 hover:text-gold text-sm font-body transition-colors flex items-center gap-1.5"
-                  >
-                    +971 58 825 1088{" "}
-                    <WhatsAppIcon className="w-4 h-4 text-green-500" />
-                  </a>
-                  <a
-                    href="tel:+971581530100"
-                    className="text-primary-foreground/60 hover:text-gold text-sm font-body transition-colors"
-                  >
-                    +971 58 153 0100 (UAE)
-                  </a>
-                  <a
-                    href="https://wa.me/917678651405"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary-foreground/60 hover:text-gold text-sm font-body transition-colors mt-1 flex items-center gap-1.5"
-                  >
-                    +91 76786 51405 (India{" "}
-                    <WhatsAppIcon className="w-4 h-4 text-green-500 inline" />)
-                  </a>
+                <div className="flex flex-col gap-2 mt-0.5">
+                  <div className="flex items-center gap-2 text-primary-foreground/60 font-body text-sm">
+                    <span>+971 58 825 1088</span>
+                    <a
+                      href="https://wa.me/971588251088"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-gold transition-colors"
+                    >
+                      <WhatsAppIcon className="w-4 h-4 text-green-500" />
+                    </a>
+                    <a
+                      href="tel:+971588251088"
+                      className="hover:text-gold transition-colors"
+                    >
+                      <Phone className="w-4 h-4" />
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2 text-primary-foreground/60 font-body text-sm">
+                    <span>+971 58 153 0100</span>
+                    <a
+                      href="https://wa.me/971581530100"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-gold transition-colors"
+                    >
+                      <WhatsAppIcon className="w-4 h-4 text-green-500" />
+                    </a>
+                    <a
+                      href="tel:+971581530100"
+                      className="hover:text-gold transition-colors"
+                    >
+                      <Phone className="w-4 h-4" />
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2 text-primary-foreground/60 font-body text-sm">
+                    <span>+91 76786 51405</span>
+                    <a
+                      href="https://wa.me/917678651405"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-gold transition-colors"
+                    >
+                      <WhatsAppIcon className="w-4 h-4 text-green-500" />
+                    </a>
+                  </div>
                 </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gold shrink-0" />
                 <a
-                  href="mailto:info@omnisproperties.ae"
+                  href="mailto:info@omnisprop.com"
                   className="text-primary-foreground/60 hover:text-gold text-sm font-body transition-colors"
                 >
-                  info@omnisproperties.ae
+                  info@omnisprop.com
                 </a>
               </li>
             </ul>

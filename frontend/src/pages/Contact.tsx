@@ -203,35 +203,58 @@ const Contact = () => {
                     </div>
                     <div>
                       <p className="font-body text-sm font-medium text-foreground flex items-center gap-2">
-                        Phone &{" "}
-                        <WhatsAppIcon className="w-4 h-4 text-green-500" />
+                        Phone & WhatsApp
                       </p>
-                      <div className="flex flex-col gap-1">
-                        <a
-                          href="https://wa.me/971588251088"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-muted-foreground hover:text-gold font-body text-sm transition-colors flex items-center gap-1.5"
-                        >
-                          +971 58 825 1088{" "}
-                          <WhatsAppIcon className="w-4 h-4 text-green-500" />
-                        </a>
-                        <a
-                          href="tel:+971581530100"
-                          className="text-muted-foreground hover:text-gold font-body text-sm transition-colors"
-                        >
-                          +971 58 153 0100 (UAE)
-                        </a>
-                        <a
-                          href="https://wa.me/917678651405"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-muted-foreground hover:text-gold font-body text-sm transition-colors mt-1 flex items-center gap-1.5"
-                        >
-                          +91 76786 51405 (India{" "}
-                          <WhatsAppIcon className="w-4 h-4 text-green-500 inline" />
-                          )
-                        </a>
+
+                      <div className="flex flex-col gap-2 mt-1">
+                        <div className="flex items-center gap-2 text-muted-foreground font-body text-sm">
+                          <span>+971 58 825 1088</span>
+
+                          <a
+                            href="https://wa.me/971588251088"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="hover:text-gold transition-colors"
+                          >
+                            <WhatsAppIcon className="w-4 h-4 text-green-500" />
+                          </a>
+                          <a
+                            href="tel:+971588251088"
+                            className="hover:text-gold transition-colors"
+                          >
+                            <Phone className="w-4 h-4" />
+                          </a>
+                        </div>
+                        <div className="flex items-center gap-2 text-muted-foreground font-body text-sm">
+                          <span>+971 58 153 0100</span>
+
+                          <a
+                            href="https://wa.me/971581530100"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="hover:text-gold transition-colors"
+                          >
+                            <WhatsAppIcon className="w-4 h-4 text-green-500" />
+                          </a>
+
+                          <a
+                            href="tel:+971581530100"
+                            className="hover:text-gold transition-colors"
+                          >
+                            <Phone className="w-4 h-4" />
+                          </a>
+                        </div>
+                        <div className="flex items-center gap-2 text-muted-foreground font-body text-sm">
+                          <span>+91 76786 51405</span>
+                          <a
+                            href="https://wa.me/917678651405"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="hover:text-gold transition-colors"
+                          >
+                            <WhatsAppIcon className="w-4 h-4 text-green-500" />
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -244,10 +267,10 @@ const Contact = () => {
                         Email
                       </p>
                       <a
-                        href="mailto:info@omnisproperties.ae"
+                        href="mailto:info@omnisprop.com"
                         className="text-muted-foreground hover:text-gold font-body text-sm transition-colors"
                       >
-                        info@omnisproperties.ae
+                        info@omnisprop.com
                       </a>
                     </div>
                   </div>
