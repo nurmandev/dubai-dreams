@@ -233,29 +233,6 @@ const AdminProfile = () => {
               </div>
             </form>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-background rounded-xl p-8 shadow-sm border border-border space-y-6"
-          >
-            <div className="flex items-center gap-3 pb-6 border-b border-border">
-              <Key className="w-5 h-5 text-gold" />
-              <h4 className="font-display font-bold text-lg text-foreground uppercase tracking-widest">
-                Security & Access
-              </h4>
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-4">
-              <Button variant="hero-outline" className="flex-1">
-                Update Password
-              </Button>
-              <Button variant="hero-outline" className="flex-1">
-                Manage 2FA Sessions
-              </Button>
-            </div>
-          </motion.div>
         </div>
       </div>
     </AdminLayout>

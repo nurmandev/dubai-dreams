@@ -13,6 +13,16 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Property {
   id: string;
@@ -29,6 +39,7 @@ const ManageProperties = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [propertyToDelete, setPropertyToDelete] = useState<string | null>(null);
 
   const fetchProperties = async () => {
     try {
@@ -50,15 +61,17 @@ const ManageProperties = () => {
     fetchProperties();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this property?")) return;
+  const confirmDelete = async () => {
+    if (!propertyToDelete) return;
 
     try {
-      await api.delete(`/api/dashboard/properties/${id}`);
-      setProperties(properties.filter((p) => p.id !== id));
+      await api.delete(`/api/dashboard/properties/${propertyToDelete}`);
+      setProperties(properties.filter((p) => p.id !== propertyToDelete));
       toast.success("Property deleted successfully");
     } catch (err) {
       toast.error("Failed to delete property");
+    } finally {
+      setPropertyToDelete(null);
     }
   };
 
@@ -194,7 +207,7 @@ const ManageProperties = () => {
                           variant="ghost"
                           size="icon"
                           className="h-9 w-9 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                          onClick={() => handleDelete(p.id)}
+                          onClick={() => setPropertyToDelete(p.id)}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -244,7 +257,7 @@ const ManageProperties = () => {
                       variant="outline"
                       size="icon"
                       className="h-8 w-8 border-border text-destructive hover:bg-destructive/5"
-                      onClick={() => handleDelete(p.id)}
+                      onClick={() => setPropertyToDelete(p.id)}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </Button>
@@ -288,6 +301,38 @@ const ManageProperties = () => {
           )}
         </div>
       </div>
+
+      <AlertDialog
+        open={!!propertyToDelete}
+        onOpenChange={(open) => !open && setPropertyToDelete(null)}
+      >
+        <AlertDialogContent className="font-body max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-display font-bold text-xl text-foreground">
+              Delete Property
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground mt-2">
+              Are you absolutely sure you want to delete this property? This
+              action cannot be undone and will permanently remove this property
+              from your portfolio.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-6 gap-3 flex-col sm:flex-row">
+            <AlertDialogCancel className="font-bold uppercase tracking-wider text-[11px] rounded-full px-6 flex-1 sm:flex-none">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground font-bold uppercase tracking-wider text-[11px] rounded-full px-6 flex-1 sm:flex-none border-none"
+              onClick={(e) => {
+                e.preventDefault();
+                confirmDelete();
+              }}
+            >
+              Confirm Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 };

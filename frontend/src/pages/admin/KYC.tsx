@@ -39,6 +39,9 @@ const KYCManagement = () => {
   const [submissions, setSubmissions] = useState<KYCSubmission[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const fetchSubmissions = async () => {
     try {
@@ -315,12 +318,26 @@ const KYCManagement = () => {
     fetchSubmissions();
   }, []);
 
-  const filteredSubmissions = submissions.filter(
-    (s) =>
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter]);
+
+  const filteredSubmissions = submissions.filter((s) => {
+    const matchesSearch =
       s.fullName.toLowerCase().includes(search.toLowerCase()) ||
       s.idNumber.toLowerCase().includes(search.toLowerCase()) ||
       (s.userId?.email &&
-        s.userId.email.toLowerCase().includes(search.toLowerCase())),
+        s.userId.email.toLowerCase().includes(search.toLowerCase()));
+
+    const matchesStatus = statusFilter === "all" || s.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const totalPages = Math.ceil(filteredSubmissions.length / itemsPerPage);
+  const paginatedSubmissions = filteredSubmissions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
   );
 
   return (
@@ -331,32 +348,60 @@ const KYCManagement = () => {
             KYC Compliance
           </h1>
           <p className="text-muted-foreground font-body text-sm">
-            Review client identification and regulatory submissions.
+            Review client identification and regulatory submissions securely.
           </p>
         </div>
         {!loading && (
-          <div className="px-4 py-2 bg-gold/5 rounded-2xl border border-gold/20 flex flex-col items-center sm:items-end">
-            <span className="text-[10px] uppercase font-black tracking-widest text-gold/60">
-              Pending Appraisals
+          <div className="px-5 py-3 bg-gold/5 rounded-2xl border border-gold/20 flex flex-col items-center sm:items-end shadow-inner">
+            <span className="text-[10px] uppercase font-black tracking-[0.2em] text-[#0D3430] mb-1">
+              Active Queue
             </span>
-            <span className="text-lg font-display font-bold text-gold">
-              {filteredSubmissions.filter((s) => s.status === "pending").length}{" "}
-              Queue
-            </span>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-display font-black text-gold leading-none">
+                {
+                  filteredSubmissions.filter((s) => s.status === "pending")
+                    .length
+                }
+              </span>
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                Pending Appraisals
+              </span>
+            </div>
           </div>
         )}
       </div>
 
-      <div className="mb-8 p-3 md:p-4 bg-background rounded-2xl border border-border shadow-sm flex items-center">
-        <div className="relative w-full">
-          <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search by name, email, or ID number..."
-            className="w-full pl-11 pr-4 py-3 rounded-xl bg-muted/20 border-border font-body text-sm outline-none focus:ring-1 ring-gold/30 transition-all"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+      <div className="mb-8 flex flex-col sm:flex-row gap-4">
+        <div className="p-3 md:p-4 bg-background rounded-2xl border border-border shadow-sm flex items-center flex-1">
+          <div className="relative w-full">
+            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search by name, email, or ID number..."
+              className="w-full pl-11 pr-4 py-3 rounded-xl bg-muted/20 border-border font-body text-sm outline-none focus:ring-1 ring-gold/30 transition-all"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="p-3 md:p-4 bg-background rounded-2xl border border-border shadow-sm flex items-center shrink-0">
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="w-full sm:w-48 pl-4 pr-8 py-3 rounded-xl bg-muted/20 border-border font-body text-sm outline-none focus:ring-1 ring-gold/30 transition-all appearance-none cursor-pointer"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 1rem center",
+              backgroundSize: "1.2em",
+            }}
+          >
+            <option value="all">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
         </div>
       </div>
 
@@ -373,7 +418,7 @@ const KYCManagement = () => {
             </p>
           </div>
         ) : (
-          filteredSubmissions.map((sub, i) => (
+          paginatedSubmissions.map((sub, i) => (
             <motion.div
               key={sub._id}
               initial={{ opacity: 0, y: 20 }}
@@ -381,60 +426,86 @@ const KYCManagement = () => {
               transition={{ delay: i * 0.05 }}
               className="bg-background rounded-2xl border border-border shadow-sm p-5 md:p-6 hover:shadow-md transition-shadow"
             >
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="flex flex-col xl:flex-row justify-between gap-8">
                 {/* Information Section */}
-                <div className="flex items-start gap-4 flex-1">
-                  <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary shrink-0 border border-primary/10">
-                    <FileText className="w-6 h-6" />
+                <div className="flex flex-col sm:flex-row items-start gap-6 flex-1">
+                  <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center text-gold shrink-0 border border-gold/20 shadow-inner">
+                    <User className="w-8 h-8" />
                   </div>
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <h3 className="font-display font-bold text-lg">
+                  <div className="flex-1 w-full">
+                    <div className="flex flex-wrap items-center gap-3 mb-6 pb-4 border-b border-border/50">
+                      <h3 className="font-display font-black text-2xl text-foreground">
                         {sub.fullName}
                       </h3>
                       {sub.status === "pending" && (
-                        <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20">
+                        <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-amber-50 text-amber-600 border border-amber-200">
                           <Clock className="w-3 h-3" /> Pending Review
                         </span>
                       )}
                       {sub.status === "approved" && (
-                        <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                        <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
                           <CheckCircle2 className="w-3 h-3" /> Approved
                         </span>
                       )}
                       {sub.status === "rejected" && (
-                        <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-red-500/10 text-red-600 border border-red-500/20">
+                        <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-200">
                           <XCircle className="w-3 h-3" /> Rejected
                         </span>
                       )}
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-auto bg-muted/40 px-3 py-1 rounded-md">
+                        REF: {sub._id.slice(-8).toUpperCase()}
+                      </span>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm text-muted-foreground font-body">
-                      <span>
-                        <strong>Email:</strong>{" "}
-                        {sub.email || sub.userId?.email || "N/A"}
-                      </span>
-                      <span>
-                        <strong>Phone:</strong> {sub.phone || "N/A"}
-                      </span>
-                      <span>
-                        <strong>Nationality:</strong> {sub.nationality}
-                      </span>
-                      <span className="uppercase">
-                        <strong>{sub.idType.replace("_", " ")}:</strong>{" "}
-                        {sub.idNumber}
-                      </span>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1.5">
+                          Email Address
+                        </span>
+                        <span className="font-body text-sm font-medium text-foreground">
+                          {sub.email || sub.userId?.email || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1.5">
+                          Contact Number
+                        </span>
+                        <span className="font-body text-sm font-medium text-foreground">
+                          {sub.phone || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1.5">
+                          Nationality
+                        </span>
+                        <span className="font-body text-sm font-medium text-foreground">
+                          {sub.nationality}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1.5">
+                          {sub.idType.replace("_", " ")}
+                        </span>
+                        <span className="font-body text-sm font-medium text-foreground uppercase tracking-wider">
+                          {sub.idNumber}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Actions Section */}
-                <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto mt-4 lg:mt-0 pt-4 lg:pt-0 border-t border-border lg:border-t-0">
+                <div className="flex flex-col sm:flex-row xl:flex-col items-center sm:items-stretch xl:justify-center gap-3 w-full xl:w-48 mt-6 xl:mt-0 pt-6 xl:pt-0 border-t border-border xl:border-t-0 xl:border-l xl:pl-8">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#0D3430] w-full text-center sm:text-left xl:text-center mb-1">
+                    Compliance Actions
+                  </span>
+
                   {/* Document Downloads */}
-                  <div className="flex items-center gap-2 mr-auto lg:mr-4 border-r border-border pr-4">
+                  <div className="flex items-center justify-center gap-2 w-full">
                     {sub.documentUrls?.passportCopy && (
                       <button
                         title="Download Passport"
-                        className="p-2 bg-muted/20 hover:bg-gold hover:text-white rounded-lg transition-colors border border-border"
+                        className="flex-1 flex items-center justify-center gap-2 p-2.5 bg-muted/30 hover:bg-gold hover:text-white rounded-xl transition-colors border border-border"
                         onClick={() =>
                           handleDocumentDownload(
                             sub.documentUrls.passportCopy!,
@@ -443,12 +514,15 @@ const KYCManagement = () => {
                         }
                       >
                         <Download className="w-4 h-4" />
+                        <span className="text-[10px] font-black uppercase tracking-wider">
+                          Pass
+                        </span>
                       </button>
                     )}
                     {sub.documentUrls?.emiratesIdCopy && (
                       <button
                         title="Download Emirates ID"
-                        className="p-2 bg-muted/20 hover:bg-gold hover:text-white rounded-lg transition-colors border border-border"
+                        className="flex-1 flex items-center justify-center gap-2 p-2.5 bg-muted/30 hover:bg-gold hover:text-white rounded-xl transition-colors border border-border"
                         onClick={() =>
                           handleDocumentDownload(
                             sub.documentUrls.emiratesIdCopy!,
@@ -457,22 +531,25 @@ const KYCManagement = () => {
                         }
                       >
                         <Download className="w-4 h-4" />
+                        <span className="text-[10px] font-black uppercase tracking-wider">
+                          EID
+                        </span>
                       </button>
                     )}
                   </div>
 
                   <button
                     onClick={() => generatePDFSummary(sub)}
-                    className="px-4 py-2 rounded-xl bg-muted/30 text-foreground font-display font-medium text-xs hover:bg-muted transition-colors flex items-center gap-2"
+                    className="w-full px-4 py-2.5 rounded-xl bg-[#0D3430] text-gold hover:bg-[#06201e] focus:ring-2 ring-gold/50 shadow-lg font-black uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-2"
                   >
-                    <FileDown className="w-4 h-4" /> Summary Report
+                    <FileDown className="w-4 h-4 text-white" /> Print Report
                   </button>
 
-                  <div className="flex gap-2">
+                  <div className="flex w-full gap-2 mt-1">
                     <button
                       onClick={() => handleStatusUpdate(sub._id, "approved")}
                       disabled={sub.status === "approved"}
-                      className="p-2 text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500 hover:text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 flex items-center justify-center gap-1 p-2.5 text-emerald-700 bg-emerald-50 border border-emerald-200 hover:bg-emerald-500 hover:text-white hover:border-emerald-600 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Approve"
                     >
                       <CheckCircle2 className="w-5 h-5" />
@@ -480,7 +557,7 @@ const KYCManagement = () => {
                     <button
                       onClick={() => handleStatusUpdate(sub._id, "rejected")}
                       disabled={sub.status === "rejected"}
-                      className="p-2 text-red-600 bg-red-500/10 border border-red-500/20 hover:bg-red-500 hover:text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 flex items-center justify-center gap-1 p-2.5 text-red-700 bg-red-50 border border-red-200 hover:bg-red-500 hover:text-white hover:border-red-600 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Reject"
                     >
                       <XCircle className="w-5 h-5" />
@@ -492,6 +569,32 @@ const KYCManagement = () => {
           ))
         )}
       </div>
+
+      {!loading && totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-8">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 rounded-xl bg-background border border-border text-xs font-bold uppercase tracking-widest disabled:opacity-50 hover:bg-muted/50 transition-colors"
+          >
+            Previous
+          </button>
+          <div className="flex items-center gap-1 font-body text-sm font-medium">
+            <span className="px-3 py-1 rounded-lg bg-gold/10 text-[#0D3430] border border-gold/20">
+              {currentPage}
+            </span>
+            <span className="text-muted-foreground">/</span>
+            <span className="text-muted-foreground">{totalPages}</span>
+          </div>
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 rounded-xl bg-background border border-border text-xs font-bold uppercase tracking-widest disabled:opacity-50 hover:bg-muted/50 transition-colors"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </AdminLayout>
   );
 };

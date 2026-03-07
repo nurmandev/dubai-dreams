@@ -132,10 +132,6 @@ const PropertyDetails = () => {
 
   const getDownloadUrl = (url: string) => {
     if (!url) return "";
-    if (url.includes("cloudinary.com")) {
-      // Inject fl_attachment to force download
-      return url.replace("/upload/", "/upload/fl_attachment/");
-    }
     return url;
   };
 
@@ -241,7 +237,7 @@ const PropertyDetails = () => {
 
                 <div className="absolute top-16 md:top-24 left-4 sm:left-8 md:left-16 right-4 sm:right-8 md:right-16 drop-shadow-sm">
                   <div className="max-w-4xl space-y-4 sm:space-y-6">
-                    <h1 className="font-display text-[2.5rem] leading-[1.1] sm:text-[3.5rem] md:text-[5rem] font-bold text-primary tracking-tight sm:leading-[1] md:leading-[0.9]">
+                    <h1 className="font-display text-[2.5rem] leading-[1.1] sm:text-[3.5rem] md:text-[5rem] font-bold text-primary tracking-tight sm:leading-[1] md:leading-[0.9] bg-white/30 backdrop-blur-md w-fit px-6 lg:px-8 py-4 lg:py-6 rounded-[1.5rem] border border-white/20 shadow-sm">
                       {property.title.split(" ").slice(0, 2).join(" ")}
                       <br />
                       {property.title.split(" ").slice(2).join(" ")}
@@ -649,7 +645,7 @@ const PropertyDetails = () => {
                       href={getDownloadUrl(
                         property.technicalPdf.startsWith("http")
                           ? property.technicalPdf
-                          : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`,
+                          : `${(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000").replace(/\/$/, "")}/${property.technicalPdf.replace(/^\//, "")}`,
                       )}
                       target="_blank"
                       rel="noreferrer"
@@ -1310,7 +1306,7 @@ const PropertyDetails = () => {
                       href={getDownloadUrl(
                         property.technicalPdf.startsWith("http")
                           ? property.technicalPdf
-                          : `${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"}/${property.technicalPdf}`,
+                          : `${(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000").replace(/\/$/, "")}/${property.technicalPdf.replace(/^\//, "")}`,
                       )}
                       target="_blank"
                       rel="noreferrer"

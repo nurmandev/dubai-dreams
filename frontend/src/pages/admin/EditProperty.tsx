@@ -568,7 +568,9 @@ const EditProperty = () => {
                         <span className="text-xs font-bold text-foreground truncate">
                           {newTechnicalPdf
                             ? newTechnicalPdf.name
-                            : "Existing Brochure.pdf"}
+                            : existingTechnicalPdf
+                              ? existingTechnicalPdf.split("/").pop()
+                              : "Existing Brochure.pdf"}
                         </span>
                       </div>
                       <button

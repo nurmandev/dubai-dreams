@@ -12,6 +12,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  connectionTimeout: 5000, // Drop connection attempt after 5s
+  greetingTimeout: 5000,
+  socketTimeout: 5000,
 });
 
 export const sendAdminNotification = async (
@@ -35,7 +38,16 @@ export const sendAdminNotification = async (
       html: htmlContent,
     });
     console.log(`Notification sent: ${subject}`);
-  } catch (err) {
-    console.error("Failed to safely dispatch admin notification:", err);
+  } catch (err: any) {
+    if (err.code === "ETIMEDOUT" || err.code === "ESOCKETTIMEDOUT") {
+      console.error(
+        `[Mailer] Failed to send "${subject}": SMTP connection timed out. Check your .env SMTP variables.`,
+      );
+    } else {
+      console.error(
+        `[Mailer] Failed to send "${subject}":`,
+        err.message || err,
+      );
+    }
   }
 };
