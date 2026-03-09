@@ -28,7 +28,6 @@ import {
   PlayCircle,
   FileText,
   X,
-  DollarSign,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -296,10 +295,9 @@ const PropertyDetails = () => {
 
                 <div className="flex flex-col items-center md:items-start md:pl-12 justify-center">
                   <div className="flex items-center gap-2 sm:gap-4 mb-1">
-                    <DollarSign
-                      className="w-5 h-5 md:w-6 md:h-6 text-[#DDB57A]"
-                      strokeWidth={1.5}
-                    />
+                    <div className="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center text-[#DDB57A] font-black text-[9px] md:text-[11px] leading-none shrink-0 border border-[#DDB57A]/40 rounded-[4px] pt-0.5">
+                      AED
+                    </div>
                     <div className="flex flex-col text-left">
                       <span className="text-[10px] md:text-[11px] font-medium text-stone-600 mb-0.5 leading-none">
                         Starting from
@@ -418,18 +416,6 @@ const PropertyDetails = () => {
                         </div>
                       </div>
                     </div>
-                    <Button
-                      asChild
-                      className="w-full mt-8 bg-[#0D3430] hover:bg-[#06201e] text-white rounded-[0.5rem] h-12 font-bold uppercase tracking-widest text-[11px] flex items-center justify-between px-6 transition-all border-none"
-                    >
-                      <a href="/contact">
-                        <span>ENQUIRE NOW</span>
-                        <ChevronRight
-                          className="w-[14px] h-[14px]"
-                          strokeWidth={3}
-                        />
-                      </a>
-                    </Button>
                   </div>
 
                   {/* 2. Technical Profile */}
@@ -1049,8 +1035,10 @@ const PropertyDetails = () => {
                 {property.category === "off-plan" && property.paymentPlan && (
                   <div className="mt-12 pt-12 border-t border-border">
                     <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter flex items-center gap-3">
-                      <DollarSign className="w-6 h-6 text-gold" /> Payment
-                      Strategy
+                      <div className="w-6 h-6 flex items-center justify-center text-gold font-black text-[10px] leading-none shrink-0 border border-gold/40 rounded-[4px] pt-0.5">
+                        AED
+                      </div>{" "}
+                      Payment Strategy
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="p-6 rounded-2xl bg-gold/5 border border-gold/10">
@@ -1386,17 +1374,6 @@ const PropertyDetails = () => {
                         className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-gold transition-colors resize-none mb-1"
                         placeholder="I am interested in this property..."
                       />
-                      <Button
-                        variant="gold"
-                        size="xl"
-                        type="submit"
-                        disabled={submitting}
-                        className="w-full rounded-2xl py-6 shadow-xl shadow-gold/20 font-bold uppercase tracking-wider text-xs"
-                      >
-                        {submitting
-                          ? "Sending..."
-                          : "Request Details & Availability"}
-                      </Button>
                     </form>
 
                     <div className="pt-4 flex justify-center gap-6 border-t border-border mt-2">
