@@ -39,8 +39,8 @@ interface Property {
   price: number;
   propertyType: string;
   status: string;
-  bedrooms?: number;
-  bathrooms?: number;
+  bedrooms?: number | string;
+  bathrooms?: number | string;
   area?: number | string;
   amenities?: string[];
   yearBuilt?: number;
@@ -60,9 +60,10 @@ interface Property {
   images: string[];
   floorPlans: string[];
   // Off-plan fields
+  developerName?: string;
   unitTypes?: string;
   handoverYear?: string;
-  totalFloors?: number;
+  totalFloors?: number | string;
   paymentPlan?: {
     onBooking?: number;
     duringConstruction?: number;
@@ -117,6 +118,7 @@ const EditProperty = () => {
     images: [],
     floorPlans: [],
     // Off-plan fields
+    developerName: "",
     unitTypes: "",
     handoverYear: "",
     totalFloors: 0,
@@ -616,6 +618,23 @@ const EditProperty = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {isOffPlan ? (
                   <>
+                    <div className="space-y-2">
+                      <label className="text-xs font-body font-bold text-muted-foreground uppercase">
+                        Developer Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Emaar Properties"
+                        className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
+                        value={formData.developerName || ""}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            developerName: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
                     <div className="space-y-2">
                       <label className="text-xs font-body font-bold text-muted-foreground uppercase">
                         Bedrooms Range

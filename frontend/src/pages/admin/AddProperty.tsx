@@ -69,6 +69,7 @@ const AddProperty = () => {
     yearlyTaxRate: "0",
     videoUrl: "",
     // Off-plan fields
+    developerName: "",
     unitTypes: "",
     handoverYear: new Date().getFullYear().toString(),
     totalFloors: "",
@@ -453,6 +454,23 @@ const AddProperty = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {isOffPlan ? (
                   <>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                        Developer Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Emaar Properties"
+                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
+                        value={formData.developerName}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            developerName: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
                         Bedrooms Range

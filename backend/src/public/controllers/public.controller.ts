@@ -74,6 +74,7 @@ export class PublicController {
         type: prop.propertyType,
         technicalPdf: PublicController.getFullUrl(prop.technicalPdf || ""),
         // Off-plan fields
+        developerName: prop.developerName,
         unitTypes: prop.unitTypes,
         handoverYear: prop.handoverYear,
         totalFloors: prop.totalFloors,
@@ -148,6 +149,7 @@ export class PublicController {
           PublicController.getFullUrl(img),
         ),
         // Off-plan fields
+        developerName: prop.developerName,
         unitTypes: prop.unitTypes,
         handoverYear: prop.handoverYear,
         totalFloors: prop.totalFloors,

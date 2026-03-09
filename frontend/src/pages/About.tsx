@@ -151,7 +151,7 @@ const About = () => {
             <div className="w-16 h-[1px] bg-gold mx-auto mt-8" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             {/* Team Members */}
             {[
               {
@@ -160,7 +160,12 @@ const About = () => {
                 image: "/images/Vikas-kumar.jpeg",
                 bio: "Founder of OMNIS Properties, Vikas Kumar oversees the firm’s strategic direction, client advisory, and investment consulting. He holds an MBA in Urban Infrastructure and Real Estate Management from Amity University, Noida (2012). With extensive experience in the Dubai and UAE real estate markets, he specializes in guiding investors toward well-researched, high-potential property opportunities through a transparent, client-first approach.",
               },
-
+              {
+                name: "Jamal Alsuwaidi",
+                role: "Local Partner",
+                image: "/images/Jamal.jpeg",
+                bio: "Jamal Alsuwaidi is a Local Partner at OMNIS Properties and holds a position within the Dubai Government. He has been associated with the company since its establishment and supports the firm in government-related matters, while also strengthening its presence both locally and internationally.",
+              },
               {
                 name: "Anstin Machado",
                 role: "Admin Executive & Digital Marketing",

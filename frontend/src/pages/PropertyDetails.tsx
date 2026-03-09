@@ -100,7 +100,7 @@ const PropertyDetails = () => {
             image:
               p.carousel_thumb?.[0]?.img || "/images/property-placeholder.jpg",
             images: p.carousel_thumb?.map((img: any) => img.img) || [],
-            developer: p.owner?.name,
+            developer: p.developerName || p.owner?.name,
             amenities: p.amenities || [],
             yearBuilt: p.yearBuilt,
             kitchens: p.kitchens,

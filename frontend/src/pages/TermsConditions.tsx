@@ -117,7 +117,7 @@ const TermsConditions = () => {
                   address:
                 </p>
                 <div className="text-gold font-bold">
-                  Email: info@omnisproperties.ae
+                  Email: info@omnisprop.com
                   <br />
                   Office: Suite 1205, Marina Plaza, Dubai Marina, UAE
                 </div>

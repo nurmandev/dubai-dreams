@@ -64,6 +64,7 @@ const Properties = () => {
             status: p.status === "active" ? "ready" : "off-plan",
             image:
               p.carousel_thumb?.[0]?.img || "/images/property-placeholder.jpg",
+            developer: p.developerName || p.owner?.name,
             unitTypes: p.unitTypes,
             handoverYear: p.handoverYear,
             totalFloors: p.totalFloors,

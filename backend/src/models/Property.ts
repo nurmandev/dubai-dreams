@@ -41,6 +41,7 @@ export interface IProperty extends Document {
   technicalPdf?: string;
   floorPlans?: string[];
   // Off-plan specific fields
+  developerName?: string;
   unitTypes?: string;
   handoverYear?: string;
   totalFloors?: number;
@@ -109,6 +110,7 @@ const PropertySchema = new Schema<IProperty>(
     zipCode: { type: String },
     country: { type: String },
     // Off-plan fields
+    developerName: { type: String },
     unitTypes: { type: String },
     handoverYear: { type: String },
     totalFloors: { type: Number },

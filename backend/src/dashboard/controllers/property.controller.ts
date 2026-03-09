@@ -39,6 +39,7 @@ export class PropertyController {
         zipCode,
         country,
         address,
+        developerName,
         unitTypes,
         handoverYear,
         totalFloors,
@@ -127,6 +128,7 @@ export class PropertyController {
         zipCode,
         country,
         // Off-plan fields
+        developerName,
         unitTypes,
         handoverYear,
         totalFloors: parseNum(totalFloors),
