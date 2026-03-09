@@ -418,46 +418,86 @@ const PropertyDetails = () => {
                     </div>
                   </div>
 
-                  {/* 2. Technical Profile */}
-                  <div className="bg-white rounded-[1rem] p-8 shadow-sm border border-stone-100 h-full hover:shadow-lg transition-shadow">
-                    <h3 className="font-display text-[1.4rem] font-bold text-[#0D3430] mb-8 leading-none">
-                      Technical Profile
-                    </h3>
-                    <div className="space-y-6 mt-2">
-                      <div className="flex items-center justify-between border-b border-stone-100 pb-5">
-                        <div className="flex items-center gap-4">
-                          <Calendar className="w-5 h-5 text-[#DDB57A]" />
-                          <span className="text-[13px] font-medium text-stone-600">
-                            Handover Year
+                  {/* 2. Technical Profile (Redesigned as Project Overview) */}
+                  <div className="bg-white rounded-[1.5rem] p-8 shadow-sm border border-stone-100 h-full flex flex-col hover:shadow-lg transition-all duration-500">
+                    <div className="mb-8">
+                      <h3 className="font-display text-[1.5rem] md:text-[1.75rem] font-bold text-[#0D3430] leading-none mb-3">
+                        Project Overview
+                      </h3>
+                      <div className="w-12 h-[2px] bg-[#0D3430]" />
+                    </div>
+
+                    <div className="space-y-8 flex-1">
+                      <div className="flex items-center justify-between border-b border-stone-50 pb-6 group">
+                        <div className="flex items-center gap-5">
+                          <div className="w-10 h-10 rounded-full bg-stone-50 flex items-center justify-center group-hover:bg-stone-100 transition-colors">
+                            <Building2 className="w-5 h-5 text-[#DDB57A]" />
+                          </div>
+                          <span className="text-[14px] font-medium text-stone-600">
+                            Developer
                           </span>
                         </div>
-                        <span className="font-display font-black text-xl text-stone-900">
+                        <span className="font-display font-bold text-lg text-stone-900">
+                          {property.developer || "TBA"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between border-b border-stone-50 pb-6 group">
+                        <div className="flex items-center gap-5">
+                          <div className="w-10 h-10 rounded-full bg-stone-50 flex items-center justify-center group-hover:bg-stone-100 transition-colors">
+                            <Calendar className="w-5 h-5 text-[#DDB57A]" />
+                          </div>
+                          <span className="text-[14px] font-medium text-stone-600">
+                            Expected Handover
+                          </span>
+                        </div>
+                        <span className="font-display font-bold text-lg text-stone-900">
                           {property.handoverYear || "TBA"}
                         </span>
                       </div>
-                      <div className="flex items-center justify-between border-b border-stone-100 pb-5">
-                        <div className="flex items-center gap-4">
-                          <Utensils className="w-5 h-5 text-[#DDB57A]" />
-                          <span className="text-[13px] font-medium text-stone-600">
-                            Kitchens
-                          </span>
-                        </div>
-                        <span className="font-display font-black text-xl text-stone-900">
-                          {property.kitchens || 1}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between pb-2">
-                        <div className="flex items-center gap-4">
-                          <Layers className="w-5 h-5 text-[#DDB57A]" />
-                          <span className="text-[13px] font-medium text-stone-600">
+
+                      <div className="flex items-center justify-between border-b border-stone-50 pb-6 group">
+                        <div className="flex items-center gap-5">
+                          <div className="w-10 h-10 rounded-full bg-stone-50 flex items-center justify-center group-hover:bg-stone-100 transition-colors">
+                            <Layers className="w-5 h-5 text-[#DDB57A]" />
+                          </div>
+                          <span className="text-[14px] font-medium text-stone-600">
                             Total Floors
                           </span>
                         </div>
-                        <span className="font-display font-black text-xl text-stone-900">
+                        <span className="font-display font-bold text-lg text-stone-900">
                           {property.totalFloors || "N/A"}
                         </span>
                       </div>
+
+                      <div className="flex items-center justify-between group">
+                        <div className="flex items-center gap-5">
+                          <div className="w-10 h-10 rounded-full bg-stone-50 flex items-center justify-center group-hover:bg-stone-100 transition-colors">
+                            <Home className="w-5 h-5 text-[#DDB57A]" />
+                          </div>
+                          <span className="text-[14px] font-medium text-stone-600">
+                            Development Type
+                          </span>
+                        </div>
+                        <span className="font-display font-bold text-lg text-stone-900">
+                          {property.type.charAt(0).toUpperCase() +
+                            property.type.slice(1)}
+                        </span>
+                      </div>
                     </div>
+
+                    <Button
+                      asChild
+                      className="w-full mt-12 bg-[#0D3430] hover:bg-[#06201e] text-white rounded-[0.5rem] h-14 font-bold uppercase tracking-[0.2em] text-[11px] flex items-center justify-between px-8 transition-all border-none shadow-xl shadow-[#0D3430]/10"
+                    >
+                      <a href="/contact">
+                        <span>ENQUIRE NOW</span>
+                        <ChevronRight
+                          className="w-[16px] h-[16px]"
+                          strokeWidth={3}
+                        />
+                      </a>
+                    </Button>
                   </div>
 
                   {/* 3. Lifestyle Amenities */}
