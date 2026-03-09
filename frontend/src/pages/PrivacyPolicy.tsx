@@ -3,45 +3,43 @@ import { motion } from "framer-motion";
 import { Shield, Lock, Eye, FileText, Scale, Globe } from "lucide-react";
 
 const PrivacyPolicy = () => {
-  const lastUpdated = "March 05, 2026";
+  const lastUpdated = "March 09, 2026";
 
   const sections = [
     {
       icon: Eye,
-      title: "Data Minimization",
-      content: `We believe in protecting your digital footprint. Unlike many platforms, we do not collect broad 'user data'. We only collect the specific information you voluntarily provide to facilitate a real estate inquiry or service. This is limited to your contact details (name, email, phone) and your stated property preferences. We do not track your activity outside of our platform or build broad behavioral profiles.`,
+      title: "Introduction",
+      content: `At OMNIS Properties, we respect your privacy and are committed to protecting the personal information you share with us through our website.`,
     },
     {
       icon: Lock,
-      title: "Purpose-Driven Usage",
-      content: `Your information is used strictly for the specific purpose it was provided. We use it to:
-      • Connect you with the specific properties or developers you inquired about.
-      • Send requested luxury market insights and investment opportunities.
-      • Facilitate secure communication between you and our consultants.
-      We do not use your data for automated marketing profiles or sell it to third-party data brokers.`,
-    },
-    {
-      icon: Shield,
-      title: "Focused Security",
-      content: `Because we collect so little data, your risk is inherently minimized. What we do hold is protected by modern encryption and strict access controls. Our team follows a 'need-to-know' protocol, ensuring your contact details are only visible to the professionals handled your specific inquiry.`,
-    },
-    {
-      icon: Globe,
-      title: "Selective Sharing",
-      content: `Sharing is restricted to the absolute essentials required to finalize a transaction or inquiry:
-      • The specific Developer of a project you've expressed interest in.
-      • Regulatory authorities (RERA/DLD) only when a formal transaction begins.
-      We do not share your data with 'partner networks' for unrelated advertising.`,
-    },
-    {
-      icon: Scale,
-      title: "Your Privacy Rights",
-      content: `You have full control. You can request to view, update, or permanently delete your contact information from our records at any time. As we do not store secondary or 'hidden' metadata, a deletion request results in a complete removal of your presence from our active databases.`,
+      title: "Data Collection",
+      content: `When you submit information through contact forms, enquiry forms, or KYC submissions, we may collect personal details such as your name, email address, phone number, and other relevant information.`,
     },
     {
       icon: FileText,
-      title: "Policy Updates",
-      content: `As we evolve, our commitment to collecting as little data as possible remains constant. Any refinements to our processes will be reflected here. We encourage you to check this page to see our continued dedication to your privacy.`,
+      title: "Information Usage",
+      content: `This information is used solely for responding to enquiries, providing real estate advisory services, and improving our client support.`,
+    },
+    {
+      icon: Globe,
+      title: "Data Sharing",
+      content: `We do not sell, trade, or share your personal information with third parties except where necessary to facilitate property-related services or where required by applicable laws and regulatory authorities in the UAE.`,
+    },
+    {
+      icon: Shield,
+      title: "Cookies & Tracking",
+      content: `This website may use cookies and similar technologies to enhance user experience and analyze website performance. Cookies help us understand how visitors interact with our website so we can improve functionality and content. Users may disable cookies through their browser settings; however, certain website features may be affected.`,
+    },
+    {
+      icon: Scale,
+      title: "Confidentiality",
+      content: `All personal information provided through this website is handled with confidentiality and used only for legitimate business purposes related to OMNIS Properties’ services.`,
+    },
+    {
+      icon: FileText,
+      title: "Consent",
+      content: `By using this website and submitting your information, you consent to the collection and use of your data in accordance with this policy.`,
     },
   ];
 
@@ -79,14 +77,6 @@ const PrivacyPolicy = () => {
               viewport={{ once: true }}
               className="prose prose-lg max-w-none text-muted-foreground font-body"
             >
-              <p className="text-lg leading-relaxed mb-12">
-                At Omnis Properties, we operate on a principle of transparency
-                and minimalist data collection. This Privacy Policy outlines our
-                commitment to your privacy, explaining why we only collect the
-                absolute essentials necessary to connect you with Dubai's most
-                exclusive real estate opportunities.
-              </p>
-
               <div className="grid gap-12">
                 {sections.map((section, index) => (
                   <motion.div
@@ -124,7 +114,7 @@ const PrivacyPolicy = () => {
                   dedicated privacy team.
                 </p>
                 <div className="text-gold font-bold">
-                  Email: privacy@omnisproperties.ae
+                  Email: info@omnisproperties.ae
                   <br />
                   Office: Suite 1205, Marina Plaza, Dubai Marina, UAE
                 </div>

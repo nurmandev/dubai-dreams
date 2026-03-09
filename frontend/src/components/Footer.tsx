@@ -111,7 +111,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-gold mt-1 shrink-0" />
                 <span className="text-primary-foreground/60 text-sm font-body">
-                  Business Bay, Dubai, UAE
+                  Suite 1205, Marina Plaza, Dubai Marina, UAE
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -167,10 +167,10 @@ const Footer = () => {
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gold shrink-0" />
                 <a
-                  href="mailto:info@omnisprop.com"
+                  href="mailto:info@omnisproperties.ae"
                   className="text-primary-foreground/60 hover:text-gold text-sm font-body transition-colors"
                 >
-                  info@omnisprop.com
+                  info@omnisproperties.ae
                 </a>
               </li>
             </ul>

@@ -7,46 +7,42 @@ import {
   AlertCircle,
   HelpCircle,
   ShieldAlert,
+  Eye,
 } from "lucide-react";
 
 const TermsConditions = () => {
-  const lastUpdated = "March 05, 2026";
+  const lastUpdated = "March 09, 2026";
 
   const sections = [
     {
       icon: Gavel,
-      title: "1. Acceptance of Terms",
-      content: `By accessing and using the Dubai Dreams Showcase platform (the "Service"), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must not use our platform. These terms apply to all visitors, users, and others who access or use the Service.`,
-    },
-    {
-      icon: Scale,
-      title: "2. Real Estate Disclaimer",
-      content: `All property information, including prices, floor plans, and availability, is provided for informational purposes only. While we strive for accuracy, Omnis Properties LLC does not guarantee the completeness or reliability of any listings. 
-      
-      Off-plan project timelines and designs are subject to change by the respective developers (e.g., Emaar, Nakheel, Damac). Investment in real estate involves risk; we recommend independent financial and legal advice before committing to any transaction.`,
-    },
-    {
-      icon: ShieldAlert,
-      title: "3. User Conduct & KYC",
-      content: `In compliance with UAE anti-money laundering (AML) and Know Your Customer (KYC) regulations, users may be required to provide valid documentation (e.g., Passport copy, Emirates ID) to facilitate property transactions. Users agree to provide truthful and accurate information and are prohibited from:
-      • Misrepresenting their identity or affiliation.
-      • Using the platform for any illegal or fraudulent activities.
-      • Attempting to interfere with the proper functioning of the Service.`,
+      title: "General Information",
+      content: `The information provided on the OMNIS Properties website is intended for general informational purposes regarding real estate opportunities in Dubai and the UAE.`,
     },
     {
       icon: AlertCircle,
-      title: "4. Intellectual Property",
-      content: `The Service and its original content (excluding developer logos which are property of their respective owners), features, and functionality are and will remain the exclusive property of Omnis Properties LLC. Our brand assets, custom designs, and professional photography may not be used without prior written consent.`,
+      title: "Accuracy & Changes",
+      content: `While we strive to ensure that property details, pricing, payment plans, and project information are accurate and up to date, these details may change without prior notice by developers or relevant authorities. OMNIS Properties does not guarantee the completeness or accuracy of all information displayed.`,
+    },
+    {
+      icon: Eye,
+      title: "Visual Disclaimer",
+      content: `Images, renderings, and project visuals shown on the website are for illustrative purposes only and may not represent the final delivered product.`,
+    },
+    {
+      icon: Scale,
+      title: "Advisory Role",
+      content: `OMNIS Properties acts as a real estate brokerage and advisory firm and does not provide legal, financial, or tax advice. Visitors are encouraged to conduct their own due diligence and seek professional advice before making investment decisions.`,
+    },
+    {
+      icon: ShieldAlert,
+      title: "Liability",
+      content: `By using this website, you agree that OMNIS Properties shall not be held liable for any decisions or actions taken based on the information provided on this website.`,
     },
     {
       icon: HelpCircle,
-      title: "5. Limitation of Liability",
-      content: `To the maximum extent permitted by UAE law, Omnis Properties LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the Service. We do not act as a bank or financial lender; all financing arrangements are between the user and their chosen financial institution.`,
-    },
-    {
-      icon: FileText,
-      title: "6. Governing Law",
-      content: `These Terms shall be governed and construed in accordance with the laws of the United Arab Emirates and the Emirate of Dubai. Any disputes arising from these terms shall be subject to the exclusive jurisdiction of the Courts of Dubai.`,
+      title: "Compliance",
+      content: `Users are responsible for ensuring that any property transactions comply with applicable regulations and real estate laws within the United Arab Emirates.`,
     },
   ];
 
@@ -84,14 +80,6 @@ const TermsConditions = () => {
               viewport={{ once: true }}
               className="prose prose-lg max-w-none text-muted-foreground font-body"
             >
-              <p className="text-lg leading-relaxed mb-12">
-                Welcome to Omnis Properties. These Terms and Conditions govern
-                your relationship with our platform and services. By engaging
-                with our listings and expert consultants, you acknowledge the
-                regulatory framework of the Dubai Real Estate market and agree
-                to adhere to these standards.
-              </p>
-
               <div className="grid gap-12">
                 {sections.map((section, index) => (
                   <motion.div
@@ -129,11 +117,9 @@ const TermsConditions = () => {
                   address:
                 </p>
                 <div className="text-gold font-bold">
-                  Email: legal@omnisproperties.ae
+                  Email: info@omnisproperties.ae
                   <br />
                   Office: Suite 1205, Marina Plaza, Dubai Marina, UAE
-                  <br />
-                  Registration: Omnis Properties LLC (DED License #112233)
                 </div>
               </div>
             </motion.div>
