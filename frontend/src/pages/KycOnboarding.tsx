@@ -5,6 +5,8 @@ import { Upload, FileText, CheckCircle, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
+import { countries } from "@/data/countries";
+import { CountryCodeSelector } from "@/components/CountryCodeSelector";
 
 const KycOnboarding = () => {
   const [formData, setFormData] = useState({
@@ -51,7 +53,11 @@ const KycOnboarding = () => {
     try {
       const data = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
-        data.append(key, value);
+        if (key === "phone") {
+          data.append(key, `${formData.countryCode} ${value}`);
+        } else if (key !== "countryCode") {
+          data.append(key, value);
+        }
       });
 
       if (passportFile) data.append("passportCopy", passportFile);
@@ -187,15 +193,28 @@ const KycOnboarding = () => {
                     <label className="text-sm font-bold text-muted-foreground">
                       Phone / WhatsApp
                     </label>
-                    <input
-                      required
-                      type="tel"
-                      className="w-full bg-background border border-border rounded-xl px-4 py-3 text-foreground focus:border-gold outline-none transition-colors"
-                      value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
-                    />
+                    <div className="flex gap-2">
+                      <CountryCodeSelector
+                        value={formData.countryCode}
+                        onChange={(value) =>
+                          setFormData({
+                            ...formData,
+                            countryCode: value,
+                          })
+                        }
+                        className="w-[100px] rounded-xl h-[50px]"
+                      />
+                      <input
+                        required
+                        type="tel"
+                        className="flex-1 bg-background border border-border rounded-xl px-4 py-3 text-foreground focus:border-gold outline-none transition-colors"
+                        value={formData.phone}
+                        onChange={(e) =>
+                          setFormData({ ...formData, phone: e.target.value })
+                        }
+                        placeholder="XX XXX XXXX"
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <label className="text-sm font-bold text-muted-foreground">

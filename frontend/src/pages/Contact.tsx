@@ -5,6 +5,8 @@ import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
+import { countries } from "@/data/countries";
+import { CountryCodeSelector } from "@/components/CountryCodeSelector";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg
@@ -21,6 +23,7 @@ const Contact = () => {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    countryCode: "+971",
     phone: "",
     message: "",
     budget: "",
@@ -31,11 +34,22 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post("/api/public/inquiry", { data: form });
+      const submissionData = {
+        ...form,
+        phone: `${form.countryCode} ${form.phone}`,
+      };
+      await api.post("/api/public/inquiry", { data: submissionData });
       toast.success(
         "Enquiry Submitted! Our team will get back to you shortly.",
       );
-      setForm({ name: "", email: "", phone: "", message: "", budget: "" });
+      setForm({
+        name: "",
+        email: "",
+        countryCode: "+971",
+        phone: "",
+        message: "",
+        budget: "",
+      });
     } catch (error) {
       toast.error("Failed to submit enquiry. Please try again later.");
     } finally {
@@ -109,17 +123,27 @@ const Contact = () => {
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="font-body text-sm text-foreground mb-1 block">
-                      Phone (with country code) *
+                      Phone Number *
                     </label>
-                    <input
-                      required
-                      value={form.phone}
-                      onChange={(e) =>
-                        setForm({ ...form, phone: e.target.value })
-                      }
-                      className="w-full bg-muted rounded-lg px-4 py-3 text-foreground font-body text-sm outline-none border border-border focus:border-gold transition-colors"
-                      placeholder="+971 XX XXX XXXX"
-                    />
+                    <div className="flex gap-2">
+                      <CountryCodeSelector
+                        value={form.countryCode}
+                        onChange={(value) =>
+                          setForm({ ...form, countryCode: value })
+                        }
+                        className="w-[110px] sm:w-[130px] rounded-lg h-[46px]"
+                      />
+                      <input
+                        required
+                        type="tel"
+                        value={form.phone}
+                        onChange={(e) =>
+                          setForm({ ...form, phone: e.target.value })
+                        }
+                        className="flex-1 bg-muted rounded-lg px-4 py-3 text-foreground font-body text-sm outline-none border border-border focus:border-gold transition-colors"
+                        placeholder="XX XXX XXXX"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="font-body text-sm text-foreground mb-1 block">

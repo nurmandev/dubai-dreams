@@ -34,6 +34,8 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import PriceDisplay from "@/components/PriceDisplay";
 import DirhamIcon from "@/components/icons/DirhamIcon";
+import { countries } from "@/data/countries";
+import { CountryCodeSelector } from "@/components/CountryCodeSelector";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -46,6 +48,7 @@ const PropertyDetails = () => {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    countryCode: "+971",
     phone: "",
     message: "",
   });
@@ -57,15 +60,23 @@ const PropertyDetails = () => {
 
     setSubmitting(true);
     try {
-      await api.post("/api/public/inquiry", {
+      const submissionData = {
         ...form,
+        phone: `${form.countryCode} ${form.phone}`,
         propertyId: property.id,
         propertyTitle: property.title,
-      });
+      };
+      await api.post("/api/public/inquiry", { data: submissionData });
       toast.success(
         "Enquiry securely transmitted. Our brokers will contact you shortly.",
       );
-      setForm({ name: "", email: "", phone: "", message: "" });
+      setForm({
+        name: "",
+        email: "",
+        countryCode: "+971",
+        phone: "",
+        message: "",
+      });
     } catch (err) {
       toast.error("Failed to submit enquiry. Please try again.");
     } finally {
@@ -1400,16 +1411,26 @@ const PropertyDetails = () => {
                         className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-gold transition-colors"
                         placeholder="Email Address *"
                       />
-                      <input
-                        required
-                        type="tel"
-                        value={form.phone}
-                        onChange={(e) =>
-                          setForm({ ...form, phone: e.target.value })
-                        }
-                        className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-gold transition-colors"
-                        placeholder="Phone (with country code) *"
-                      />
+                      <div className="flex gap-2">
+                        <CountryCodeSelector
+                          value={form.countryCode}
+                          onChange={(value) =>
+                            setForm({ ...form, countryCode: value })
+                          }
+                          className="w-[100px] rounded-xl h-[46px]"
+                          isDark
+                        />
+                        <input
+                          required
+                          type="tel"
+                          value={form.phone}
+                          onChange={(e) =>
+                            setForm({ ...form, phone: e.target.value })
+                          }
+                          className="flex-1 bg-muted/30 border border-border rounded-xl px-4 py-3 text-sm font-body outline-none focus:border-gold transition-colors"
+                          placeholder="Phone Number *"
+                        />
+                      </div>
                       <textarea
                         required
                         rows={3}
