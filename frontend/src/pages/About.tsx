@@ -69,7 +69,7 @@ const About = () => {
         </motion.div>
       </section>
 
-      {/* Our Story / Local Partner - Editorial Layout */}
+      {/* Business Methodology - Editorial Layout */}
       <section className="py-24 lg:py-32 bg-white overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-center">
@@ -79,13 +79,13 @@ const About = () => {
               viewport={{ once: true }}
               className="lg:col-span-5 relative"
             >
-              <div className="aspect-[4/5] overflow-hidden rounded-tr-[4rem] rounded-bl-[4rem] relative">
+              <div className="aspect-[4/5] overflow-hidden rounded-tr-[4rem] rounded-bl-[4rem] relative shadow-2xl">
                 <img
                   src="/images/property-villa.jpg"
-                  alt="Luxury interior"
+                  alt="Omnis properties methodology"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-primary/10" />
+                <div className="absolute inset-0 bg-primary/5" />
               </div>
               {/* Floating Stat Card */}
               <div className="absolute -bottom-6 right-2 sm:-right-6 md:-right-10 md:-bottom-10 bg-primary text-white p-6 md:p-8 rounded-2xl shadow-2xl border border-gold/20 max-w-[160px] md:max-w-[200px]">
@@ -105,18 +105,25 @@ const About = () => {
               className="lg:col-span-7 lg:pl-10"
             >
               <h2 className="font-display text-4xl md:text-5xl font-bold text-primary mb-8 leading-tight">
-                Jamal Alsuwaidi <br />
+                A Modern Approach <br />
                 <span className="text-gold italic font-light">
-                  LOCAL PARTNER
+                  TO DUBAI REAL ESTATE
                 </span>
               </h2>
               <div className="space-y-6 text-muted-foreground font-body text-lg leading-relaxed">
                 <p>
-                  Jamal Alsuwaidi is a Local Partner at OMNIS Properties and
-                  holds a position within the Dubai Government. He has been
-                  associated with the company since its establishment and
-                  supports the firm in government-related matters, while also
-                  strengthening its presence both locally and internationally.
+                  Omnis Properties was started with one simple goal: to help
+                  people find the best places to live and invest in Dubai. We
+                  know this city inside and out, and we use that knowledge to
+                  find properties that aren't just beautiful, but are also smart
+                  investments for your future.
+                </p>
+                <p>
+                  We are more than just a regular real estate agency. We work
+                  closely with you to understand exactly what you need, making
+                  sure the whole process is clear, honest, and stress-free.
+                  Whether you are buying your first home or growing your
+                  property collection, we are here to support you at every step.
                 </p>
               </div>
               <div className="mt-12">
