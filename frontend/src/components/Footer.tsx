@@ -111,7 +111,11 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-gold mt-1 shrink-0" />
                 <span className="text-primary-foreground/60 text-sm font-body">
-                  Suite 1205, Marina Plaza, Dubai Marina, UAE
+                  Office No. 301-21, DhanGuard Business Center
+                  <br />
+                  Khalid Bin Waleed Road
+                  <br />
+                  Mankhool, Dubai
                 </span>
               </li>
               <li className="flex items-start gap-3">

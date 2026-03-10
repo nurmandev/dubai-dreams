@@ -12,6 +12,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import DirhamIcon from "@/components/icons/DirhamIcon";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -169,8 +170,9 @@ const ManageProperties = () => {
                         {p.location}
                       </div>
                     </td>
-                    <td className="px-6 py-5 text-sm font-display font-medium text-gold">
-                      AED {p.price.toLocaleString()}
+                    <td className="px-6 py-5 text-sm font-display font-medium text-gold flex items-center gap-1.5">
+                      <DirhamIcon size={14} className="opacity-70" />
+                      {p.price.toLocaleString()}
                     </td>
                     <td className="px-6 py-5">
                       <span className="inline-flex items-center px-2 py-0.5 bg-primary/5 text-primary text-[10px] font-bold rounded border border-primary/10">
@@ -269,8 +271,9 @@ const ManageProperties = () => {
                     <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
                       Price
                     </span>
-                    <p className="text-sm font-display font-bold text-gold">
-                      AED {p.price.toLocaleString()}
+                    <p className="text-sm font-display font-bold text-gold flex items-center gap-1.5">
+                      <DirhamIcon size={12} className="opacity-70" />
+                      {p.price.toLocaleString()}
                     </p>
                   </div>
                   <div className="space-y-1">

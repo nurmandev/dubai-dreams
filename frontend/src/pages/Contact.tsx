@@ -133,11 +133,11 @@ const Contact = () => {
                       className="w-full bg-muted rounded-lg px-4 py-3 text-foreground font-body text-sm outline-none border border-border focus:border-gold transition-colors"
                     >
                       <option value="">Select budget range</option>
-                      <option value="under-1m">Under AED 1M</option>
-                      <option value="1m-3m">AED 1M - 3M</option>
-                      <option value="3m-5m">AED 3M - 5M</option>
-                      <option value="5m-10m">AED 5M - 10M</option>
-                      <option value="above-10m">Above AED 10M</option>
+                      <option value="under-1m">Under D 1M</option>
+                      <option value="1m-3m">D 1M - 3M</option>
+                      <option value="3m-5m">D 3M - 5M</option>
+                      <option value="5m-10m">D 5M - 10M</option>
+                      <option value="above-10m">Above D 10M</option>
                     </select>
                   </div>
                 </div>

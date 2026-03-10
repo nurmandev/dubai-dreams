@@ -18,6 +18,7 @@ import {
   DollarSign,
   ChevronLeft,
 } from "lucide-react";
+import DirhamIcon from "@/components/icons/DirhamIcon";
 import { motion } from "framer-motion";
 import PropertyCard from "@/components/PropertyCard";
 import Layout from "@/components/Layout";
@@ -338,8 +339,14 @@ const Index = () => {
                 {/* Expanded Filters */}
                 {showAdvanced && (
                   <div className="flex flex-wrap items-center gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                    <span className="text-primary-foreground/40 text-xs font-body uppercase tracking-wider">
-                      Price Range (AED):
+                    <span className="text-primary-foreground/40 text-xs font-body uppercase tracking-wider flex items-center gap-1">
+                      Price Range (
+                      <DirhamIcon
+                        size={10}
+                        strokeWidth={3}
+                        className="pt-0.5"
+                      />
+                      ):
                     </span>
                     <div className="flex items-center gap-2">
                       <input

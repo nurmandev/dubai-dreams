@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Bed, Bath, Maximize, Calendar } from "lucide-react";
-import { Property, formatPrice } from "@/data/properties";
+import { Property } from "@/data/properties";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import PriceDisplay from "@/components/PriceDisplay";
 
 interface PropertyCardProps {
   property: Property;
@@ -46,9 +47,12 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
             )}
           </div>
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/80 to-transparent p-4">
-            <p className="text-primary-foreground font-display text-xl font-semibold">
-              {formatPrice(property.price, property.category)}
-            </p>
+            <PriceDisplay
+              price={property.price}
+              category={property.category}
+              className="text-primary-foreground font-display text-xl font-semibold"
+              iconClassName="w-5 h-5 inline-block mr-1 mb-1.5"
+            />
           </div>
         </div>
 

@@ -10,6 +10,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, SlidersHorizontal, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import DirhamIcon from "@/components/icons/DirhamIcon";
 
 const Properties = () => {
   const [searchParams] = useSearchParams();
@@ -291,8 +292,9 @@ const Properties = () => {
 
         {/* Price Range */}
         <div className="space-y-3">
-          <label className="text-[10px] font-bold tracking-widest uppercase text-stone-400">
-            Price Range (AED)
+          <label className="text-[10px] font-bold tracking-widest uppercase text-stone-400 flex items-center gap-1">
+            Price Range (
+            <DirhamIcon size={10} strokeWidth={3} className="pt-0.5" />)
           </label>
           <div className="flex items-center gap-2">
             <input

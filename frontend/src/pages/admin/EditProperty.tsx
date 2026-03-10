@@ -27,6 +27,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import DirhamIcon from "@/components/icons/DirhamIcon";
 import { AMENITIES_LIST } from "@/data/properties";
 
 interface Property {
@@ -902,8 +903,10 @@ const EditProperty = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-body font-bold text-muted-foreground uppercase text-gold font-bold">
-                    {isOffPlan ? "Starting Price (AED)*" : "Price (AED)*"}
+                  <label className="text-xs font-body font-bold text-muted-foreground uppercase text-gold font-bold flex items-center gap-1">
+                    {isOffPlan ? "Starting Price (" : "Price ("}
+                    <DirhamIcon size={12} strokeWidth={4} />
+                    {")*"}
                   </label>
                   <input
                     type="number"

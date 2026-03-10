@@ -27,6 +27,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import DirhamIcon from "@/components/icons/DirhamIcon";
 import { AMENITIES_LIST } from "@/data/properties";
 
 const AddProperty = () => {
@@ -726,8 +727,10 @@ const AddProperty = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest text-gold">
-                    {isOffPlan ? "Starting Price (AED)*" : "Offer Value (AED)*"}
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest text-gold flex items-center gap-1">
+                    {isOffPlan ? "Starting Price (" : "Offer Value ("}
+                    <DirhamIcon size={10} strokeWidth={4} />
+                    {")*"}
                   </label>
                   <input
                     type="number"

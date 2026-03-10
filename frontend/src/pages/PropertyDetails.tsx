@@ -32,6 +32,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import PriceDisplay from "@/components/PriceDisplay";
+import DirhamIcon from "@/components/icons/DirhamIcon";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -235,11 +237,9 @@ const PropertyDetails = () => {
                 </div>
 
                 <div className="absolute top-16 md:top-24 left-4 sm:left-8 md:left-16 right-4 sm:right-8 md:right-16 drop-shadow-sm">
-                  <div className="max-w-4xl space-y-4 sm:space-y-6">
-                    <h1 className="font-display text-[2.5rem] leading-[1.1] sm:text-[3.5rem] md:text-[5rem] font-bold text-primary tracking-tight sm:leading-[1] md:leading-[0.9] bg-white/30 backdrop-blur-md w-fit px-6 lg:px-8 py-4 lg:py-6 rounded-[1.5rem] border border-white/20 shadow-sm">
-                      {property.title.split(" ").slice(0, 2).join(" ")}
-                      <br />
-                      {property.title.split(" ").slice(2).join(" ")}
+                  <div className="max-w-full overflow-hidden space-y-4 sm:space-y-6">
+                    <h1 className="font-display text-[1.5rem] sm:text-[2.25rem] md:text-[3rem] lg:text-[3.5rem] font-bold text-primary tracking-tight leading-tight bg-white/30 backdrop-blur-md w-fit max-w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 rounded-[1.5rem] border border-white/20 shadow-sm whitespace-nowrap overflow-hidden text-ellipsis">
+                      {property.title}
                     </h1>
 
                     <div className="flex items-center gap-2 sm:gap-3 text-stone-800 font-bold bg-white/95 backdrop-blur-md w-full sm:w-max max-w-full px-3 py-2 sm:px-6 sm:py-3 rounded-[1rem] shadow-xl border border-stone-100/50 overflow-hidden">
@@ -295,15 +295,16 @@ const PropertyDetails = () => {
 
                 <div className="flex flex-col items-center md:items-start md:pl-12 justify-center">
                   <div className="flex items-center gap-2 sm:gap-4 mb-1">
-                    <div className="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center text-[#DDB57A] font-black text-[9px] md:text-[11px] leading-none shrink-0 border border-[#DDB57A]/40 rounded-[4px] pt-0.5">
-                      AED
+                    <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-[#DDB57A] shrink-0 border border-[#DDB57A]/40 rounded-[4px] p-0.5">
+                      <DirhamIcon className="w-full h-full" />
                     </div>
                     <div className="flex flex-col text-left">
                       <span className="text-[10px] md:text-[11px] font-medium text-stone-600 mb-0.5 leading-none">
                         Starting from
                       </span>
-                      <span className="font-display font-medium text-[1.25rem] md:text-[1.5rem] text-[#0D3430] leading-none tracking-tight whitespace-nowrap">
-                        AED {property.price.toLocaleString()}
+                      <span className="font-display font-medium text-[1.25rem] md:text-[1.5rem] text-[#0D3430] leading-none tracking-tight whitespace-nowrap flex items-center gap-1.5">
+                        <DirhamIcon size={18} className="opacity-80" />{" "}
+                        {property.price.toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -974,9 +975,14 @@ const PropertyDetails = () => {
                     <p className="text-[10px] font-black text-gold uppercase tracking-[0.3em] mb-2">
                       Asking Price
                     </p>
-                    <p className="font-display text-4xl md:text-5xl font-black text-foreground">
-                      {formatPrice(property.price, property.category)}
-                    </p>
+                    <div className="font-display text-4xl md:text-5xl font-black text-foreground">
+                      <PriceDisplay
+                        price={property.price}
+                        category={property.category}
+                        iconSize={32}
+                        iconClassName="w-8 h-8 md:w-10 md:h-10 inline-block mr-1 mb-1.5 opacity-80"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -1075,8 +1081,8 @@ const PropertyDetails = () => {
                 {property.category === "off-plan" && property.paymentPlan && (
                   <div className="mt-12 pt-12 border-t border-border">
                     <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter flex items-center gap-3">
-                      <div className="w-6 h-6 flex items-center justify-center text-gold font-black text-[10px] leading-none shrink-0 border border-gold/40 rounded-[4px] pt-0.5">
-                        AED
+                      <div className="w-7 h-7 flex items-center justify-center text-gold shrink-0 border border-gold/40 rounded-[4px] p-0.5">
+                        <DirhamIcon className="w-full h-full" />
                       </div>{" "}
                       Payment Strategy
                     </h2>

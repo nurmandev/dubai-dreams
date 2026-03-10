@@ -148,7 +148,7 @@ export const sampleProperties: Property[] = [
 ];
 
 export const formatPrice = (price: number, category: string) => {
-  const formatted = `AED ${price.toLocaleString()}`;
+  const formatted = `D ${price.toLocaleString()}`;
   if (category === "rental") {
     return `${formatted} /yr`;
   }

@@ -119,7 +119,8 @@ const TermsConditions = () => {
                 <div className="text-gold font-bold">
                   Email: info@omnisprop.com
                   <br />
-                  Office: Suite 1205, Marina Plaza, Dubai Marina, UAE
+                  Office: Office No. 301-21, DhanGuard Business Center, Khalid
+                  Bin Waleed Road, Mankhool, Dubai
                 </div>
               </div>
             </motion.div>
