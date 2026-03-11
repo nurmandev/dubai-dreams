@@ -16,7 +16,6 @@ import {
   Building2,
   ArrowLeft,
   Phone,
-  MessageCircle,
   Calendar,
   Home,
   Car,
@@ -36,6 +35,7 @@ import PriceDisplay from "@/components/PriceDisplay";
 import DirhamIcon from "@/components/icons/DirhamIcon";
 import { countries } from "@/data/countries";
 import { CountryCodeSelector } from "@/components/CountryCodeSelector";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -731,7 +731,7 @@ const PropertyDetails = () => {
                         </div>
                         <div className="flex items-center gap-6 group">
                           <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 flex items-center justify-center text-gold group-hover:bg-[#25D366] group-hover:text-white transition-all border border-white/10">
-                            <MessageCircle className="w-6 h-6" />
+                            <WhatsAppIcon className="w-6 h-6" />
                           </div>
                           <div>
                             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1">
@@ -1450,7 +1450,7 @@ const PropertyDetails = () => {
                         rel="noreferrer"
                         className="text-muted-foreground hover:text-emerald transition-colors flex items-center gap-2 font-black uppercase text-[10px] tracking-widest"
                       >
-                        <MessageCircle className="w-5 h-5" /> Chat via WhatsApp
+                        <WhatsAppIcon className="w-5 h-5" /> Chat via WhatsApp
                       </a>
                     </div>
                   </div>
