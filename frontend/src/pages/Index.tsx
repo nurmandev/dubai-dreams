@@ -535,7 +535,7 @@ const Index = () => {
                   ref={emblaRef}
                 >
                   <div className="flex -ml-8 py-6">
-                    {[...Array(30)].map((_, i) => (
+                    {[...Array(31)].map((_, i) => (
                       <div
                         key={i}
                         className="flex-[0_0_240px] min-w-0 pl-8 shrink-0"
