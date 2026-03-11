@@ -538,12 +538,12 @@ const Index = () => {
                     {[...Array(30)].map((_, i) => (
                       <div
                         key={i}
-                        className="flex-[0_0_280px] min-w-0 bg-white rounded-2xl p-10 flex items-center justify-center h-48 shadow-luxury shrink-0 transition-all duration-500 hover:scale-[1.05] hover:shadow-gold/30 border border-white/10"
+                        className="flex-[0_0_200px] min-w-0 bg-white rounded-2xl p-6 flex items-center justify-center h-32 shadow-luxury shrink-0 transition-all duration-500 hover:scale-[1.05] hover:shadow-gold/30 border border-white/10"
                       >
                         <img
                           src={`/LOGOS/${i + 1}.png`}
                           alt={`Developer ${i + 1}`}
-                          className="max-h-full max-w-full object-contain drop-shadow-sm"
+                          className="max-h-full max-w-full object-contain drop-shadow-sm p-2"
                           loading="lazy"
                         />
                       </div>
