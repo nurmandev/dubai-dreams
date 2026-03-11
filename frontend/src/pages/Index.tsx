@@ -534,18 +534,20 @@ const Index = () => {
                   className="overflow-hidden cursor-grab active:cursor-grabbing px-4"
                   ref={emblaRef}
                 >
-                  <div className="flex gap-8 py-6">
+                  <div className="flex -ml-8 py-6">
                     {[...Array(30)].map((_, i) => (
                       <div
                         key={i}
-                        className="flex-[0_0_200px] min-w-0 bg-white rounded-2xl p-6 flex items-center justify-center h-32 shadow-luxury shrink-0 transition-all duration-500 hover:scale-[1.05] hover:shadow-gold/30 border border-white/10"
+                        className="flex-[0_0_240px] min-w-0 pl-8 shrink-0"
                       >
-                        <img
-                          src={`/LOGOS/${i + 1}.png`}
-                          alt={`Developer ${i + 1}`}
-                          className="max-h-full max-w-full object-contain drop-shadow-sm p-2"
-                          loading="lazy"
-                        />
+                        <div className="bg-white rounded-2xl p-6 flex items-center justify-center h-32 shadow-luxury transition-all duration-500 hover:scale-[1.05] hover:shadow-gold/30 border border-white/10">
+                          <img
+                            src={`/LOGOS/${i + 1}.png`}
+                            alt={`Developer ${i + 1}`}
+                            className="max-h-full max-w-full object-contain drop-shadow-sm p-4"
+                            loading="lazy"
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
