@@ -6,6 +6,7 @@ import {
   Award,
   TrendingUp,
   Linkedin,
+  Instagram,
   Mail,
   ArrowRight,
   Diamond,
@@ -166,18 +167,31 @@ const About = () => {
                 role: "Founder & General Manager",
                 image: "/images/Vikas-kumar.jpeg",
                 bio: "Founder of OMNIS Properties, Vikas Kumar oversees the firm’s strategic direction, client advisory, and investment consulting. He holds an MBA in Urban Infrastructure and Real Estate Management from Amity University, Noida (2012). With extensive experience in the Dubai and UAE real estate markets, he specializes in guiding investors toward well-researched, high-potential property opportunities through a transparent, client-first approach.",
+                links: {
+                  linkedin: "https://www.linkedin.com/in/vikas-kumar-23828224",
+                  instagram: "https://www.instagram.com/astrorealtorvk/",
+                },
               },
               {
                 name: "Jamal Alsuwaidi",
                 role: "Local Partner",
                 image: "/images/Jamal.jpeg",
                 bio: "Jamal Alsuwaidi is a Local Partner at OMNIS Properties and holds a position within the Dubai Government. He has been associated with the company since its establishment and supports the firm in government-related matters, while also strengthening its presence both locally and internationally.",
+                links: {
+                  linkedin: "https://www.linkedin.com/in/omnisprop",
+                  instagram:
+                    "https://www.instagram.com/omnispropertiesdubai/",
+                },
               },
               {
                 name: "Anstin Machado",
                 role: "Admin Executive & Digital Marketing",
                 image: "/images/Anstin.jpeg",
                 bio: "Anstin Machado manages administrative operations and oversees digital marketing activities at Omnis Properties. He handles essential paperwork, documentation, and contributes to digital creative work that supports the company’s branding and online presence.",
+                links: {
+                  linkedin: "https://www.linkedin.com/in/anstin01/",
+                  instagram: "https://www.instagram.com/realtor_ixe_dxb/",
+                },
               },
             ].map((member, i) => (
               <motion.div
@@ -197,12 +211,34 @@ const About = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent opacity-80" />
 
                   <div className="absolute bottom-8 left-8 right-8">
-                    <h3 className="font-display text-3xl font-bold text-white mb-2">
-                      {member.name}
-                    </h3>
-                    <p className="text-gold font-body text-xs uppercase tracking-[0.2em] font-bold">
-                      {member.role}
-                    </p>
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <h3 className="font-display text-3xl font-bold text-white mb-2">
+                          {member.name}
+                        </h3>
+                        <p className="text-gold font-body text-xs uppercase tracking-[0.2em] font-bold">
+                          {member.role}
+                        </p>
+                      </div>
+                      <div className="flex gap-4">
+                        <a
+                          href={member.links.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/40 hover:text-gold transition-colors"
+                        >
+                          <Linkedin className="w-5 h-5" />
+                        </a>
+                        <a
+                          href={member.links.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white/40 hover:text-gold transition-colors"
+                        >
+                          <Instagram className="w-5 h-5" />
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <p className="text-white/60 font-body text-base leading-relaxed text-justify">
