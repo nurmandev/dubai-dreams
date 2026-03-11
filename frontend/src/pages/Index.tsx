@@ -540,11 +540,11 @@ const Index = () => {
                         key={i}
                         className="flex-[0_0_240px] min-w-0 pl-8 shrink-0"
                       >
-                        <div className="bg-white rounded-2xl p-6 flex items-center justify-center h-32 shadow-luxury transition-all duration-500 hover:scale-[1.05] hover:shadow-gold/30 border border-white/10">
+                        <div className="bg-white rounded-2xl p-4 flex items-center justify-center h-32 shadow-luxury transition-all duration-500 hover:scale-[1.05] hover:shadow-gold/30 border border-white/10">
                           <img
                             src={`/LOGOS/${i + 1}.png`}
                             alt={`Developer ${i + 1}`}
-                            className="max-h-full max-w-full object-contain drop-shadow-sm p-4"
+                            className="max-h-full max-w-full object-contain drop-shadow-sm p-1"
                             loading="lazy"
                           />
                         </div>
