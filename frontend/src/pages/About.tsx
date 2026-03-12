@@ -113,18 +113,22 @@ const About = () => {
               </h2>
               <div className="space-y-6 text-muted-foreground font-body text-lg leading-relaxed">
                 <p>
-                  Omnis Properties was started with one simple goal: to help
-                  people find the best places to live and invest in Dubai. We
-                  know this city inside and out, and we use that knowledge to
-                  find properties that aren't just beautiful, but are also smart
-                  investments for your future.
+                  Our focus is on investors looking to benefit from Dubai’s
+                  growing real estate market. We work with a carefully selected
+                  portfolio of projects that offer strong potential for capital
+                  appreciation and attractive rental returns, helping clients
+                  secure investments with long-term value. From the first
+                  conversation to project handover, we provide clear and honest
+                  guidance at every stage of the process.
                 </p>
                 <p>
-                  We are more than just a regular real estate agency. We work
-                  closely with you to understand exactly what you need, making
-                  sure the whole process is clear, honest, and stress-free.
-                  Whether you are buying your first home or growing your
-                  property collection, we are here to support you at every step.
+                  We offer end-to-end support including project selection,
+                  booking assistance, documentation guidance, and post-handover
+                  services. Whether clients choose to rent their property for
+                  steady income or sell for future gains, our client-centric
+                  approach ensures a dependable and transparent experience.
+                  Integrity, transparency, and long-term relationships remain at
+                  the core of how we support every property investment journey.
                 </p>
               </div>
               <div className="mt-12">
@@ -179,8 +183,7 @@ const About = () => {
                 bio: "Jamal Alsuwaidi is a Local Partner at OMNIS Properties and holds a position within the Dubai Government. He has been associated with the company since its establishment and supports the firm in government-related matters, while also strengthening its presence both locally and internationally.",
                 links: {
                   linkedin: "https://www.linkedin.com/in/omnisprop",
-                  instagram:
-                    "https://www.instagram.com/omnispropertiesdubai/",
+                  instagram: "https://www.instagram.com/omnispropertiesdubai/",
                 },
               },
               {

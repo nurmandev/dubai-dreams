@@ -9,7 +9,6 @@ import {
   Linkedin,
 } from "lucide-react";
 
-
 const XIcon = ({ className }: { className?: string }) => (
   <svg
     viewBox="0 0 24 24"
@@ -32,8 +31,10 @@ const Footer = () => {
               <img src="/logo.png" alt="OMNIS" className="h-12 w-auto" />
             </Link>
             <p className="text-primary-foreground/60 font-body text-sm leading-relaxed mb-6">
-              Your trusted partner in Dubai's premium real estate market. We
-              connect investors and homebuyers with exceptional properties.
+              Your trusted partner in Dubai&apos;s premium real estate market.
+              Guided by a client-first philosophy, we connect investors and
+              homebuyers with the right property opportunities through
+              transparency, honesty, and integrity.
             </p>
             <div className="flex items-center gap-4">
               <a
