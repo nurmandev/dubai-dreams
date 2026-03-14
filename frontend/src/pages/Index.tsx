@@ -618,10 +618,10 @@ const Index = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/30 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-center font-display text-2xl font-bold text-primary-foreground mb-2 uppercase">
+                    <h3 className="text-left font-display text-2xl font-bold text-primary-foreground mb-2 uppercase">
                       {cat.title}
                     </h3>
-                    <p className="text-primary-foreground/70 font-body text-sm leading-relaxed">
+                    <p className="text-left text-primary-foreground/70 font-body text-sm leading-relaxed">
                       {cat.desc}
                     </p>
                   </div>
