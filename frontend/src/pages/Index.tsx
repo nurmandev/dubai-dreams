@@ -442,9 +442,9 @@ const Index = () => {
                 <span className="inline-block text-gold font-body text-xs uppercase tracking-[0.5em] font-bold">
                   Institutional Trust
                 </span>
-                <h2 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight">
+                <h2 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight uppercase">
                   Regulatory{" "}
-                  <span className="italic text-white/90">Compliance</span>
+                  <span className="italic text-white/90 font-display">Compliance</span>
                 </h2>
                 <div className="w-20 h-[1px] bg-gold mx-auto mt-8" />
                 <p className="text-white/40 font-body text-lg max-w-2xl mx-auto leading-relaxed mt-8">
