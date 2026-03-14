@@ -45,7 +45,7 @@ const About = () => {
             </div>
             <h1 className="text-center font-display text-5xl md:text-7xl font-bold text-white leading-tight mb-8">
               EXCELLENCE IN <br />
-              <span className="italic font-light text-white/90">
+              <span className="text-white/90 font-body">
                 DUBAI REAL ESTATE
               </span>
             </h1>
@@ -80,7 +80,7 @@ const About = () => {
               viewport={{ once: true }}
               className="lg:col-span-5 relative"
             >
-              <div className="aspect-[4/5] overflow-hidden rounded-tr-[4rem] rounded-bl-[4rem] relative shadow-2xl">
+              <div className="aspect-[4/5] overflow-hidden relative shadow-2xl">
                 <img
                   src="/images/property-villa.jpg"
                   alt="Omnis properties methodology"
@@ -89,7 +89,7 @@ const About = () => {
                 <div className="absolute inset-0 bg-primary/5" />
               </div>
               {/* Floating Stat Card */}
-              <div className="absolute -bottom-6 right-2 sm:-right-6 md:-right-10 md:-bottom-10 bg-primary text-white p-6 md:p-8 rounded-2xl shadow-2xl border border-gold/20 max-w-[160px] md:max-w-[200px]">
+              <div className="absolute -bottom-6 right-2 sm:-right-6 md:-right-10 md:-bottom-10 bg-primary text-white p-6 md:p-8 shadow-2xl border border-gold/20 max-w-[160px] md:max-w-[200px]">
                 <div className="text-gold font-display text-4xl md:text-5xl font-bold mb-2">
                   10+
                 </div>
@@ -105,9 +105,9 @@ const About = () => {
               viewport={{ once: true }}
               className="lg:col-span-7 lg:pl-10"
             >
-              <h2 className="text-center font-display text-4xl md:text-5xl font-bold text-primary mb-8 leading-tight">
+              <h2 className="text-left font-display text-4xl md:text-5xl font-bold text-primary mb-8 leading-tight">
                 A MODERN APPROACH <br />
-                <span className="text-gold italic font-light">
+                <span className="text-gold font-body">
                   TO DUBAI REAL ESTATE
                 </span>
               </h2>
@@ -158,7 +158,7 @@ const About = () => {
             </span>
             <h2 className="text-center font-display text-4xl md:text-5xl font-bold text-white">
               THE VISIONARIES BEHIND{" "}
-              <span className="italic font-light">OMNIS</span>
+              <span className="font-body">OMNIS</span>
             </h2>
             <div className="w-16 h-[1px] bg-gold mx-auto mt-8" />
           </div>
@@ -327,7 +327,7 @@ const About = () => {
             <h2 className="text-center font-display text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
               UNLOCK OPPORTUNITIES IN
               <br />
-              <span className="text-gold italic font-light">
+              <span className="text-gold font-body">
                 DUBAI REAL ESTATE.
               </span>
             </h2>
