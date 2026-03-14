@@ -64,6 +64,11 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
           <p className="text-muted-foreground text-sm font-body mt-1">
             {property.location}
           </p>
+          {property.developer && (
+            <p className="text-gold text-[10px] font-black uppercase tracking-widest mt-1">
+              {property.developer}
+            </p>
+          )}
 
           <div className="flex items-center gap-5 mt-4 pt-4 border-t border-border">
             {property.category === "off-plan" ? (

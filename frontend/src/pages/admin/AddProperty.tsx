@@ -185,24 +185,43 @@ const AddProperty = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                    {isOffPlan ? "Project Name*" : "Property Title*"}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder={
-                      isOffPlan
-                        ? "e.g. Radisson Blu Residences"
-                        : "e.g. Ultra Luxury Penthouse at 22 Karat"
-                    }
-                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      {isOffPlan ? "Project Name*" : "Property Title*"}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder={
+                        isOffPlan
+                          ? "e.g. Radisson Blu Residences"
+                          : "e.g. Ultra Luxury Penthouse at 22 Karat"
+                      }
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                      value={formData.title}
+                      onChange={(e) =>
+                        setFormData({ ...formData, title: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                      Developer Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Emaar Properties"
+                      className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold transition-all"
+                      value={formData.developerName}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          developerName: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
@@ -457,18 +476,15 @@ const AddProperty = () => {
                   <>
                     <div className="space-y-2">
                       <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
-                        Developer Name
+                        Unit Types
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g. Emaar Properties"
+                        placeholder="e.g. 1 & 2 BR Apartments"
                         className="w-full bg-muted/30 border border-border rounded-xl px-4 py-2.5 outline-none font-body text-sm focus:border-gold"
-                        value={formData.developerName}
+                        value={formData.unitTypes}
                         onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            developerName: e.target.value,
-                          })
+                          setFormData({ ...formData, unitTypes: e.target.value })
                         }
                       />
                     </div>

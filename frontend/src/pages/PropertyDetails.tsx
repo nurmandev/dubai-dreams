@@ -1132,6 +1132,17 @@ const PropertyDetails = () => {
                     Technical Profile
                   </h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    {property.developer && (
+                      <div className="flex items-center gap-4">
+                        <Building2 className="w-5 h-5 text-[#0D3430]" />
+                        <div>
+                          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                            Developer
+                          </p>
+                          <p className="text-sm font-bold">{property.developer}</p>
+                        </div>
+                      </div>
+                    )}
                     {Number(property.yearBuilt) > 0 && (
                       <div className="flex items-center gap-4">
                         <Calendar className="w-5 h-5 text-[#0D3430]" />
