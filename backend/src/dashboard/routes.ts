@@ -59,6 +59,7 @@ router.patch(
 router.delete("/properties/:id", PropertyController.deleteProperty);
 
 import { BlogAdminController } from "./controllers/blog.controller";
+import { ChannelController } from "./controllers/channel.controller";
 
 // Blog Management
 router.get("/blogs", BlogAdminController.getAllBlogs);
@@ -79,5 +80,11 @@ router.patch(
   BlogAdminController.updateBlog,
 );
 router.delete("/blogs/:id", BlogAdminController.deleteBlog);
+
+// Channel Management
+router.get("/channels", ChannelController.getChannels);
+router.post("/channels", ChannelController.createChannel);
+router.patch("/channels/:id", ChannelController.updateChannel);
+router.delete("/channels/:id", ChannelController.deleteChannel);
 
 export default router;

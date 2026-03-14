@@ -10,6 +10,7 @@ import {
   X,
   Menu,
   FileText,
+  Share2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -28,6 +29,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobile }: AdminSidebarProps) => {
     { label: "Lead Management", icon: MessageSquare, path: "/admin/inquiries" },
     { label: "KYC Management", icon: FileText, path: "/admin/kyc" },
     { label: "Blogs", icon: FileText, path: "/admin/blogs" },
+    { label: "Social Channels", icon: Share2, path: "/admin/channels" },
     { label: "Profile", icon: User, path: "/admin/profile" },
   ];
 

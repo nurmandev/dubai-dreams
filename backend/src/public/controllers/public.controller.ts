@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Property from "../../models/Property";
 import Inquiry from "../../models/Inquiry";
 import KYC from "../../models/KYC";
+import SocialChannel from "../../models/SocialChannel";
 import { sendAdminNotification } from "../../utils/mailer";
 
 export class PublicController {
@@ -371,5 +372,20 @@ export class PublicController {
     const baseUrl =
       process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 5000}`;
     return `${baseUrl}/${path.replace(/\\/g, "/")}`;
+  }
+
+  /**
+   * Get all active social channels
+   * GET /api/public/channels
+   */
+  static async getChannels(req: Request, res: Response) {
+    try {
+      const channels = await SocialChannel.find({ isActive: true }).sort({
+        order: 1,
+      });
+      res.status(200).json({ channels });
+    } catch (error: any) {
+      res.status(500).json({ message: "Failed to fetch channels" });
+    }
   }
 }

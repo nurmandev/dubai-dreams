@@ -21,6 +21,7 @@ import AdminProfile from "./pages/admin/Profile";
 import EditProperty from "./pages/admin/EditProperty";
 import AddProperty from "./pages/admin/AddProperty";
 import ManageBlogs from "./pages/admin/ManageBlogs";
+import ManageChannels from "./pages/admin/ManageChannels";
 import BlogForm from "./pages/admin/BlogForm";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/admin/blogs" element={<ManageBlogs />} />
           <Route path="/admin/blogs/add" element={<BlogForm />} />
           <Route path="/admin/blogs/edit/:id" element={<BlogForm />} />
+          <Route path="/admin/channels" element={<ManageChannels />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

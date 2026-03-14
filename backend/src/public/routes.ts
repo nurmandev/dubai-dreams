@@ -9,6 +9,7 @@ const router = Router();
 router.get("/properties", PublicController.getProperties);
 router.get("/properties/:id", PublicController.getPropertyById);
 router.get("/stats", PublicController.getPublicStats);
+router.get("/channels", PublicController.getChannels);
 
 // Blogs
 router.get("/blogs", BlogController.getAllBlogs);
