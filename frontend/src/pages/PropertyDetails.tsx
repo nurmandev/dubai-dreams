@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { api } from "@/lib/api";
@@ -147,11 +147,11 @@ const PropertyDetails = () => {
     return url;
   };
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     if (property?.images) {
       setActiveImage((prev) => (prev + 1) % property.images!.length);
     }
-  };
+  }, [property?.images]);
 
   const prevImage = () => {
     if (property?.images) {
@@ -171,7 +171,7 @@ const PropertyDetails = () => {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [activeImage, property?.images]);
+  }, [activeImage, property?.images, nextImage]);
 
   if (loading) {
     return (
