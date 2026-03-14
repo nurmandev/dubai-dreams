@@ -182,7 +182,7 @@ export class PublicController {
       const hotspots = await Property.aggregate([
         {
           $group: {
-            _id: "$city",
+            _id: "$location",
             count: { $sum: 1 },
             img: { $first: "$images" },
           },

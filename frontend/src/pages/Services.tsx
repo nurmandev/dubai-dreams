@@ -35,7 +35,7 @@ const services = [
   },
   {
     icon: Key,
-    title: "Property Leasing & Rentals",
+    title: "Property Leasing",
     desc: "We help tenants find suitable rental properties and support landlords in leasing their units. Our services include tenant sourcing, property marketing, and lease coordination. The goal is to make the rental process smooth and efficient for both parties.",
   },
   {
@@ -285,7 +285,7 @@ const Services = () => {
             viewport={{ once: true }}
             className="max-w-2xl mx-auto"
           >
-            <h2 className="font-display text-5xl md:text-7xl font-medium text-white mb-12 italic leading-tight">
+            <h2 className="font-body text-5xl md:text-7xl font-medium text-white mb-12 italic leading-tight">
               Integrity is the <br />
               Only Luxury.
             </h2>

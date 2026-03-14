@@ -43,10 +43,10 @@ const About = () => {
                 About Omnis Properties
               </span>
             </div>
-            <h1 className="font-display text-5xl md:text-7xl font-bold text-white leading-tight mb-8">
-              Excellence in <br />
+            <h1 className="text-center font-display text-5xl md:text-7xl font-bold text-white leading-tight mb-8">
+              EXCELLENCE IN <br />
               <span className="italic font-light text-white/90">
-                Dubai Real Estate
+                DUBAI REAL ESTATE
               </span>
             </h1>
             <p className="text-white/60 font-body text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
@@ -105,8 +105,8 @@ const About = () => {
               viewport={{ once: true }}
               className="lg:col-span-7 lg:pl-10"
             >
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-primary mb-8 leading-tight">
-                A Modern Approach <br />
+              <h2 className="text-center font-display text-4xl md:text-5xl font-bold text-primary mb-8 leading-tight">
+                A MODERN APPROACH <br />
                 <span className="text-gold italic font-light">
                   TO DUBAI REAL ESTATE
                 </span>
@@ -156,9 +156,9 @@ const About = () => {
             <span className="inline-block text-gold font-body text-xs uppercase tracking-[0.4em] font-bold mb-4">
               Our Leader
             </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white">
-              The Visionaries Behind{" "}
-              <span className="italic font-light">Omnis</span>
+            <h2 className="text-center font-display text-4xl md:text-5xl font-bold text-white">
+              THE VISIONARIES BEHIND{" "}
+              <span className="italic font-light">OMNIS</span>
             </h2>
             <div className="w-16 h-[1px] bg-gold mx-auto mt-8" />
           </div>
@@ -188,7 +188,7 @@ const About = () => {
               },
               {
                 name: "Anstin Machado",
-                role: "Admin Executive & Digital Marketing",
+                role: "OPERATIONS & DIGITAL MARKETING MANAGER",
                 image: "/images/Anstin.jpeg",
                 bio: "Anstin Machado manages administrative operations and oversees digital marketing activities at Omnis Properties. He handles essential paperwork, documentation, and contributes to digital creative work that supports the company’s branding and online presence.",
                 links: {
@@ -216,7 +216,7 @@ const About = () => {
                   <div className="absolute bottom-8 left-8 right-8">
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <h3 className="font-display text-3xl font-bold text-white mb-2">
+                        <h3 className="font-display text-xl md:text-2xl font-bold text-white mb-1 uppercase">
                           {member.name}
                         </h3>
                         <p className="text-gold font-body text-xs uppercase tracking-[0.2em] font-bold">
@@ -260,8 +260,8 @@ const About = () => {
             <span className="inline-block text-gold font-body text-xs uppercase tracking-[0.4em] font-bold mb-4">
               Core Principles
             </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-primary">
-              The Omnis Advantage
+            <h2 className="text-center font-display text-4xl md:text-5xl font-bold text-primary">
+              THE OMNIS ADVANTAGE
             </h2>
           </div>
 
@@ -299,7 +299,7 @@ const About = () => {
                 <div className="w-14 h-14 bg-primary text-gold rounded-none flex items-center justify-center mb-8">
                   <item.icon className="w-6 h-6" />
                 </div>
-                <h3 className="font-display text-xl font-bold text-primary mb-4">
+                <h3 className="text-center font-display text-xl font-bold text-primary mb-4 uppercase">
                   {item.title}
                 </h3>
                 <p className="text-muted-foreground font-body leading-relaxed text-sm">
@@ -324,15 +324,16 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h2 className="font-display text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
-              Ready to construct your <br />
+            <h2 className="text-center font-display text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
+              UNLOCK OPPORTUNITIES IN
+              <br />
               <span className="text-gold italic font-light">
-                wealth legacy?
+                DUBAI REAL ESTATE.
               </span>
             </h2>
             <p className="text-white/70 font-body text-lg md:text-xl mb-12">
-              Our investment advisors are ready to curate a bespoke portfolio
-              that aligns strictly with your financial aspirations.
+              Our team helps investors identify properties with strong potential
+              for growth, rental income, and long-term value.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center w-full px-4 sm:px-0">
               <Button

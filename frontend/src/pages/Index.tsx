@@ -459,9 +459,9 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-px bg-white/5 border border-white/5 mb-32 max-w-4xl mx-auto">
               {[
                 {
-                  name: "RERA",
-                  label: "Real Estate Regulatory Agency",
-                  sub: "Licensing & Regulation",
+                  name: "DET",
+                  label: "Dubai Department of Economy & Tourism",
+                  sub: "Primary Business Licensing Authority",
                 },
                 {
                   name: "DLD",
@@ -499,7 +499,7 @@ const Index = () => {
                   <span className="text-gold font-body text-[10px] uppercase tracking-[0.3em] font-bold">
                     Strategic Network
                   </span>
-                  <h3 className="font-display text-3xl md:text-5xl font-bold text-white leading-tight">
+                  <h3 className="text-center font-display text-3xl md:text-5xl font-bold text-white leading-tight uppercase">
                     Our Developer{" "}
                     <span className="text-white/40 italic">Network</span>
                   </h3>
@@ -573,7 +573,7 @@ const Index = () => {
             <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-2">
               Browse By Category
             </p>
-            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
+            <h2 className="text-center font-display text-2xl md:text-3xl lg:text-4xl font-bold text-foreground uppercase">
               What Are You Looking For?
             </h2>
           </motion.div>
@@ -618,7 +618,7 @@ const Index = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/30 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="font-display text-2xl font-bold text-primary-foreground mb-2">
+                    <h3 className="text-center font-display text-2xl font-bold text-primary-foreground mb-2 uppercase">
                       {cat.title}
                     </h3>
                     <p className="text-primary-foreground/70 font-body text-sm leading-relaxed">
@@ -644,7 +644,7 @@ const Index = () => {
             <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-2">
               Premium Districts
             </p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
+            <h2 className="text-left font-display text-3xl md:text-4xl font-bold text-foreground uppercase">
               Investment Hotspots
             </h2>
           </motion.div>
@@ -699,10 +699,10 @@ const Index = () => {
                   </span>
                 </div>
                 <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="font-display text-2xl font-bold text-white mb-1">
+                  <h3 className="text-left font-display text-2xl font-bold text-white mb-1 uppercase">
                     {area.name}
                   </h3>
-                  <p className="text-white/60 font-body text-sm">
+                  <p className="text-left text-white/60 font-body text-sm">
                     {area.properties}
                   </p>
                 </div>
@@ -724,7 +724,7 @@ const Index = () => {
             <p className="text-gold font-body text-sm tracking-[0.2em] uppercase mb-2">
               Why Choose Us
             </p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
+            <h2 className="text-center font-display text-3xl md:text-4xl font-bold text-foreground uppercase">
               The Omnis Advantage
             </h2>
           </motion.div>
@@ -739,7 +739,7 @@ const Index = () => {
               {
                 icon: Shield,
                 title: "Trusted Partner",
-                desc: "Licensed and regulated by Dubai's Real Estate Regulatory Agency (RERA).",
+                desc: "Licensed and regulated by Dubai's Department of Economy & Tourism (DET).",
               },
               {
                 icon: TrendingUp,
@@ -763,7 +763,7 @@ const Index = () => {
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-emerald mb-5 group-hover:shadow-gold transition-shadow duration-300">
                   <item.icon className="w-7 h-7 text-gold" />
                 </div>
-                <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                <h3 className="text-center font-display text-lg font-semibold text-foreground mb-2 uppercase">
                   {item.title}
                 </h3>
                 <p className="text-muted-foreground font-body text-sm leading-relaxed">
@@ -775,47 +775,43 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="py-20 bg-primary overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gold/5 skew-x-12 translate-x-20" />
-        <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto bg-card/10 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-16 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-            >
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gold/20 mb-6">
-                <Globe className="w-6 h-6 text-gold" />
-              </div>
-              <h2 className="font-display text-3xl md:text-5xl font-bold text-white mb-4">
-                Exclusive Opportunities
-              </h2>
-              <p className="text-gold/60 font-body text-lg mb-10 max-w-xl mx-auto">
-                Join our private list to receive off-market luxury listings and
-                market insights before they go public.
+      {/* List Your Property */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+        
+        <div className="container mx-auto px-4 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <span className="inline-block text-gold font-body text-xs uppercase tracking-[0.4em] font-bold mb-4">
+              Partner With Us
+            </span>
+            <h2 className="text-center font-display text-4xl md:text-5xl font-bold text-primary mb-8 uppercase">
+              List Your Property With Us
+            </h2>
+            <div className="w-16 h-[1px] bg-gold mx-auto mb-8" />
+            
+            <div className="space-y-6 text-muted-foreground font-body text-lg leading-relaxed mb-10">
+              <p>
+                If you are looking to sell or rent your property in Dubai or the UAE, OMNIS Properties offers a professional and transparent platform to get started. Property owners can list their properties with us at no upfront listing cost, allowing access to a network of genuine buyers, investors, and tenants.
               </p>
-              <form
-                className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  toast.success("Welcome to the exclusive circle!");
-                }}
-              >
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white font-body outline-none focus:ring-1 ring-gold transition-all"
-                  required
-                />
-                <Button variant="gold" size="xl" className="whitespace-nowrap">
-                  Join Private List
-                </Button>
-              </form>
-            </motion.div>
-          </div>
+              <p>
+                Our team supports you with property presentation, enquiry management, and connecting with serious prospects through our investor network and marketing channels.
+              </p>
+            </div>
+            
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/contact">
+                Contact Our Team <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+            </Button>
+          </motion.div>
         </div>
       </section>
+
 
       {/* Testimonials */}
       <section className="py-32 bg-primary relative overflow-hidden">
@@ -834,7 +830,7 @@ const Index = () => {
                 <span className="inline-block text-gold font-body text-xs uppercase tracking-[0.5em] font-bold">
                   Client Success
                 </span>
-                <h2 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight">
+                <h2 className="text-center font-display text-4xl md:text-6xl font-bold text-white leading-tight uppercase">
                   What Our Elite <br />
                   <span className="italic text-white/90">Clients Say</span>
                 </h2>
@@ -977,10 +973,10 @@ const Index = () => {
             viewport={{ once: true }}
             className="flex flex-col items-center"
           >
-            <h2 className="font-display text-2xl md:text-5xl font-bold text-primary-foreground mb-4 max-w-2xl px-4">
+            <h2 className="text-center font-display text-2xl md:text-5xl font-bold text-primary-foreground mb-4 max-w-2xl px-4 uppercase">
               Ready to Invest in Dubai?
             </h2>
-            <p className="text-primary-foreground/70 font-body text-sm md:text-lg max-w-2xl mx-auto mb-8 px-4">
+            <p className="text-center text-primary-foreground/70 font-body text-sm md:text-lg max-w-2xl mx-auto mb-8 px-4">
               Let our team of experts guide you through Dubai's dynamic real
               estate market. Schedule a free consultation today.
             </p>
