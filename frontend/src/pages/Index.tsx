@@ -499,10 +499,10 @@ const Index = () => {
                   <span className="text-gold font-body text-[10px] uppercase tracking-[0.3em] font-bold">
                     Strategic Network
                   </span>
-                  <h3 className="text-center font-display text-3xl md:text-5xl font-bold text-white leading-tight uppercase">
+                  <h2 className="text-center md:text-left font-display text-4xl md:text-6xl font-bold text-white leading-tight uppercase">
                     Our Developer{" "}
                     <span className="text-white/40 italic">Network</span>
-                  </h3>
+                  </h2>
                 </div>
                 <div className="flex gap-4">
                   <Button
@@ -685,27 +685,31 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group relative h-[400px] rounded-xl overflow-hidden cursor-pointer"
               >
-                <img
-                  src={area.img}
-                  alt={area.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent" />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-gold text-accent-foreground text-[10px] font-black uppercase tracking-widest rounded-full">
-                    {area.tag}
-                  </span>
-                </div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="text-left font-display text-2xl font-bold text-white mb-1 uppercase">
-                    {area.name}
-                  </h3>
-                  <p className="text-left text-white/60 font-body text-sm">
-                    {area.properties}
-                  </p>
-                </div>
+                <Link
+                  to={`/properties?search=${area.name}`}
+                  className="group relative block h-[400px] rounded-xl overflow-hidden cursor-pointer"
+                >
+                  <img
+                    src={area.img}
+                    alt={area.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent" />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 bg-gold text-accent-foreground text-[10px] font-black uppercase tracking-widest rounded-full">
+                      {area.tag}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-left font-display text-2xl font-bold text-white mb-1 uppercase">
+                      {area.name}
+                    </h3>
+                    <p className="text-left text-white/60 font-body text-sm">
+                      {area.properties}
+                    </p>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
