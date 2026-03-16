@@ -99,7 +99,7 @@ const Services = () => {
               </div>
               <h1 className="font-display text-6xl md:text-8xl font-medium text-white mb-10 leading-[1.1] tracking-tight">
                 Refining the <br />
-                <span className="italic text-gold">Standard</span> of Trust.
+                <span className="text-gold">Standard</span> of Trust.
               </h1>
               <p className="text-white/60 font-body text-xl md:text-2xl max-w-2xl leading-relaxed font-light">
                 A bespoke collective of real estate solutions designed for the
@@ -169,7 +169,7 @@ const Services = () => {
                 >
                   <div className="flex flex-col md:flex-row gap-10 md:items-start group">
                     <div className="shrink-0 pt-2">
-                      <span className="font-display text-4xl italic text-gold/30 group-hover:text-gold transition-colors duration-500">
+                      <span className="font-display text-4xl text-gold/30 group-hover:text-gold transition-colors duration-500">
                         {(i + 1).toString().padStart(2, "0")}
                       </span>
                     </div>
@@ -221,7 +221,7 @@ const Services = () => {
                 <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
               </div>
               <div className="absolute -bottom-10 -right-10 bg-primary p-12 text-white hidden xl:block shadow-2xl">
-                <p className="font-display text-5xl font-medium mb-4 italic text-gold">
+                <p className="font-display text-5xl font-medium mb-4 text-gold">
                   10+
                 </p>
                 <p className="font-body text-[10px] uppercase tracking-[0.4em] text-white/40">
@@ -285,7 +285,7 @@ const Services = () => {
             viewport={{ once: true }}
             className="max-w-2xl mx-auto"
           >
-            <h2 className="font-body text-5xl md:text-7xl font-medium text-white mb-12 italic leading-tight">
+            <h2 className="font-body text-5xl md:text-7xl font-medium text-white mb-12 leading-tight">
               Integrity is the <br />
               Only Luxury.
             </h2>

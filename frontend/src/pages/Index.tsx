@@ -444,7 +444,7 @@ const Index = () => {
                 </span>
                 <h2 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight uppercase">
                   Regulatory{" "}
-                  <span className="italic text-white/90 font-display">Compliance</span>
+                  <span className="text-white/90 font-display">Compliance</span>
                 </h2>
                 <div className="w-20 h-[1px] bg-gold mx-auto mt-8" />
                 <p className="text-white/40 font-body text-lg max-w-2xl mx-auto leading-relaxed mt-8">
@@ -501,7 +501,7 @@ const Index = () => {
                   </span>
                   <h2 className="text-center md:text-left font-display text-4xl md:text-6xl font-bold text-white leading-tight uppercase">
                     Our Developer{" "}
-                    <span className="text-white/40 italic">Network</span>
+                    <span className="text-white/40">Network</span>
                   </h2>
                 </div>
                 <div className="flex gap-4">
@@ -650,35 +650,32 @@ const Index = () => {
           </motion.div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {(homeHotspots.length > 0
-              ? homeHotspots
-              : [
-                  {
-                    name: "Downtown Dubai",
-                    properties: "450+ Properties",
-                    img: "/images/hero-dubai.jpg",
-                    tag: "High ROI",
-                  },
-                  {
-                    name: "Palm Jumeirah",
-                    properties: "120+ Properties",
-                    img: "/images/property-villa.jpg",
-                    tag: "Exclusive",
-                  },
-                  {
-                    name: "Dubai Marina",
-                    properties: "380+ Properties",
-                    img: "/images/property-marina.jpg",
-                    tag: "High Yield",
-                  },
-                  {
-                    name: "Business Bay",
-                    properties: "290+ Properties",
-                    img: "/images/property-offplan.jpg",
-                    tag: "Commercial",
-                  },
-                ]
-            ).map((area, i) => (
+            {[
+              {
+                name: "Downtown Dubai",
+                properties: "450+ Properties",
+                img: "/images/hero-dubai.jpg",
+                tag: "High ROI",
+              },
+              {
+                name: "Palm Jumeirah",
+                properties: "120+ Properties",
+                img: "/images/property-villa.jpg",
+                tag: "Exclusive",
+              },
+              {
+                name: "Dubai Marina",
+                properties: "380+ Properties",
+                img: "/images/property-marina.jpg",
+                tag: "High Yield",
+              },
+              {
+                name: "Business Bay",
+                properties: "290+ Properties",
+                img: "/images/property-offplan.jpg",
+                tag: "Commercial",
+              },
+            ].map((area, i) => (
               <motion.div
                 key={area.name}
                 initial={{ opacity: 0, y: 30 }}
@@ -836,7 +833,7 @@ const Index = () => {
                 </span>
                 <h2 className="text-center font-display text-4xl md:text-6xl font-bold text-white leading-tight uppercase">
                   What Our Elite <br />
-                  <span className="italic text-white/90">Clients Say</span>
+                  <span className="text-white/90">Clients Say</span>
                 </h2>
                 <div className="w-20 h-[1px] bg-gold mx-auto mt-8" />
               </motion.div>
