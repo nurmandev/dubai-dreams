@@ -240,11 +240,18 @@ const PropertyDetails = () => {
 
                 {/* Image display strictly 100% original as requested without overlays */}
 
-                {/* Top Right OFF-PLAN Badge */}
-                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 bg-[#0D3430] rounded-lg shadow-xl px-4 py-1.5 sm:px-6 sm:py-2">
-                  <span className="text-white text-[10px] font-bold uppercase tracking-widest">
-                    OFF-PLAN
-                  </span>
+                {/* Top Right Badges */}
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 flex items-center gap-2">
+                  <div className="bg-yellow-400 text-stone-900 rounded-lg shadow-xl px-4 py-1.5 sm:px-6 sm:py-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest">
+                      {property.type.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="bg-[#0D3430] rounded-lg shadow-xl px-4 py-1.5 sm:px-6 sm:py-2">
+                    <span className="text-white text-[10px] font-bold uppercase tracking-widest">
+                      OFF-PLAN
+                    </span>
+                  </div>
                 </div>
 
                 <div className="absolute top-16 md:top-24 left-4 sm:left-8 md:left-16 right-4 sm:right-8 md:right-16 drop-shadow-sm">
@@ -260,13 +267,6 @@ const PropertyDetails = () => {
                       <span className="font-body text-xs sm:text-sm md:text-base pr-2 truncate">
                         {property.address || property.location}
                       </span>
-                    </div>
-
-                    <div className="flex">
-                      <div className="bg-white px-6 py-2 sm:px-8 sm:py-3 shadow-sm rounded-sm text-primary text-xs sm:text-sm font-bold border-b-4 border-blue-400">
-                        {property.type.charAt(0).toUpperCase() +
-                          property.type.slice(1)}
-                      </div>
                     </div>
                   </div>
                 </div>

@@ -64,7 +64,7 @@ const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
             <Link to="/" className="inline-block mb-4">
@@ -245,36 +245,7 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          {/* Dynamic Channels */}
-          {channels.length > 0 && (
-            <div>
-              <h4 className="font-display text-lg font-semibold text-gold mb-4">
-                Channels
-              </h4>
-              <ul className="space-y-3">
-                {channels.map((channel) => {
-                  const Icon = IconMap[channel.icon] || WhatsAppIcon;
-                  return (
-                    <li key={channel._id}>
-                      <a
-                        href={channel.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary-foreground/60 hover:text-gold transition-all duration-300 text-sm font-body flex items-center gap-2 group"
-                      >
-                        <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gold group-hover:text-primary transition-all duration-300">
-                          <Icon className="w-4 h-4" />
-                        </span>
-                        {channel.name}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          )}
+        </div>
         </div>
 
         <div className="border-t border-emerald-light/20 mt-12 pt-8 text-center flex flex-col items-center">
