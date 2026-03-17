@@ -64,9 +64,9 @@ const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-10">
           {/* Brand */}
-          <div>
+          <div className="lg:col-span-4">
             <Link to="/" className="inline-block mb-4">
               <img src="/logo.png" alt="OMNIS" className="h-12 w-auto" />
             </Link>
@@ -117,19 +117,11 @@ const Footer = () => {
               >
                 <Youtube className="w-5 h-5" />
               </a>
-              <a
-                href="https://www.youtube.com/@OmnisProperties"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary-foreground/60 hover:bg-gold hover:text-primary transition-all duration-300"
-              >
-                <Youtube className="w-5 h-5" />
-              </a>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="lg:col-span-2">
             <h4 className="font-display text-lg font-semibold text-gold mb-4">
               Quick Links
             </h4>
@@ -161,7 +153,7 @@ const Footer = () => {
           </div>
 
           {/* Contact */}
-          <div>
+          <div className="lg:col-span-4">
             <h4 className="font-display text-lg font-semibold text-gold mb-4">
               Contact Us
             </h4>
@@ -239,7 +231,7 @@ const Footer = () => {
           </div>
 
           {/* Legal */}
-          <div>
+          <div className="lg:col-span-2">
             <h4 className="font-display text-lg font-semibold text-gold mb-4">
               Legal
             </h4>
