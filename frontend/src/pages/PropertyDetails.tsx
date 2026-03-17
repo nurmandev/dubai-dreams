@@ -142,20 +142,35 @@ const PropertyDetails = () => {
     if (id) fetchProperty();
   }, [id]);
 
-  const getDownloadUrl = (url: string) => {
-    if (!url) return "";
+  const handleDownload = async (url: string | undefined) => {
+    if (!url) return;
     let downloadUrl = url;
     if (!url.startsWith("http")) {
       const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
       downloadUrl = `${baseUrl.replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
     }
 
-    // Force download for Cloudinary URLs
     if (downloadUrl.includes("res.cloudinary.com") && downloadUrl.includes("/upload/")) {
-      return downloadUrl.replace("/upload/", "/upload/fl_attachment/");
+      const filename = downloadUrl.split('/').pop()?.split('.')[0] || "Project_Brochure";
+      downloadUrl = downloadUrl.replace("/upload/", `/upload/fl_attachment:${filename}/`);
     }
 
-    return downloadUrl;
+    try {
+      const response = await fetch(downloadUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      const filename = downloadUrl.split('/').pop() || "Brochure.pdf";
+      link.download = filename.toLowerCase().endsWith(".pdf") ? filename : `${filename}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Direct download failed:", error);
+      window.open(downloadUrl, "_blank");
+    }
   };
 
   const nextImage = useCallback(() => {
@@ -687,16 +702,13 @@ const PropertyDetails = () => {
                       Download the official project brochure to view full floor
                       plans, payment details, and technical specifications.
                     </p>
-                    <a
-                      href={getDownloadUrl(property.technicalPdf)}
-                      target="_blank"
-                      rel="noreferrer"
-                      download
+                    <button
+                      onClick={() => handleDownload(property.technicalPdf)}
                       className="flex items-center gap-4 bg-[#0D3430] hover:bg-[#06201e] text-white font-bold uppercase tracking-[0.2em] text-[12px] px-12 py-5 rounded-full transition-all shadow-2xl hover:shadow-[0_20px_40px_-15px_rgba(13,52,48,0.4)] group"
                     >
                       <FileText className="w-5 h-5 text-gold group-hover:scale-110 transition-transform" />
                       Download Official Brochure (PDF)
-                    </a>
+                    </button>
                   </div>
                 )}
 
@@ -1360,17 +1372,10 @@ const PropertyDetails = () => {
                   <Button
                     variant="gold"
                     className="rounded-full px-16 py-8 font-bold uppercase tracking-[0.2em] text-[11px] shadow-2xl hover:shadow-gold/20 group"
-                    asChild
+                    onClick={() => handleDownload(property.technicalPdf)}
                   >
-                    <a
-                      href={getDownloadUrl(property.technicalPdf)}
-                      target="_blank"
-                      rel="noreferrer"
-                      download
-                    >
-                      <FileText className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-                      Download Brochure (PDF)
-                    </a>
+                    <FileText className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                    Download Brochure (PDF)
                   </Button>
                 </div>
               )}
