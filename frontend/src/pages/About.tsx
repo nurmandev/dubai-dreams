@@ -44,7 +44,7 @@ const About = () => {
               </span>
             </div>
             <h1 className="text-center font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8">
-              EXCELLENCE IN <br />
+              EXCELLENCE IN <br className="hidden md:block" />
               <span className="text-white/90 font-body">
                 DUBAI REAL ESTATE
               </span>
