@@ -306,7 +306,7 @@ const About = () => {
                 <div className="w-14 h-14 bg-primary text-gold rounded-none flex items-center justify-center mb-8">
                   <item.icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-center font-display text-xl font-bold text-primary mb-4 uppercase">
+                <h3 className="font-display text-xl font-bold text-primary mb-4 uppercase">
                   {item.title}
                 </h3>
                 <p className="text-muted-foreground font-body leading-relaxed text-sm">
