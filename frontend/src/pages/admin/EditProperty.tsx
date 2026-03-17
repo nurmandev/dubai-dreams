@@ -152,7 +152,11 @@ const EditProperty = () => {
           });
           setExistingImages(found.images || []);
           setExistingFloorPlans(found.floorPlans || []);
-          setExistingTechnicalPdf(found.technicalPdf || null);
+          setExistingTechnicalPdf(
+            found.technicalPdf && found.technicalPdf !== "null"
+              ? found.technicalPdf
+              : null
+          );
           if (found.amenities && Array.isArray(found.amenities)) {
             const predefined = found.amenities
               .map((a: string) => {
@@ -267,6 +271,8 @@ const EditProperty = () => {
         data.append("technicalPdf", newTechnicalPdf);
       } else if (existingTechnicalPdf) {
         data.append("technicalPdf", existingTechnicalPdf);
+      } else {
+        data.append("technicalPdf", ""); // Explicably clear it in the database
       }
 
       await api.patch(`/api/dashboard/properties/${id}`, { data });

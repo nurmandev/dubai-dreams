@@ -144,7 +144,18 @@ const PropertyDetails = () => {
 
   const getDownloadUrl = (url: string) => {
     if (!url) return "";
-    return url;
+    let downloadUrl = url;
+    if (!url.startsWith("http")) {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+      downloadUrl = `${baseUrl.replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
+    }
+
+    // Force download for Cloudinary URLs
+    if (downloadUrl.includes("res.cloudinary.com") && downloadUrl.includes("/upload/")) {
+      return downloadUrl.replace("/upload/", "/upload/fl_attachment/");
+    }
+
+    return downloadUrl;
   };
 
   const nextImage = useCallback(() => {
@@ -663,7 +674,7 @@ const PropertyDetails = () => {
                 )}
 
                 {/* Official Brochure (PDF) - Off-Plan View */}
-                {property.technicalPdf && (
+                {property.technicalPdf && property.technicalPdf !== "null" && property.technicalPdf.trim() !== "" && (
                   <div className="bg-white rounded-[1.5rem] p-8 md:p-12 shadow-sm border border-stone-100 flex flex-col items-center text-center">
                     <div className="flex items-center gap-4 mb-6 justify-center">
                       <div className="w-12 h-[3px] bg-gold rounded-full" />
@@ -677,11 +688,7 @@ const PropertyDetails = () => {
                       plans, payment details, and technical specifications.
                     </p>
                     <a
-                      href={getDownloadUrl(
-                        property.technicalPdf.startsWith("http")
-                          ? property.technicalPdf
-                          : `${(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000").replace(/\/$/, "")}/${property.technicalPdf.replace(/^\//, "")}`,
-                      )}
+                      href={getDownloadUrl(property.technicalPdf)}
                       target="_blank"
                       rel="noreferrer"
                       download
@@ -1337,7 +1344,7 @@ const PropertyDetails = () => {
               )}
 
               {/* Official Brochure (PDF) - Regular Property View */}
-              {property.technicalPdf && (
+              {property.technicalPdf && property.technicalPdf !== "null" && property.technicalPdf.trim() !== "" && (
                 <div className="bg-background/80 backdrop-blur-2xl rounded-3xl shadow-xl p-8 md:p-12 border border-white/10 mt-8 flex flex-col items-center text-center">
                   <div className="flex items-center gap-4 mb-6 justify-center">
                     <div className="w-8 h-1 bg-gold rounded-full" />
@@ -1356,11 +1363,7 @@ const PropertyDetails = () => {
                     asChild
                   >
                     <a
-                      href={getDownloadUrl(
-                        property.technicalPdf.startsWith("http")
-                          ? property.technicalPdf
-                          : `${(import.meta.env.VITE_API_BASE_URL || "http://localhost:5000").replace(/\/$/, "")}/${property.technicalPdf.replace(/^\//, "")}`,
-                      )}
+                      href={getDownloadUrl(property.technicalPdf)}
                       target="_blank"
                       rel="noreferrer"
                       download
