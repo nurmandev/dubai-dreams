@@ -109,6 +109,22 @@ const Footer = () => {
               >
                 <Linkedin className="w-5 h-5" />
               </a>
+              <a
+                href="https://www.youtube.com/@OmnisProperties"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary-foreground/60 hover:bg-gold hover:text-primary transition-all duration-300"
+              >
+                <Youtube className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.youtube.com/@OmnisProperties"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary-foreground/60 hover:bg-gold hover:text-primary transition-all duration-300"
+              >
+                <Youtube className="w-5 h-5" />
+              </a>
             </div>
           </div>
 
@@ -245,39 +261,17 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
-        </div>
-        </div>
-
-        <div className="border-t border-emerald-light/20 mt-12 pt-8 text-center flex flex-col items-center">
-          <p className="text-primary-foreground/40 text-sm font-body mb-6">
-            © {new Date().getFullYear()} Omnis Properties LLC. All rights
-            reserved.
-          </p>
-          <div className="flex items-center gap-6">
-            {channels.length > 0 ? (
-              channels.map((channel) => {
-                const Icon = IconMap[channel.icon] || WhatsAppIcon;
-                return (
-                  <a
-                    key={channel._id}
-                    href={channel.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary-foreground/60 hover:text-gold transition-colors flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-gold hover:text-primary"
-                    title={channel.name}
-                  >
-                    <Icon className="w-5 h-5" />
-                  </a>
-                );
-              })
-            ) : (
-              <>
+            <div className="mt-6">
+              <h4 className="font-display text-sm font-semibold text-gold mb-3">
+                Join Our Channels
+              </h4>
+              <div className="flex items-center gap-3">
                 <a
                   href="https://whatsapp.com/channel/0029VbBn9KR0LKZHcgEZ3D2d"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-foreground/60 hover:text-gold transition-colors flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-gold hover:text-primary"
-                  title="Vikas | Omnis Properties Channel on WhatsApp"
+                  className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary-foreground/60 hover:bg-gold hover:text-primary transition-all duration-300"
+                  title="WhatsApp Channel"
                 >
                   <WhatsAppIcon className="w-5 h-5" />
                 </a>
@@ -285,23 +279,21 @@ const Footer = () => {
                   href="https://t.me/VikasOmnisPropertiesDubai"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-foreground/60 hover:text-gold transition-colors flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-gold hover:text-primary"
-                  title="Vikas Omnis Properties on Telegram"
+                  className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-primary-foreground/60 hover:bg-gold hover:text-primary transition-all duration-300"
+                  title="Telegram Channel"
                 >
                   <TelegramIcon className="w-5 h-5" />
                 </a>
-                <a
-                  href="https://www.youtube.com/@OmnisProperties"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-foreground/60 hover:text-gold transition-colors flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-gold hover:text-primary"
-                  title="Omnis Properties on YouTube"
-                >
-                  <Youtube className="w-5 h-5" />
-                </a>
-              </>
-            )}
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div className="border-t border-emerald-light/20 mt-12 pt-8 text-center">
+          <p className="text-primary-foreground/40 text-sm font-body">
+            © {new Date().getFullYear()} Omnis Properties LLC. All rights
+            reserved.
+          </p>
         </div>
       </div>
     </footer>
