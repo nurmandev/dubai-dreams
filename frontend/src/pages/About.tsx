@@ -49,7 +49,7 @@ const About = () => {
                 DUBAI REAL ESTATE
               </span>
             </h1>
-            <p className="text-white/60 font-body text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white/60 font-body text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
               A premier advisory firm dedicated to connecting discerning global
               investors with exceptional property opportunities across the UAE.
             </p>
@@ -61,7 +61,7 @@ const About = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
         >
           <span className="text-gold/50 text-xs font-body tracking-[0.2em] uppercase">
             Discover
