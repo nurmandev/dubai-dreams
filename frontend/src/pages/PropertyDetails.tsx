@@ -306,15 +306,12 @@ const PropertyDetails = () => {
 
                 <div className="flex flex-col items-center md:items-start md:pl-12 justify-center">
                   <div className="flex items-center gap-2 sm:gap-4 mb-1">
-                    <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-[#DDB57A] shrink-0 border border-[#DDB57A]/40 rounded-[4px] p-0.5">
-                      <DirhamIcon className="w-full h-full" />
-                    </div>
+                    <DirhamIcon className="w-5 h-5 md:w-6 md:h-6 text-[#DDB57A]" />
                     <div className="flex flex-col text-left">
                       <span className="text-[10px] md:text-[11px] font-medium text-stone-600 mb-0.5 leading-none">
                         Starting from
                       </span>
-                      <span className="font-display font-medium text-[1.25rem] md:text-[1.5rem] text-[#0D3430] leading-none tracking-tight whitespace-nowrap flex items-center gap-1.5">
-                        <DirhamIcon size={18} className="opacity-80" />{" "}
+                      <span className="font-display font-medium text-[1.25rem] md:text-[1.5rem] text-[#0D3430] leading-none tracking-tight whitespace-nowrap">
                         {property.price.toLocaleString()}
                       </span>
                     </div>

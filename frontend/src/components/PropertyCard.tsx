@@ -40,11 +40,6 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
             <Badge className="bg-primary text-primary-foreground font-body text-xs">
               {categoryLabel[property.category]}
             </Badge>
-            {property.status === "ready" && (
-              <Badge className="bg-gold text-accent-foreground font-body text-xs">
-                Ready
-              </Badge>
-            )}
           </div>
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-foreground/80 to-transparent p-4">
             <PriceDisplay

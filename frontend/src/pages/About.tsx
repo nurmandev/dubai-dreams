@@ -43,7 +43,7 @@ const About = () => {
                 About Omnis Properties
               </span>
             </div>
-            <h1 className="text-center font-display text-5xl md:text-7xl font-bold text-white leading-tight mb-8">
+            <h1 className="text-center font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8">
               EXCELLENCE IN <br />
               <span className="text-white/90 font-body">
                 DUBAI REAL ESTATE
@@ -105,7 +105,7 @@ const About = () => {
               viewport={{ once: true }}
               className="lg:col-span-7 lg:pl-10"
             >
-              <h2 className="text-left font-display text-4xl md:text-5xl font-bold text-primary mb-8 leading-tight">
+              <h2 className="text-left font-display text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-8 leading-tight">
                 A MODERN APPROACH <br />
                 <span className="text-gold font-body">
                   TO DUBAI REAL ESTATE
@@ -169,6 +169,7 @@ const About = () => {
               {
                 name: "Vikas Kumar",
                 role: "Founder & General Manager",
+                brokerNo: "39159",
                 image: "/images/Vikas-kumar.jpeg",
                 bio: "Founder of OMNIS Properties, Vikas Kumar oversees the firm’s strategic direction, client advisory, and investment consulting. He holds an MBA in Urban Infrastructure and Real Estate Management from Amity University, Noida (2012). With extensive experience in the Dubai and UAE real estate markets, he specializes in guiding investors toward well-researched, high-potential property opportunities through a transparent, client-first approach.",
                 links: {
@@ -179,6 +180,7 @@ const About = () => {
               {
                 name: "Jamal Alsuwaidi",
                 role: "Local Partner",
+                brokerNo: "39735",
                 image: "/images/Jamal.jpeg",
                 bio: "Jamal Alsuwaidi is a Local Partner at OMNIS Properties and holds a position within the Dubai Government. He has been associated with the company since its establishment and supports the firm in government-related matters, while also strengthening its presence both locally and internationally.",
                 links: {
@@ -222,6 +224,11 @@ const About = () => {
                         <p className="text-gold font-body text-xs uppercase tracking-[0.2em] font-bold">
                           {member.role}
                         </p>
+                        {"brokerNo" in member && member.brokerNo && (
+                          <p className="text-white/60 font-body text-[9px] uppercase tracking-[0.1em] mt-1.5 border-t border-white/10 pt-1.5 w-fit">
+                            BRN: {member.brokerNo as string}
+                          </p>
+                        )}
                       </div>
                       <div className="flex gap-4">
                         <a

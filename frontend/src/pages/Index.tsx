@@ -462,11 +462,13 @@ const Index = () => {
                   name: "DET",
                   label: "Dubai Department of Economy & Tourism",
                   sub: "Primary Business Licensing Authority",
+                  no: "Trade License No: 765450",
                 },
                 {
                   name: "DLD",
                   label: "Dubai Land Department",
                   sub: "Legal Registration",
+                  no: "RERA ORN: 17250",
                 },
               ].map((partner, i) => (
                 <motion.div
@@ -487,6 +489,11 @@ const Index = () => {
                     <p className="text-gold/40 font-body text-[10px] uppercase tracking-widest">
                       {partner.sub}
                     </p>
+                    {partner.no && (
+                      <p className="text-white/60 font-body text-[10px] uppercase tracking-wider mt-2 border-t border-white/5 pt-2 w-full">
+                        {partner.no}
+                      </p>
+                    )}
                   </div>
                 </motion.div>
               ))}
