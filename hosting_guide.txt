@@ -1,0 +1,72 @@
+Hey there! 
+
+Here is a simple, friendly guide on how to get your website live on GoDaddy or Hostinger. 
+
+Since you have a Frontend (the design you see) and a Backend (the database and email logic), we host them in separate parts. Here is exactly what to do step-by-step:
+
+---
+👉 FIRST THINGS FIRST (Before Uploading)
+---
+Open your `backend/.env` file and make sure these details are set for the internet, not your computer:
+1. **MONGODB_URI**: Needs to be your live internet database link (not localhost).
+2. **FRONTEND_URL**: Update this to your official web address (like https://omnisprop.com).
+3. **PORT**: Keep it at 5000 or let your host manage it.
+
+---
+🚀 OPTION 1: HOSTINGER 
+---
+
+✅ STEP 1: Setting up the Frontend (Static display)
+1. Log into your Hostinger hPanel.
+2. Open your **"File Manager"** and go into the `public_html` folder.
+3. Upload EVERYTHING inside your `omnis/frontend/dist` folder here.
+   * Note: You should be able to see `index.html` sitting directly inside `public_html`.
+4. **Important Fix for React Pages**: 
+   * Create a file named `.htaccess` inside `public_html` and paste this code to prevent "Page Not Found" errors when refreshing pages:
+     
+     Options -MultiViews
+     RewriteEngine On
+     RewriteCond %{REQUEST_FILENAME} !-f
+     RewriteCond %{REQUEST_FILENAME} !-d
+     RewriteRule ^ index.html [QSA,L]
+
+✅ STEP 2: Setting up the Backend (Node.js Logic)
+* Note: Standard Hostinger shared hosting can struggle with Node.js. It's usually better to use **Hostinger VPS** for this.
+1. Connect via **SSH** (Hostinger gives you these login details).
+2. Create folder "backend" and upload your backend files (including the .env file and the `dist` folder you just built).
+3. Run this command to install the correct files:
+   > cd backend
+   > npm install --omit=dev
+4. Run PM2 so the server stays on 24/7 even if you close the terminal:
+   > npm install pm2 -g
+   > pm2 start dist/server.js --name "omnis-backend"
+   > pm2 save
+
+---
+🚀 OPTION 2: GODADDY (cPanel Setup)
+---
+
+✅ STEP 1: Setting up the Frontend
+1. Log into GoDaddy -> **cPanel** -> Open **File Manager**.
+2. Go to the `public_html` folder.
+3. Upload everything from inside `omnis/frontend/dist` directly here.
+4. Add that same `.htaccess` file (see above code) so the links work correctly!
+
+✅ STEP 2: Setting up the Backend (Using "Setup Node.js App")
+1. In cPanel, search for **"Setup Node.js App"** and open it.
+2. Click **Create Application**:
+   * **Node.js version**: Pick the latest stable version (like v18 or v20).
+   * **Application mode**: Set it to `production`.
+   * **Application root**: Name it `backend`.
+   * **Application URL**: Type `api` (this sets up your backend address to `yourdomain.com/api`).
+   * **Startup file**: Set it to `dist/server.js`.
+3. Click **Create**.
+4. Use File Manager to upload your backend files (from your `backend/` local folder layout) inside that newly created directory.
+5. Go back to your Node.js Setup screen on cPanel and click **"Run NPM Install"** button.
+6. Click **"Restart Application"** and it will go live!
+
+---
+💡 GENERAL TIP:
+For the highest control, setting up a subdomain like `api.omnisprop.com` is highly recommended to bridge the gap between design and server clearly!
+
+Let me know if any step feels tricky, and we can tackle it together! Good luck! ✨

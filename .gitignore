@@ -38,3 +38,9 @@ backend/node_modules/
 backend/dist/
 backend/build/
 backend/uploads/
+
+
+# App Deployment Archives
+*.tar.gz
+*.zip
+*.mjs
