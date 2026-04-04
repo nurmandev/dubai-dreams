@@ -38,7 +38,7 @@ import { CountryCodeSelector } from "@/components/CountryCodeSelector";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 const PropertyDetails = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [property, setProperty] = useState<PropertyType | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
@@ -87,11 +87,12 @@ const PropertyDetails = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const { data } = await api.get(`/api/public/properties/${id}`);
+        const { data } = await api.get(`/api/public/properties/${slug}`);
         if (data && data.property) {
           const p = data.property;
           const mapped: PropertyType = {
             id: p.id,
+            slug: p.slug,
             title: p.title,
             description: p.description,
             price: p.price,
@@ -139,8 +140,8 @@ const PropertyDetails = () => {
       }
     };
 
-    if (id) fetchProperty();
-  }, [id]);
+    if (slug) fetchProperty();
+  }, [slug]);
 
   const handleDownload = async (url: string | undefined) => {
     if (!url) return;
@@ -1433,7 +1434,7 @@ const PropertyDetails = () => {
                           onChange={(value) =>
                             setForm({ ...form, countryCode: value })
                           }
-                          className="w-[100px] rounded-xl h-[46px]"
+                          className="w-[130px] rounded-xl h-[46px]"
                           isDark
                         />
                         <input

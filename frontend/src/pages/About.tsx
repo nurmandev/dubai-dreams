@@ -192,7 +192,7 @@ const About = () => {
                 name: "Anstin Machado",
                 role: "OPERATIONS & DIGITAL MARKETING MANAGER",
                 image: "/images/Anstin.jpeg",
-                bio: "Anstin Machado manages administrative operations and oversees digital marketing activities at Omnis Properties. He handles essential paperwork, documentation, and contributes to digital creative work that supports the company’s branding and online presence.",
+                bio: "Anstin Machado oversees administrative operations and digital marketing initiatives at Omnis Properties, ensuring smooth coordination of documentation processes while guiding the company’s digital branding and creative direction.",
                 links: {
                   linkedin: "https://www.linkedin.com/in/anstin01/",
                   instagram: "https://www.instagram.com/realtor_ixe_dxb/",

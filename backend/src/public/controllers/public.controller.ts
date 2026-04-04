@@ -37,24 +37,36 @@ export class PublicController {
         ];
       }
 
-      const properties = await Property.find(query).populate(
-        "ownerId",
-        "name email",
-      );
+      const properties = await Property.find(query)
+        .populate("ownerId", "name email")
+        .sort({ createdAt: -1 });
 
       // Map to frontend expected format
       const formattedProperties = properties.map((prop: any) => ({
         id: prop._id,
+        slug: prop.slug,
         tag: prop.listedIn === "rent" ? "FOR RENT" : "FOR SELL",
         tag_bg: prop.listedIn === "rent" ? "rent" : "sale",
         carousel: prop._id.toString().substring(0, 5),
-        carousel_thumb:
-          prop.images && prop.images.length > 0
+        carousel_thumb: [
+          ...(prop.thumbnailUrl
+            ? [
+                {
+                  img: PublicController.getFullUrl(prop.thumbnailUrl),
+                  active: "active",
+                },
+              ]
+            : []),
+          ...(prop.images && prop.images.length > 0
             ? prop.images.map((img: string, i: number) => ({
                 img: PublicController.getFullUrl(img),
-                active: i === 0 ? "active" : "",
+                active: !prop.thumbnailUrl && i === 0 ? "active" : "",
               }))
-            : [{ img: "/assets/images/placeholder.png", active: "active" }],
+            : []),
+          ...(!prop.thumbnailUrl && (!prop.images || prop.images.length === 0)
+            ? [{ img: "/assets/images/placeholder.png", active: "active" }]
+            : []),
+        ],
         title: prop.title,
         address: prop.location,
         property_info: {
@@ -96,10 +108,21 @@ export class PublicController {
   static async getPropertyById(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const prop = await Property.findById(id).populate(
-        "ownerId",
-        "name email",
-      );
+      let prop;
+      const idStr = id as string;
+
+      // Check if ID is a valid MongoDB ObjectId
+      if (idStr.match(/^[0-9a-fA-F]{24}$/)) {
+        prop = await Property.findById(id).populate("ownerId", "name email");
+      }
+
+      // If not found by ID or ID is not a valid ObjectId, try finding by slug
+      if (!prop) {
+        prop = await Property.findOne({ slug: id }).populate(
+          "ownerId",
+          "name email",
+        );
+      }
 
       if (!prop) {
         return res.status(404).json({ message: "Property not found" });
@@ -108,16 +131,29 @@ export class PublicController {
       // Format for frontend
       const formatted = {
         id: prop._id,
+        slug: prop.slug,
         tag: prop.listedIn === "rent" ? "FOR RENT" : "FOR SELL",
         tag_bg: prop.listedIn === "rent" ? "rent" : "sale",
         carousel: prop._id.toString().substring(0, 5),
-        carousel_thumb:
-          prop.images && prop.images.length > 0
+        carousel_thumb: [
+          ...(prop.thumbnailUrl
+            ? [
+                {
+                  img: PublicController.getFullUrl(prop.thumbnailUrl),
+                  active: "active",
+                },
+              ]
+            : []),
+          ...(prop.images && prop.images.length > 0
             ? prop.images.map((img: string, i: number) => ({
                 img: PublicController.getFullUrl(img),
-                active: i === 0 ? "active" : "",
+                active: !prop.thumbnailUrl && i === 0 ? "active" : "",
               }))
-            : [{ img: "/assets/images/placeholder.png", active: "active" }],
+            : []),
+          ...(!prop.thumbnailUrl && (!prop.images || prop.images.length === 0)
+            ? [{ img: "/assets/images/placeholder.png", active: "active" }]
+            : []),
+        ],
         title: prop.title,
         description: prop.description,
         address: prop.location,

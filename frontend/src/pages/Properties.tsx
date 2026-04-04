@@ -49,6 +49,7 @@ const Properties = () => {
         if (data && data.properties) {
           const mapped: PropertyType[] = data.properties.map((p: any) => ({
             id: p.id,
+            slug: p.slug,
             title: p.title,
             price: p.price,
             area: p.property_info?.sqft || 0,

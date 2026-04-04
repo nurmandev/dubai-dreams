@@ -117,13 +117,13 @@ const Contact = () => {
                       Phone Number *
                     </label>
                     <div className="flex gap-2">
-                      <CountryCodeSelector
-                        value={form.countryCode}
-                        onChange={(value) =>
-                          setForm({ ...form, countryCode: value })
-                        }
-                        className="w-[110px] sm:w-[130px] rounded-lg h-[46px]"
-                      />
+                        <CountryCodeSelector
+                          value={form.countryCode}
+                          onChange={(value) =>
+                            setForm({ ...form, countryCode: value })
+                          }
+                          className="w-[130px] rounded-lg h-[46px]"
+                        />
                       <input
                         required
                         type="tel"
@@ -204,11 +204,13 @@ const Contact = () => {
                         Office Address
                       </p>
                       <p className="text-muted-foreground font-body text-sm leading-relaxed">
-                        Office No. 301-21, DhanGuard Business Center
+                        Building R308
                         <br />
-                        Khalid Bin Waleed Road
+                        Office No. 301-21
                         <br />
-                        Mankhool, Dubai
+                        Khalid Bin Al Waleed Road
+                        <br />
+                        Mankhool, Dubai, UAE
                       </p>
                     </div>
                   </div>
@@ -221,54 +223,62 @@ const Contact = () => {
                         Phone & WhatsApp
                       </p>
 
-                      <div className="flex flex-col gap-2 mt-1">
-                        <div className="flex items-center gap-2 text-muted-foreground font-body text-sm">
-                          <span>+971 58 825 1088</span>
-
-                          <a
-                            href="https://wa.me/971588251088"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="hover:text-gold transition-colors"
-                          >
-                            <WhatsAppIcon className="w-4 h-4 text-green-500" />
-                          </a>
-                          <a
-                            href="tel:+971588251088"
-                            className="hover:text-gold transition-colors"
-                          >
-                            <Phone className="w-4 h-4" />
-                          </a>
+                      <div className="flex flex-col gap-3 mt-2">
+                        <div className="flex flex-wrap items-center gap-2 text-muted-foreground font-body text-sm bg-muted/20 px-3 py-2 rounded-lg border border-border/50">
+                          <span className="text-lg mr-1 opacity-100" title="UAE Flag">🇦🇪</span>
+                          <span className="font-medium">+971 58 825 1088</span>
+                          <div className="flex items-center gap-2 ml-auto">
+                            <a
+                              href="https://wa.me/971588251088"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all group"
+                            >
+                              <WhatsAppIcon className="w-4 h-4 text-green-500 group-hover:text-white" />
+                            </a>
+                            <a
+                              href="tel:+971588251088"
+                              className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center hover:bg-gold hover:text-primary transition-all group"
+                            >
+                              <Phone className="w-4 h-4 text-gold group-hover:text-primary" />
+                            </a>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2 text-muted-foreground font-body text-sm">
-                          <span>+971 58 153 0100</span>
 
-                          <a
-                            href="https://wa.me/971581530100"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="hover:text-gold transition-colors"
-                          >
-                            <WhatsAppIcon className="w-4 h-4 text-green-500" />
-                          </a>
-
-                          <a
-                            href="tel:+971581530100"
-                            className="hover:text-gold transition-colors"
-                          >
-                            <Phone className="w-4 h-4" />
-                          </a>
+                        <div className="flex flex-wrap items-center gap-2 text-muted-foreground font-body text-sm bg-muted/20 px-3 py-2 rounded-lg border border-border/50">
+                          <span className="text-lg mr-1 opacity-100" title="UAE Flag">🇦🇪</span>
+                          <span className="font-medium">+971 58 153 0100</span>
+                          <div className="flex items-center gap-2 ml-auto">
+                            <a
+                              href="https://wa.me/971581530100"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all group"
+                            >
+                              <WhatsAppIcon className="w-4 h-4 text-green-500 group-hover:text-white" />
+                            </a>
+                            <a
+                              href="tel:+971581530100"
+                              className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center hover:bg-gold hover:text-primary transition-all group"
+                            >
+                              <Phone className="w-4 h-4 text-gold group-hover:text-primary" />
+                            </a>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2 text-muted-foreground font-body text-sm">
-                          <span>+91 76786 51405</span>
-                          <a
-                            href="https://wa.me/917678651405"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="hover:text-gold transition-colors"
-                          >
-                            <WhatsAppIcon className="w-4 h-4 text-green-500" />
-                          </a>
+
+                        <div className="flex flex-wrap items-center gap-2 text-muted-foreground font-body text-sm bg-muted/20 px-3 py-2 rounded-lg border border-border/50">
+                          <span className="text-lg mr-1 opacity-100" title="India Flag">🇮🇳</span>
+                          <span className="font-medium">+91 76786 51405</span>
+                          <div className="flex items-center gap-2 ml-auto">
+                            <a
+                              href="https://wa.me/917678651405"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all group"
+                            >
+                              <WhatsAppIcon className="w-4 h-4 text-green-500 group-hover:text-white" />
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>

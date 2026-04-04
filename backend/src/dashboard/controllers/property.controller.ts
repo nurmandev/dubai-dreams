@@ -65,6 +65,10 @@ export class PropertyController {
         files["technicalPdf"] && files["technicalPdf"][0]
           ? files["technicalPdf"][0].path
           : undefined;
+      const uploadedThumbnail =
+        files["thumbnail"] && files["thumbnail"][0]
+          ? files["thumbnail"][0].path
+          : undefined;
 
       if (!title || !description || !price || !location) {
         return res.status(400).json({
@@ -92,6 +96,7 @@ export class PropertyController {
         propertyType: propertyType || "apartment",
         status: status || "pending",
         images: uploadedImages,
+        thumbnailUrl: uploadedThumbnail,
         videoUrl: uploadedVideo,
         technicalPdf: uploadedTechnicalPdf,
         floorPlans: uploadedFloorPlans,
@@ -158,6 +163,11 @@ export class PropertyController {
             .join(", "),
         });
       }
+      if (error.name === "CastError") {
+        return res.status(400).json({
+          message: `Invalid format for field "${error.path}": ${error.value}`,
+        });
+      }
       res
         .status(500)
         .json({ message: error.message || "Failed to create property" });
@@ -222,6 +232,10 @@ export class PropertyController {
         files["technicalPdf"] && files["technicalPdf"][0]
           ? files["technicalPdf"][0].path
           : undefined;
+      const newThumbnail =
+        files["thumbnail"] && files["thumbnail"][0]
+          ? files["thumbnail"][0].path
+          : undefined;
 
       // If body.images is present (it's the list of existing images to keep),
       // we need to ensure it's an array and merge with new ones.
@@ -282,6 +296,13 @@ export class PropertyController {
         Array.isArray(updateData.technicalPdf)
       ) {
         updateData.technicalPdf = updateData.technicalPdf[0];
+      }
+
+      if (newThumbnail) {
+        if (property.thumbnailUrl) {
+          deleteCloudinaryAsset(property.thumbnailUrl).catch(console.error);
+        }
+        updateData.thumbnailUrl = newThumbnail;
       }
 
       fieldsToParse.forEach((field) => {
@@ -368,6 +389,11 @@ export class PropertyController {
           message: Object.values(error.errors)
             .map((err: any) => err.message)
             .join(", "),
+        });
+      }
+      if (error.name === "CastError") {
+        return res.status(400).json({
+          message: `Invalid format for field "${error.path}": ${error.value}`,
         });
       }
       res.status(500).json({ message: error.message });

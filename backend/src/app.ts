@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import path from "path";
 import authRoutes from "./auth/routes";
 import dashboardRoutes from "./dashboard/routes";
 import publicRoutes from "./public/routes";
@@ -17,19 +18,36 @@ const app: Express = express();
 connectDB();
 
 // Middleware
-app.use(helmet());
-// CORS: explicit allowed origins + pattern matching for Vercel preview deployments
-// CORS: Simplified to allow all origins globally (bypassing CORS issues during cPanel deployment)
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow ALL origins to avoid CORS issues
-      // To allow all with credentials, we return true for any origin
-      callback(null, true);
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      
+      const allowedOrigins = [
+        "https://omnisprop.com",
+        "https://backend.omnisprop.com",
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://localhost:5000"
+      ];
+      
+      if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== "production") {
+        callback(null, true);
+      } else {
+        // Still allow for now to debug, or you can restrict strictly
+        callback(null, true);
+      }
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
   }),
 );
+
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -37,7 +55,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/public", express.static("public"));
 
-// Routes
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/public", publicRoutes);
@@ -47,11 +65,11 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "OK" });
 });
 
-// 404 Handler
-app.use((req: Request, res: Response) => {
-  res.status(404).json({ message: "Resource not found" });
-});
-
+// Serve static frontend files from public_html
+// (Disabled now as frontend is hosted on the root domain separately)
+// const frontendPath = "/home/vikasuser/public_html";
+// app.use(express.static(frontendPath));
+ 
 // Global Error Handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);

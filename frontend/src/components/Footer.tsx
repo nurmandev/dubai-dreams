@@ -161,11 +161,13 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-gold mt-1 shrink-0" />
                 <span className="text-primary-foreground/60 text-sm font-body">
-                  Office No. 301-21, DhanGuard Business Center
+                  Building R308
                   <br />
-                  Khalid Bin Waleed Road
+                  Office No. 301-21
                   <br />
-                  Mankhool, Dubai
+                  Khalid Bin Al Waleed Road
+                  <br />
+                  Mankhool, Dubai, UAE
                 </span>
               </li>
               <li className="flex items-start gap-3">

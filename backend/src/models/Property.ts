@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { slugify } from "../utils/string";
 
 export interface IProperty extends Document {
   ownerId: mongoose.Types.ObjectId;
@@ -20,6 +21,7 @@ export interface IProperty extends Document {
   views: number;
   favouritedBy: mongoose.Types.ObjectId[];
   images: string[];
+  thumbnailUrl?: string;
   bedrooms?: number | string;
   bathrooms?: number | string;
   area?: number | string;
@@ -50,6 +52,7 @@ export interface IProperty extends Document {
     duringConstruction?: number;
     onHandover?: number;
   };
+  slug: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -89,6 +92,7 @@ const PropertySchema = new Schema<IProperty>(
     views: { type: Number, default: 0 },
     favouritedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
     images: [{ type: String }],
+    thumbnailUrl: { type: String },
     videoUrl: { type: String },
     technicalPdf: { type: String },
     floorPlans: [{ type: String }],
@@ -119,8 +123,16 @@ const PropertySchema = new Schema<IProperty>(
       duringConstruction: { type: Number },
       onHandover: { type: Number },
     },
+    slug: { type: String, unique: true, index: true },
   },
   { timestamps: true },
 );
+
+// Pre-save hook to generate slug
+PropertySchema.pre("validate", function (this: IProperty) {
+  if ((this.isModified("title") || !this.slug) && this.title) {
+    this.slug = slugify(this.title);
+  }
+});
 
 export default mongoose.model<IProperty>("Property", PropertySchema);

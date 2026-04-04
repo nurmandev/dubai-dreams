@@ -73,14 +73,9 @@ const Login = () => {
               </div>
 
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
                   <label className="text-sm font-medium text-foreground block">
                     Password
                   </label>
-                  <Link to="#" className="text-xs text-gold hover:underline">
-                    Forgot password?
-                  </Link>
-                </div>
                 <input
                   type="password"
                   required
@@ -102,17 +97,7 @@ const Login = () => {
               </Button>
             </form>
 
-            <div className="mt-8 text-center">
-              <p className="text-muted-foreground font-body text-sm">
-                Don't have an account?{" "}
-                <Link
-                  to="/register"
-                  className="text-gold font-medium hover:underline"
-                >
-                  Sign up
-                </Link>
-              </p>
-            </div>
+
           </motion.div>
         </div>
       </section>

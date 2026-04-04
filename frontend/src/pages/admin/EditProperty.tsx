@@ -59,6 +59,7 @@ interface Property {
   areaLocation?: string;
   videoUrl?: string;
   images: string[];
+  thumbnailUrl?: string;
   floorPlans: string[];
   // Off-plan fields
   developerName?: string;
@@ -92,6 +93,11 @@ const EditProperty = () => {
   const [existingTechnicalPdf, setExistingTechnicalPdf] = useState<
     string | null
   >(null);
+  const [newThumbnail, setNewThumbnail] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [existingThumbnail, setExistingThumbnail] = useState<string | null>(
+    null,
+  );
 
   const [formData, setFormData] = useState<Partial<Property>>({
     title: "",
@@ -155,8 +161,9 @@ const EditProperty = () => {
           setExistingTechnicalPdf(
             found.technicalPdf && found.technicalPdf !== "null"
               ? found.technicalPdf
-              : null
+              : null,
           );
+          setExistingThumbnail(found.thumbnailUrl || null);
           if (found.amenities && Array.isArray(found.amenities)) {
             const predefined = found.amenities
               .map((a: string) => {
@@ -273,6 +280,12 @@ const EditProperty = () => {
         data.append("technicalPdf", existingTechnicalPdf);
       } else {
         data.append("technicalPdf", ""); // Explicably clear it in the database
+      }
+
+      if (newThumbnail) {
+        data.append("thumbnail", newThumbnail);
+      } else if (existingThumbnail) {
+        data.append("thumbnail", existingThumbnail);
       }
 
       await api.patch(`/api/dashboard/properties/${id}`, { data });
@@ -472,6 +485,62 @@ const EditProperty = () => {
                   {isOffPlan ? "Project Renders" : "Images & Gallery"}
                 </label>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-body font-black text-gold uppercase tracking-[0.2em] flex items-center gap-2">
+                      <ImageIcon className="w-3.5 h-3.5" /> CARD THUMBNAIL (REQ)
+                    </label>
+                    {thumbnailPreview || existingThumbnail ? (
+                      <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-gold shadow-lg shadow-gold/10 group">
+                        <img
+                          src={
+                            thumbnailPreview ||
+                            (existingThumbnail?.startsWith("http")
+                              ? existingThumbnail
+                              : `http://localhost:5000/${existingThumbnail}`)
+                          }
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setNewThumbnail(null);
+                            setThumbnailPreview(null);
+                            setExistingThumbnail(null);
+                          }}
+                          className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <label className="aspect-video rounded-2xl border-2 border-dashed border-border hover:border-gold flex flex-col items-center justify-center bg-muted/10 cursor-pointer transition-all hover:bg-gold/5 group">
+                        <Upload className="w-8 h-8 text-gold mb-2 group-hover:-translate-y-1 transition-transform" />
+                        <span className="text-[10px] text-muted-foreground font-black tracking-widest">
+                          CHOOSE THUMBNAIL
+                        </span>
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={(e) => {
+                            if (e.target.files?.[0]) {
+                              const file = e.target.files[0];
+                              setNewThumbnail(file);
+                              setThumbnailPreview(URL.createObjectURL(file));
+                            }
+                          }}
+                        />
+                      </label>
+                    )}
+                    <p className="text-[9px] text-muted-foreground italic font-body">
+                      {" "}
+                      This is the image that appears on the website Homepage
+                      cards.{" "}
+                    </p>
+                  </div>
+                </div>
+
                 {/* Existing Images */}
                 <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 mb-4">
                   {existingImages.map((img, idx) => (
@@ -654,7 +723,10 @@ const EditProperty = () => {
                         className="w-full bg-muted/30 border border-border rounded-lg px-3 py-2 outline-none font-body text-sm focus:border-gold"
                         value={formData.unitTypes || ""}
                         onChange={(e) =>
-                          setFormData({ ...formData, unitTypes: e.target.value })
+                          setFormData({
+                            ...formData,
+                            unitTypes: e.target.value,
+                          })
                         }
                       />
                     </div>

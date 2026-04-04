@@ -44,3 +44,5 @@ backend/uploads/
 *.tar.gz
 *.zip
 *.mjs
+error_log.txt
+backend/error_log.txt

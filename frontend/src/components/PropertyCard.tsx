@@ -25,7 +25,7 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <Link
-        to={`/properties/${property.id}`}
+        to={`/properties/${property.slug || property.id}`}
         className="group block bg-card rounded-xl overflow-hidden shadow-luxury hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
       >
         {/* Image */}

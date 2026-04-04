@@ -42,14 +42,14 @@ export function CountryCodeSelector({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "justify-between font-body text-sm",
+            "justify-between font-body text-sm px-3",
             isDark ? "bg-muted/30 border-border" : "bg-muted border-border",
             className,
           )}
         >
-          <span className="flex items-center gap-2 truncate">
-            <span className="text-base">{selectedCountry.flag}</span>
-            <span>{selectedCountry.dial_code}</span>
+          <span className="flex items-center gap-2">
+            <span className="text-base shrink-0">{selectedCountry.flag}</span>
+            <span className="shrink-0">{selectedCountry.dial_code}</span>
           </span>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

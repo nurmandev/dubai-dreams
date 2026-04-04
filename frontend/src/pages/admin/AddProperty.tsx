@@ -43,6 +43,8 @@ const AddProperty = () => {
   const [floorPlanPreviews, setFloorPlanPreviews] = useState<string[]>([]);
 
   const [technicalPdf, setTechnicalPdf] = useState<File | null>(null);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -134,6 +136,7 @@ const AddProperty = () => {
       images.forEach((file) => data.append("images", file));
       floorPlans.forEach((file) => data.append("floorPlans", file));
       if (technicalPdf) data.append("technicalPdf", technicalPdf);
+      if (thumbnail) data.append("thumbnail", thumbnail);
 
       await api.post("/api/dashboard/properties", { data });
       toast.success(
@@ -341,6 +344,51 @@ const AddProperty = () => {
                   {isOffPlan
                     ? "Project Renders (Max 10)"
                     : "Exclusive Gallery (Max 10)"}
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-body font-black text-gold uppercase tracking-[0.2em] flex items-center gap-2">
+                       < ImageIcon className="w-3.5 h-3.5" /> CARD THUMBNAIL (REQ)
+                    </label>
+                    {thumbnailPreview ? (
+                      <div className="relative aspect-video rounded-2xl overflow-hidden border-2 border-gold shadow-lg shadow-gold/10 group">
+                        <img src={thumbnailPreview} className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setThumbnail(null);
+                            setThumbnailPreview(null);
+                          }}
+                          className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <label className="aspect-video rounded-2xl border-2 border-dashed border-border hover:border-gold flex flex-col items-center justify-center bg-muted/10 cursor-pointer transition-all hover:bg-gold/5 group">
+                        <Upload className="w-8 h-8 text-gold mb-2 group-hover:-translate-y-1 transition-transform" />
+                        <span className="text-[10px] text-muted-foreground font-black tracking-widest">
+                          CHOOSE THUMBNAIL
+                        </span>
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={(e) => {
+                             if (e.target.files?.[0]) {
+                               const file = e.target.files[0];
+                               setThumbnail(file);
+                               setThumbnailPreview(URL.createObjectURL(file));
+                             }
+                          }}
+                        />
+                      </label>
+                    )}
+                    <p className="text-[9px] text-muted-foreground italic font-body"> This is the image that appears on the website Homepage cards. </p>
+                  </div>
+                </div>
+                <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest mt-6 block">
+                  IMAGE GALLERY (MAX 10)
                 </label>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                   {imagePreviews.map((prev, idx) => (

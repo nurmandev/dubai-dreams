@@ -1,5 +1,6 @@
 export interface Property {
   id: string;
+  slug?: string;
   title: string;
   description?: string;
   price: number;
@@ -38,25 +39,20 @@ export interface Property {
 }
 
 export const AMENITIES_LIST = [
-  "Fireplace",
-  "Garages",
   "Swimming Pool",
-  "Pet Friendly",
-  "Parking",
-  "Ceiling Height",
-  "TV Cable",
-  "Elevator",
-  "Barbeque",
-  "Outdoor Shower",
-  "Lake View",
-  "Wifi",
-  "Lawn",
-  "Dryer",
-  "Disabled Access",
-  "A/C & Heating",
-  "Refrigerator",
-  "Garden",
-  "Laundry",
+  "Gym",
+  "24/7 Security",
+  "Covered Parking",
+  "High-Speed Elevators",
+  "Central Air Conditioning",
+  "Kids Play Area",
+  "Landscaped Gardens",
+  "Retail Outlets",
+  "Jogging / Walking Tracks",
+  "BBQ Area",
+  "Multi-purpose Hall",
+  "Waterfront Access",
+  "EV Charging Stations",
 ];
 
 export const sampleProperties: Property[] = [

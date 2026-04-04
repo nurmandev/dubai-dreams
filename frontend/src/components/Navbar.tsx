@@ -85,9 +85,6 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Button variant="hero-outline" size="sm" asChild>
-                  <Link to="/login">Sign In</Link>
-                </Button>
                 <Button variant="gold" size="sm" asChild>
                   <Link to="/contact">Enquire Now</Link>
                 </Button>
@@ -149,20 +146,10 @@ const Navbar = () => {
               ) : (
                 <>
                   <Button
-                    variant="hero-outline"
-                    size="lg"
-                    asChild
-                    className="mt-6"
-                  >
-                    <Link to="/login" onClick={() => setIsOpen(false)}>
-                      Sign In
-                    </Link>
-                  </Button>
-                  <Button
                     variant="gold"
                     size="lg"
                     asChild
-                    className="mt-2 text-primary"
+                    className="mt-6 text-primary"
                   >
                     <Link to="/contact" onClick={() => setIsOpen(false)}>
                       Enquire Now

@@ -202,7 +202,7 @@ const KycOnboarding = () => {
                             countryCode: value,
                           })
                         }
-                        className="w-[100px] rounded-xl h-[50px]"
+                        className="w-[130px] rounded-xl h-[50px]"
                       />
                       <input
                         required

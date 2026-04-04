@@ -116,8 +116,8 @@ const PrivacyPolicy = () => {
                 <div className="text-gold font-bold">
                   Email: info@omnisprop.com
                   <br />
-                  Office: Office No. 301-21, DhanGuard Business Center, Khalid
-                  Bin Waleed Road, Mankhool, Dubai
+                  Office: Building R308, Office No. 301-21, Khalid Bin Al Waleed
+                  Road, Mankhool, Dubai, UAE
                 </div>
               </div>
             </motion.div>

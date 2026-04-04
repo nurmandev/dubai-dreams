@@ -69,6 +69,7 @@ const Index = () => {
         if (data && data.properties) {
           const mapped: PropertyType[] = data.properties.map((p: any) => ({
             id: p.id,
+            slug: p.slug,
             title: p.title,
             price: p.price,
             area: p.property_info?.sqft || 0,
@@ -747,7 +748,7 @@ const Index = () => {
               {
                 icon: Shield,
                 title: "Trusted Partner",
-                desc: "Licensed and regulated by Dubai's Department of Economy & Tourism (DET).",
+                desc: "Licensed and regulated by Dubai’s Department of Economy & Tourism (DET) and Dubai Land Department (DLD).",
               },
               {
                 icon: TrendingUp,
