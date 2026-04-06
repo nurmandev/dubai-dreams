@@ -154,13 +154,13 @@ const Footer = () => {
 
           {/* Contact */}
           <div className="lg:col-span-4">
-            <h4 className="font-display text-lg font-semibold text-gold mb-4">
+            <h4 className="font-display text-lg font-semibold text-gold mb-6">
               Contact Us
             </h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-gold mt-1 shrink-0" />
-                <span className="text-primary-foreground/60 text-sm font-body">
+            <ul className="space-y-6">
+              <li className="flex items-start gap-4">
+                <MapPin className="w-5 h-5 text-gold mt-1 shrink-0" />
+                <span className="text-primary-foreground/80 text-sm font-body leading-relaxed">
                   Building R308
                   <br />
                   Office No. 301-21
@@ -170,61 +170,48 @@ const Footer = () => {
                   Mankhool, Dubai, UAE
                 </span>
               </li>
-              <li className="flex items-start gap-3">
-                <Phone className="w-4 h-4 text-gold shrink-0 mt-1" />
-                <div className="flex flex-col gap-2 mt-0.5">
-                  <div className="flex items-center gap-2 text-primary-foreground/60 font-body text-sm">
-                    <span>+971 58 825 1088</span>
-                    <a
-                      href="https://wa.me/971588251088"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-gold transition-colors"
-                    >
-                      <WhatsAppIcon className="w-4 h-4 text-green-500" />
-                    </a>
-                    <a
-                      href="tel:+971588251088"
-                      className="hover:text-gold transition-colors"
-                    >
-                      <Phone className="w-4 h-4" />
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2 text-primary-foreground/60 font-body text-sm">
-                    <span>+971 58 153 0100</span>
-                    <a
-                      href="https://wa.me/971581530100"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-gold transition-colors"
-                    >
-                      <WhatsAppIcon className="w-4 h-4 text-green-500" />
-                    </a>
-                    <a
-                      href="tel:+971581530100"
-                      className="hover:text-gold transition-colors"
-                    >
-                      <Phone className="w-4 h-4" />
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2 text-primary-foreground/60 font-body text-sm">
-                    <span>+91 76786 51405</span>
-                    <a
-                      href="https://wa.me/917678651405"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:text-gold transition-colors"
-                    >
-                      <WhatsAppIcon className="w-4 h-4 text-green-500" />
-                    </a>
-                  </div>
+              <li className="flex items-start gap-4">
+                <Phone className="w-5 h-5 text-gold shrink-0 mt-1" />
+                <div className="flex flex-col gap-4">
+                  {[
+                    { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
+                    { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
+                    { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
+                  ].map((contact, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5 group hover:border-gold/30 transition-all">
+                      <div className="flex items-center gap-3 text-primary-foreground/90 font-body text-sm">
+                        <span className="text-base shrink-0">{contact.flag}</span>
+                        <span className="font-medium whitespace-nowrap tracking-wide">{contact.num}</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 ml-1">
+                        <a
+                          href={`https://wa.me/${contact.wa}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="w-7 h-7 rounded-full bg-[#25D366] flex items-center justify-center text-white hover:scale-110 transition-all shadow-sm"
+                          title="WhatsApp Business"
+                        >
+                          <WhatsAppIcon className="w-3.5 h-3.5" />
+                        </a>
+                        {contact.tel && (
+                          <a
+                            href={`tel:${contact.tel}`}
+                            className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-white hover:text-white transition-all"
+                            title="Call Now"
+                          >
+                            <Phone className="w-3.5 h-3.5" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-gold shrink-0" />
+              <li className="flex items-center gap-4">
+                <Mail className="w-5 h-5 text-gold shrink-0" />
                 <a
                   href="mailto:info@omnisprop.com"
-                  className="text-primary-foreground/60 hover:text-gold text-sm font-body transition-colors"
+                  className="text-primary-foreground/80 hover:text-gold text-sm font-body transition-colors"
                 >
                   info@omnisprop.com
                 </a>

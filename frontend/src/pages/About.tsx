@@ -43,13 +43,13 @@ const About = () => {
                 About Omnis Properties
               </span>
             </div>
-            <h1 className="text-center font-display text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8">
+            <h1 className="text-center font-display text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight mb-8">
               EXCELLENCE IN <br className="hidden md:block" />
               <span className="text-white/90 font-body">
                 DUBAI REAL ESTATE
               </span>
             </h1>
-            <p className="text-white/60 font-body text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white/60 font-body text-base lg:text-lg xl:text-xl leading-relaxed max-w-2xl mx-auto">
               A premier advisory firm dedicated to connecting discerning global
               investors with exceptional property opportunities across the UAE.
             </p>
@@ -73,7 +73,7 @@ const About = () => {
       {/* Business Methodology - Editorial Layout */}
       <section className="py-24 lg:py-32 bg-white overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+          <div className="grid lg:grid-cols-12 gap-12 xl:gap-24 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -100,12 +100,12 @@ const About = () => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-7 lg:pl-10"
+              className="lg:col-span-7 xl:pl-10"
             >
-              <h2 className="text-left font-display text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-8 leading-tight">
+              <h2 className="text-left font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-8 leading-tight">
                 A MODERN APPROACH <br />
                 <span className="text-gold font-body">
                   TO DUBAI REAL ESTATE
@@ -163,7 +163,7 @@ const About = () => {
             <div className="w-16 h-[1px] bg-gold mx-auto mt-8" />
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             {/* Team Members */}
             {[
               {

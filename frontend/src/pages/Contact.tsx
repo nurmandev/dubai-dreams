@@ -223,64 +223,36 @@ const Contact = () => {
                         Phone & WhatsApp
                       </p>
 
-                      <div className="flex flex-col gap-3 mt-2">
-                        <div className="flex flex-wrap items-center gap-2 text-muted-foreground font-body text-sm bg-muted/20 px-3 py-2 rounded-lg border border-border/50">
-                          <span className="text-lg mr-1 opacity-100" title="UAE Flag">🇦🇪</span>
-                          <span className="font-medium">+971 58 825 1088</span>
-                          <div className="flex items-center gap-2 ml-auto">
-                            <a
-                              href="https://wa.me/971588251088"
-                              target="_blank"
-                              rel="noreferrer"
-                              className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all group"
-                            >
-                              <WhatsAppIcon className="w-4 h-4 text-green-500 group-hover:text-white" />
-                            </a>
-                            <a
-                              href="tel:+971588251088"
-                              className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center hover:bg-gold hover:text-primary transition-all group"
-                            >
-                              <Phone className="w-4 h-4 text-gold group-hover:text-primary" />
-                            </a>
+                        {[
+                          { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
+                          { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
+                          { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
+                        ].map((contact, idx) => (
+                          <div key={idx} className="flex items-center justify-between p-3.5 rounded-xl border border-border/80 bg-white shadow-sm hover:shadow-md hover:border-gold/30 transition-all group">
+                            <div className="flex items-center gap-3">
+                              <span className="text-xl shrink-0">{contact.flag}</span>
+                              <span className="font-body font-bold text-foreground tracking-wide">{contact.num}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <a
+                                href={`https://wa.me/${contact.wa}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="w-8 h-8 rounded-full bg-green-500/10 text-green-600 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all"
+                              >
+                                <WhatsAppIcon className="w-4 h-4" />
+                              </a>
+                              {contact.tel && (
+                                <a
+                                  href={`tel:${contact.tel}`}
+                                  className="w-8 h-8 rounded-full bg-gold/10 text-gold-dark flex items-center justify-center hover:bg-gold hover:text-primary transition-all"
+                                >
+                                  <Phone className="w-4 h-4" />
+                                </a>
+                              )}
+                            </div>
                           </div>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-2 text-muted-foreground font-body text-sm bg-muted/20 px-3 py-2 rounded-lg border border-border/50">
-                          <span className="text-lg mr-1 opacity-100" title="UAE Flag">🇦🇪</span>
-                          <span className="font-medium">+971 58 153 0100</span>
-                          <div className="flex items-center gap-2 ml-auto">
-                            <a
-                              href="https://wa.me/971581530100"
-                              target="_blank"
-                              rel="noreferrer"
-                              className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all group"
-                            >
-                              <WhatsAppIcon className="w-4 h-4 text-green-500 group-hover:text-white" />
-                            </a>
-                            <a
-                              href="tel:+971581530100"
-                              className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center hover:bg-gold hover:text-primary transition-all group"
-                            >
-                              <Phone className="w-4 h-4 text-gold group-hover:text-primary" />
-                            </a>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-2 text-muted-foreground font-body text-sm bg-muted/20 px-3 py-2 rounded-lg border border-border/50">
-                          <span className="text-lg mr-1 opacity-100" title="India Flag">🇮🇳</span>
-                          <span className="font-medium">+91 76786 51405</span>
-                          <div className="flex items-center gap-2 ml-auto">
-                            <a
-                              href="https://wa.me/917678651405"
-                              target="_blank"
-                              rel="noreferrer"
-                              className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center hover:bg-green-500 hover:text-white transition-all group"
-                            >
-                              <WhatsAppIcon className="w-4 h-4 text-green-500 group-hover:text-white" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+                        ))}
                     </div>
                   </div>
                   <div className="flex items-start gap-4">

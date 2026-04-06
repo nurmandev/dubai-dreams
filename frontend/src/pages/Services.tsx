@@ -97,7 +97,7 @@ const Services = () => {
                   OMNIS Institutional Services
                 </span>
               </div>
-              <h1 className="font-display text-6xl md:text-8xl font-medium text-white mb-10 leading-[1.1] tracking-tight">
+              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-medium text-white mb-10 leading-[1.1] tracking-tight">
                 Refining the <br />
                 <span className="text-gold">Standard</span> of Trust.
               </h1>
@@ -132,7 +132,7 @@ const Services = () => {
       {/* Services Section - High-End Editorial List */}
       <section className="py-32 bg-[#F9F8F6] relative">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-20">
+          <div className="grid lg:grid-cols-12 gap-12 xl:gap-20">
             {/* Sticky Header Column */}
             <div className="lg:col-span-4">
               <div className="lg:sticky lg:top-40">
@@ -205,7 +205,7 @@ const Services = () => {
       {/* Corporate Philosophy Section */}
       <section className="py-40 bg-white overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-32 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 xl:gap-32 items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -285,7 +285,7 @@ const Services = () => {
             viewport={{ once: true }}
             className="max-w-2xl mx-auto"
           >
-            <h2 className="font-body text-5xl md:text-7xl font-medium text-white mb-12 leading-tight">
+            <h2 className="font-body text-4xl md:text-6xl lg:text-7xl font-medium text-white mb-12 leading-tight">
               Integrity is the <br />
               Only Luxury.
             </h2>

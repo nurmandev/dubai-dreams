@@ -714,7 +714,7 @@ const PropertyDetails = () => {
                 )}
 
                 {/* Contact Section */}
-                {/* <div
+                <div
                   id="enquire"
                   className="bg-[#0D3430] rounded-[2rem] p-10 md:p-20 text-white shadow-2xl relative overflow-hidden"
                 >
@@ -733,31 +733,46 @@ const PropertyDetails = () => {
                         event access.
                       </p>
                       <div className="space-y-6">
-                        <div className="flex items-center gap-6 group">
-                          <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-[#0D3430] transition-all border border-white/10">
-                            <Phone className="w-6 h-6" />
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1">
-                              Call Expertise
-                            </p>
-                            <p className="font-display font-black text-xl">
-                              +971 4 123 4567
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-6 group">
-                          <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 flex items-center justify-center text-gold group-hover:bg-[#25D366] group-hover:text-white transition-all border border-white/10">
-                            <WhatsAppIcon className="w-6 h-6" />
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1">
-                              Instant Concierge
-                            </p>
-                            <p className="font-display font-black text-xl">
-                              WhatsApp Inquiry
-                            </p>
-                          </div>
+                        <div className="flex flex-col gap-5">
+                          {[
+                            { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
+                            { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
+                            { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
+                          ].map((contact, idx) => (
+                            <div key={idx} className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 group hover:border-gold hover:bg-white/10 transition-all">
+                              <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-gold transition-all border border-white/10 shrink-0">
+                                  <Phone className="w-5 h-5" />
+                                </div>
+                                <div className="flex flex-col">
+                                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1">
+                                    {contact.flag} {contact.num.includes("+971") ? "UAE Desk" : "India Desk"}
+                                  </p>
+                                  <p className="font-display font-black text-lg text-white">
+                                    {contact.num}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2 shrink-0">
+                                <a
+                                  href={`https://wa.me/${contact.wa}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center text-white hover:scale-110 transition-all shadow-lg"
+                                >
+                                  <WhatsAppIcon className="w-4.5 h-4.5" />
+                                </a>
+                                {contact.tel && (
+                                  <a
+                                    href={`tel:${contact.tel}`}
+                                    className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white/70 hover:border-white hover:text-white transition-all"
+                                  >
+                                    <Phone className="w-4.5 h-4.5" />
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -834,7 +849,7 @@ const PropertyDetails = () => {
                       </Button>
                     </form>
                   </div>
-                </div> */}
+                </div>
               </div>
 
               {/* Global Image Preview Lightbox */}
@@ -1460,14 +1475,45 @@ const PropertyDetails = () => {
                       />
                     </form>
 
+                    <div className="space-y-3">
+                      {[
+                        { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
+                        { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
+                        { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
+                      ].map((contact, idx) => (
+                        <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-muted/20 border border-border/50 group hover:border-gold/30 transition-all">
+                          <div className="flex items-center gap-3">
+                            <span className="text-lg shrink-0">{contact.flag}</span>
+                            <span className="text-sm font-bold text-foreground">{contact.num}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <a
+                              href={`https://wa.me/${contact.wa}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-all shadow-sm"
+                            >
+                              <WhatsAppIcon className="w-4 h-4" />
+                            </a>
+                            {contact.tel && (
+                              <a
+                                href={`tel:${contact.tel}`}
+                                className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-primary transition-all shadow-sm"
+                              >
+                                <Phone className="w-4 h-4" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
                     <div className="pt-4 flex justify-center gap-6 border-t border-border mt-2">
                       <a
-                        href={`https://wa.me/971588251088?text=${encodeURIComponent(`Hi, I'm interested in the property: ${property.title}`)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-muted-foreground hover:text-emerald transition-colors flex items-center gap-2 font-black uppercase text-[10px] tracking-widest"
+                        href="mailto:info@omnisprop.com"
+                        className="text-muted-foreground hover:text-gold transition-colors flex items-center gap-2 font-black uppercase text-[10px] tracking-widest"
                       >
-                        <WhatsAppIcon className="w-5 h-5" /> Chat via WhatsApp
+                         <Mail className="w-5 h-5" /> info@omnisprop.com
                       </a>
                     </div>
                   </div>
