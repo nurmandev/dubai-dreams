@@ -739,35 +739,28 @@ const PropertyDetails = () => {
                             { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
                             { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
                           ].map((contact, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 group hover:border-gold hover:bg-white/10 transition-all">
-                              <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-gold transition-all border border-white/10 shrink-0">
-                                  <Phone className="w-5 h-5" />
-                                </div>
-                                <div className="flex flex-col">
-                                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1">
-                                    {contact.flag} {contact.num.includes("+971") ? "UAE Desk" : "India Desk"}
-                                  </p>
-                                  <p className="font-display font-black text-lg text-white">
-                                    {contact.num}
-                                  </p>
-                                </div>
+                            <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5 group hover:border-gold/30 transition-all">
+                              <div className="flex items-center gap-3 text-white/90 font-body text-sm">
+                                <span className="text-base shrink-0">{contact.flag}</span>
+                                <span className="font-medium whitespace-nowrap tracking-wide">{contact.num}</span>
                               </div>
-                              <div className="flex items-center gap-2 shrink-0">
+                              <div className="flex items-center gap-2.5 ml-1">
                                 <a
                                   href={`https://wa.me/${contact.wa}`}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center text-white hover:scale-110 transition-all shadow-lg"
+                                  className="w-7 h-7 rounded-full bg-[#25D366] flex items-center justify-center text-white hover:scale-110 transition-all shadow-sm"
+                                  title="WhatsApp Business"
                                 >
-                                  <WhatsAppIcon className="w-4.5 h-4.5" />
+                                  <WhatsAppIcon className="w-3.5 h-3.5" />
                                 </a>
                                 {contact.tel && (
                                   <a
                                     href={`tel:${contact.tel}`}
-                                    className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white/70 hover:border-white hover:text-white transition-all"
+                                    className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-white hover:text-white transition-all"
+                                    title="Call Now"
                                   >
-                                    <Phone className="w-4.5 h-4.5" />
+                                    <Phone className="w-3.5 h-3.5" />
                                   </a>
                                 )}
                               </div>
@@ -1481,26 +1474,28 @@ const PropertyDetails = () => {
                         { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
                         { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
                       ].map((contact, idx) => (
-                        <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-muted/20 border border-border/50 group hover:border-gold/30 transition-all">
-                          <div className="flex items-center gap-3">
-                            <span className="text-lg shrink-0">{contact.flag}</span>
-                            <span className="text-sm font-bold text-foreground">{contact.num}</span>
+                        <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-border/50 bg-muted/20 group hover:border-gold/30 transition-all">
+                          <div className="flex items-center gap-3 text-foreground/90 font-body text-sm">
+                            <span className="text-base shrink-0">{contact.flag}</span>
+                            <span className="font-medium whitespace-nowrap tracking-wide">{contact.num}</span>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2.5 ml-1">
                             <a
                               href={`https://wa.me/${contact.wa}`}
                               target="_blank"
                               rel="noreferrer"
-                              className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-all shadow-sm"
+                              className="w-7 h-7 rounded-full bg-[#25D366] flex items-center justify-center text-white hover:scale-110 transition-all shadow-sm"
+                              title="WhatsApp Business"
                             >
-                              <WhatsAppIcon className="w-4 h-4" />
+                              <WhatsAppIcon className="w-3.5 h-3.5" />
                             </a>
                             {contact.tel && (
                               <a
                                 href={`tel:${contact.tel}`}
-                                className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-gold hover:bg-gold hover:text-primary transition-all shadow-sm"
+                                className="w-7 h-7 rounded-full border border-border/60 flex items-center justify-center text-muted-foreground hover:border-foreground hover:text-foreground transition-all"
+                                title="Call Now"
                               >
-                                <Phone className="w-4 h-4" />
+                                <Phone className="w-3.5 h-3.5" />
                               </a>
                             )}
                           </div>
