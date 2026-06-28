@@ -4,6 +4,7 @@ import { Property } from "@/data/properties";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import PriceDisplay from "@/components/PriceDisplay";
+import { cloudinaryUrl } from "@/lib/utils";
 
 interface PropertyCardProps {
   property: Property;
@@ -31,7 +32,7 @@ const PropertyCard = ({ property, index = 0 }: PropertyCardProps) => {
         {/* Image */}
         <div className="relative h-64 overflow-hidden">
           <img
-            src={property.image}
+            src={cloudinaryUrl(property.image, { width: 600, height: 400 })}
             alt={property.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             loading="lazy"

@@ -176,7 +176,7 @@ const Footer = () => {
                   {[
                     { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
                     { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
-                    { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
+                    { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405", tel: "+917678651405" },
                   ].map((contact, idx) => (
                     <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5 group hover:border-gold/30 transition-all">
                       <div className="flex items-center gap-3 text-primary-foreground/90 font-body text-sm">
@@ -210,10 +210,10 @@ const Footer = () => {
               <li className="flex items-center gap-4">
                 <Mail className="w-5 h-5 text-gold shrink-0" />
                 <a
-                  href="mailto:info@omnisprop.com"
+                  href="mailto:info@omnisrealty.com"
                   className="text-primary-foreground/80 hover:text-gold text-sm font-body transition-colors"
                 >
-                  info@omnisprop.com
+                  info@omnisrealty.com
                 </a>
               </li>
             </ul>

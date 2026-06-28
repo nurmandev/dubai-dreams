@@ -34,6 +34,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import PriceDisplay from "@/components/PriceDisplay";
 import DirhamIcon from "@/components/icons/DirhamIcon";
 import { countries } from "@/data/countries";
+import { cloudinaryUrl } from "@/lib/utils";
 import { CountryCodeSelector } from "@/components/CountryCodeSelector";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
@@ -260,12 +261,10 @@ const PropertyDetails = () => {
             <div className="relative">
               <div className="relative h-[450px] sm:h-[500px] md:h-[650px] w-full bg-stone-100 overflow-hidden shadow-2xl transition-all rounded-[1rem] md:rounded-[1.25rem]">
                 <img
-                  src={property.images?.[activeImage] || property.image}
+                  src={cloudinaryUrl(property.images?.[activeImage] || property.image, { width: 1200 })}
                   alt={property.title}
                   className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
                 />
-
-                {/* Image display strictly 100% original as requested without overlays */}
 
                 {/* Top Right Badges */}
                 <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 flex items-center gap-2">
@@ -642,9 +641,10 @@ const PropertyDetails = () => {
                           }}
                         >
                           <img
-                            src={img}
+                            src={cloudinaryUrl(img, { width: 400, height: 300 })}
                             alt={`${property.title} - Render ${idx + 1}`}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            loading="lazy"
                           />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                             <span className="text-white text-[10px] font-black uppercase tracking-[0.3em] bg-[#0D3430]/90 backdrop-blur-md px-6 py-3 rounded-full shadow-2xl border border-white/10 scale-90 group-hover:scale-100 transition-transform">
@@ -675,9 +675,10 @@ const PropertyDetails = () => {
                         >
                           <div className="w-full h-64 overflow-hidden rounded-xl">
                             <img
-                              src={plan}
+                              src={cloudinaryUrl(plan, { width: 800 })}
                               alt={`Floor Plan ${idx + 1}`}
                               className="w-full h-full object-contain group-hover:scale-110 transition-transform"
+                              loading="lazy"
                             />
                           </div>
                           <span className="text-[11px] font-black text-stone-400 group-hover:text-gold uppercase tracking-[0.3em] transition-colors">
@@ -737,7 +738,7 @@ const PropertyDetails = () => {
                           {[
                             { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
                             { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
-                            { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
+                            { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405", tel: "+917678651405" },
                           ].map((contact, idx) => (
                             <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5 group hover:border-gold/30 transition-all">
                               <div className="flex items-center gap-3 text-white/90 font-body text-sm">
@@ -876,7 +877,7 @@ const PropertyDetails = () => {
                       onClick={(e) => e.stopPropagation()}
                     >
                       <img
-                        src={previewImage}
+                        src={cloudinaryUrl(previewImage, { width: 1400 })}
                         alt="High Definition Preview"
                         className="max-w-full max-h-full object-contain rounded-2xl shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5"
                       />
@@ -1314,9 +1315,10 @@ const PropertyDetails = () => {
                           }}
                         >
                           <img
-                            src={img}
+                            src={cloudinaryUrl(img, { width: 400, height: 300 })}
                             alt={`${property.title} - Space ${idx + 1}`}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            loading="lazy"
                           />
                           <div className="absolute inset-0 bg-gold/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             <Maximize className="w-6 h-6 text-white" />
@@ -1343,9 +1345,10 @@ const PropertyDetails = () => {
                         onClick={() => setPreviewImage(plan)}
                       >
                         <img
-                          src={plan}
+                          src={cloudinaryUrl(plan, { width: 800 })}
                           alt={`Floor Plan ${idx + 1}`}
                           className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
                         />
                         <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white">
                           <Maximize className="w-8 h-8 mb-2" />
@@ -1505,10 +1508,10 @@ const PropertyDetails = () => {
 
                     <div className="pt-4 flex justify-center gap-6 border-t border-border mt-2">
                       <a
-                        href="mailto:info@omnisprop.com"
+                        href="mailto:info@omnisrealty.com"
                         className="text-muted-foreground hover:text-gold transition-colors flex items-center gap-2 font-black uppercase text-[10px] tracking-widest"
                       >
-                         <Mail className="w-5 h-5" /> info@omnisprop.com
+                         <Mail className="w-5 h-5" /> info@omnisrealty.com
                       </a>
                     </div>
                   </div>
@@ -1585,7 +1588,7 @@ const PropertyDetails = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  src={previewImage}
+                  src={cloudinaryUrl(previewImage, { width: 1400 })}
                   alt="Preview"
                   className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                 />

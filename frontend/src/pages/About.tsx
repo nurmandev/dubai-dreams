@@ -171,10 +171,11 @@ const About = () => {
                 role: "Founder & General Manager",
                 brokerNo: "39159",
                 image: "/images/Vikas-kumar.jpeg",
-                bio: "Founder of OMNIS Properties, Vikas Kumar oversees the firm’s strategic direction, client advisory, and investment consulting. He holds an MBA in Urban Infrastructure and Real Estate Management from Amity University, Noida (2012). With extensive experience in the Dubai and UAE real estate markets, he specializes in guiding investors toward well-researched, high-potential property opportunities through a transparent, client-first approach.",
+                bio: "Founder of OMNIS Properties, Vikas Kumar oversees the firm's strategic direction, client advisory, and investment consulting. He holds an MBA in Urban Infrastructure and Real Estate Management from Amity University, Noida (2012). With extensive experience in the Dubai and UAE real estate markets, he specializes in guiding investors toward well-researched, high-potential property opportunities through a transparent, client-first approach.",
                 links: {
                   linkedin: "https://www.linkedin.com/in/vikas-kumar-23828224",
                   instagram: "https://www.instagram.com/astrorealtorvk/",
+                  email: "mailto:vikas@omnisrealty.com",
                 },
               },
               {
@@ -186,16 +187,18 @@ const About = () => {
                 links: {
                   linkedin: "https://www.linkedin.com/in/omnisprop",
                   instagram: "https://www.instagram.com/omnispropertiesdubai/",
+                  email: "mailto:info@omnisrealty.com",
                 },
               },
               {
                 name: "Anstin Machado",
                 role: "OPERATIONS & DIGITAL MARKETING MANAGER",
                 image: "/images/Anstin.jpeg",
-                bio: "Anstin Machado oversees administrative operations and digital marketing initiatives at Omnis Properties, ensuring smooth coordination of documentation processes while guiding the company’s digital branding and creative direction.",
+                bio: "Anstin Machado oversees administrative operations and digital marketing initiatives at Omnis Properties, ensuring smooth coordination of documentation processes while guiding the company's digital branding and creative direction.",
                 links: {
                   linkedin: "https://www.linkedin.com/in/anstin01/",
                   instagram: "https://www.instagram.com/realtor_ixe_dxb/",
+                  email: "mailto:Anstin@omnisrealty.com",
                 },
               },
             ].map((member, i) => (
@@ -246,6 +249,12 @@ const About = () => {
                           className="text-white/40 hover:text-gold transition-colors"
                         >
                           <Instagram className="w-5 h-5" />
+                        </a>
+                        <a
+                          href={member.links.email}
+                          className="text-white/40 hover:text-gold transition-colors"
+                        >
+                          <Mail className="w-5 h-5" />
                         </a>
                       </div>
                     </div>

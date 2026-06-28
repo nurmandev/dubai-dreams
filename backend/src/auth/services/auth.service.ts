@@ -7,7 +7,7 @@ import crypto from 'crypto';
 
 export class AuthService {
   static async logSecurityEvent(userId: string | undefined, action: string, reqInfo: any, status: 'success' | 'failure', details?: string) {
-    await AuditLog.create({
+    AuditLog.create({
       userId,
       action,
       ip: reqInfo.ip,
@@ -15,7 +15,7 @@ export class AuthService {
       userAgent: reqInfo.userAgent,
       status,
       details,
-    });
+    }).catch(() => {});
   }
 
   static async clearExpiredSessions(user: IUser) {

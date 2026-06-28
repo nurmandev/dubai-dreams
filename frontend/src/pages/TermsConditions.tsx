@@ -117,7 +117,7 @@ const TermsConditions = () => {
                   address:
                 </p>
                 <div className="text-gold font-bold">
-                  Email: info@omnisprop.com
+                  Email: info@omnisrealty.com
                   <br />
                   Office: Building R308, Office No. 301-21, Khalid Bin Al Waleed
                   Road, Mankhool, Dubai, UAE

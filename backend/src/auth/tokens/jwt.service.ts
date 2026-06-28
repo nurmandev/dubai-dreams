@@ -4,6 +4,7 @@ import crypto from 'crypto';
 export interface TokenPayload {
   userId: string;
   sessionId: string;
+  role?: string;
 }
 
 export class JwtService {

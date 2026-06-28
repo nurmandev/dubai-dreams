@@ -46,3 +46,20 @@ backend/uploads/
 *.mjs
 error_log.txt
 backend/error_log.txt
+
+# Deployment & Server Config
+deploy-*.js
+check-*.js
+deploy*.sh
+deploy*.ps1
+ecosystem.config.js
+nginx/
+fix-*.js
+/package.json
+hosting_guide.txt
+htaccess_for_cpanel.txt
+vercel.json
+
+# Production env files
+.env.production
+.env.production.local

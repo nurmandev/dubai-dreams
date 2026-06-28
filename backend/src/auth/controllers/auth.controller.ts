@@ -99,6 +99,11 @@ export class AuthController {
       user.failedLoginAttempts = 0;
       user.lockUntil = undefined;
 
+      // Clean old sessions (keep only last 5)
+      if (user.sessions.length > 5) {
+        user.sessions = user.sessions.slice(-5);
+      }
+
       // MFA Check
       if (user.isMfaEnabled) {
         if (!mfaToken) {
@@ -123,6 +128,7 @@ export class AuthController {
       const accessToken = JwtService.generateAccessToken({
         userId: user.id,
         sessionId,
+        role: user.role,
       });
       const refreshToken = JwtService.generateRefreshToken({
         userId: user.id,

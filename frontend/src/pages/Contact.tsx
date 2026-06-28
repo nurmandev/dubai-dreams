@@ -264,10 +264,10 @@ const Contact = () => {
                         Email
                       </p>
                       <a
-                        href="mailto:info@omnisprop.com"
+                        href="mailto:info@omnisrealty.com"
                         className="text-muted-foreground hover:text-gold font-body text-sm transition-colors"
                       >
-                        info@omnisprop.com
+                        info@omnisrealty.com
                       </a>
                     </div>
                   </div>

@@ -8,7 +8,6 @@ import path from "path";
 import authRoutes from "./auth/routes";
 import dashboardRoutes from "./dashboard/routes";
 import publicRoutes from "./public/routes";
-import devpayRoutes from "./devpay/routes";
 import { connectDB } from "./config/db";
 
 dotenv.config();
@@ -26,8 +25,8 @@ app.use(
       if (!origin) return callback(null, true);
 
       const allowedOrigins = [
-        "https://omnisprop.com",
-        "https://backend.omnisprop.com",
+        "https://omnisrealty.com",
+        "https://backend.omnisrealty.com",
         "http://localhost:5173",
         "http://localhost:3000",
         "http://localhost:5000",
@@ -70,7 +69,6 @@ app.use("/public", express.static("public"));
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/public", publicRoutes);
-app.use("/api/devpay", devpayRoutes);
 
 // Health Check
 app.get("/health", (req: Request, res: Response) => {

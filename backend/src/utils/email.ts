@@ -1,16 +1,21 @@
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: process.env.SMTP_HOST || 'smtp.office365.com',
+  port: parseInt(process.env.SMTP_PORT || '587'),
+  secure: process.env.SMTP_SECURE === 'true',
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
+  connectionTimeout: 5000,
+  greetingTimeout: 5000,
+  socketTimeout: 5000,
 });
 
 export const sendEmail = async (to: string, subject: string, html: string) => {
   const mailOptions = {
-    from: `"OMNIS Security" <${process.env.GMAIL_USER}>`,
+    from: process.env.SMTP_FROM || `"Omnis Properties" <${process.env.SMTP_USER}>`,
     to,
     subject,
     html,

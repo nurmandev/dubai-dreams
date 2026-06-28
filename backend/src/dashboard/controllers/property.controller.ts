@@ -181,9 +181,11 @@ export class PropertyController {
   static async updateProperty(req: Request, res: Response) {
     try {
       const userId = (req as any).user.userId;
+      const userRole = (req as any).user.role;
       const { id } = req.params;
 
-      const property = await Property.findOne({ _id: id, ownerId: userId });
+      const filter = userRole === "admin" ? { _id: id } : { _id: id, ownerId: userId };
+      const property = await Property.findOne(filter);
       if (!property) {
         return res
           .status(404)
@@ -407,9 +409,11 @@ export class PropertyController {
   static async deleteProperty(req: Request, res: Response) {
     try {
       const userId = (req as any).user.userId;
+      const userRole = (req as any).user.role;
       const { id } = req.params;
 
-      const property = await Property.findOne({ _id: id, ownerId: userId });
+      const filter = userRole === "admin" ? { _id: id } : { _id: id, ownerId: userId };
+      const property = await Property.findOne(filter);
       if (!property) {
         return res
           .status(404)

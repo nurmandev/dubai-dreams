@@ -109,17 +109,20 @@ export class DashboardController {
   static async getProperties(req: Request, res: Response) {
     try {
       const userId = (req as any).user.userId;
+      const userRole = (req as any).user.role;
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const skip = (page - 1) * limit;
 
+      const filter = userRole === "admin" ? {} : { ownerId: userId };
+
       const [properties, total] = await Promise.all([
-        Property.find({ ownerId: userId })
+        Property.find(filter)
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit)
           .lean(),
-        Property.countDocuments({ ownerId: userId }),
+        Property.countDocuments(filter),
       ]);
 
       res.status(200).json({
