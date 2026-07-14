@@ -247,7 +247,7 @@ const PropertyDetails = () => {
                 to="/properties"
                 className="hover:text-[#0D3430] transition-colors"
               >
-                OFFLINE PROPERTIES
+                OFF-PLAN PROPERTIES
               </Link>
               <ChevronRight className="w-3 h-3 text-stone-300" />
               <span className="text-[#0D3430] truncate max-w-[150px] md:max-w-none">
@@ -717,51 +717,51 @@ const PropertyDetails = () => {
                 {/* Contact Section */}
                 <div
                   id="enquire"
-                  className="bg-[#0D3430] rounded-[2rem] p-10 md:p-20 text-white shadow-2xl relative overflow-hidden"
+                  className="bg-[#0D3430] rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-20 text-white shadow-2xl relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full -mr-64 -mt-64 blur-[100px] pointer-events-none" />
                   <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gold/5 rounded-full -ml-64 -mb-64 blur-[100px] pointer-events-none" />
 
-                  <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                  <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
                     <div>
-                      <h2 className="font-display text-4xl md:text-6xl font-black mb-8 leading-[1.1] tracking-tighter">
+                      <h2 className="font-display text-3xl sm:text-4xl md:text-6xl font-black mb-6 md:mb-8 leading-[1.1] tracking-tighter">
                         Experience <br />{" "}
                         <span className="text-gold">Dubai's Future</span>
                       </h2>
-                      <p className="text-white/60 font-body text-xl mb-12 max-w-lg leading-relaxed">
+                      <p className="text-white/60 font-body text-base md:text-xl mb-8 md:mb-12 max-w-lg leading-relaxed">
                         Register your interest today to receive exclusive
                         whitepapers, private pricing tables, and VIP launch
                         event access.
                       </p>
-                      <div className="space-y-6">
-                        <div className="flex flex-col gap-5">
+                      <div className="space-y-4 md:space-y-6">
+                        <div className="flex flex-col gap-3 md:gap-5">
                           {[
                             { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
                             { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
                             { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405", tel: "+917678651405" },
                           ].map((contact, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5 group hover:border-gold/30 transition-all">
-                              <div className="flex items-center gap-3 text-white/90 font-body text-sm">
-                                <span className="text-base shrink-0">{contact.flag}</span>
+                            <div key={idx} className="flex items-center justify-between p-2.5 md:p-3 rounded-xl border border-white/10 bg-white/5 group hover:border-gold/30 transition-all">
+                              <div className="flex items-center gap-2 md:gap-3 text-white/90 font-body text-xs md:text-sm">
+                                <span className="text-base md:text-base shrink-0">{contact.flag}</span>
                                 <span className="font-medium whitespace-nowrap tracking-wide">{contact.num}</span>
                               </div>
-                              <div className="flex items-center gap-2.5 ml-1">
+                              <div className="flex items-center gap-2 md:gap-2.5 ml-1">
                                 <a
                                   href={`https://wa.me/${contact.wa}`}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="w-7 h-7 rounded-full bg-[#25D366] flex items-center justify-center text-white hover:scale-110 transition-all shadow-sm"
+                                  className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-[#25D366] flex items-center justify-center text-white hover:scale-110 transition-all shadow-sm"
                                   title="WhatsApp Business"
                                 >
-                                  <WhatsAppIcon className="w-3.5 h-3.5" />
+                                  <WhatsAppIcon className="w-3 h-3 md:w-3.5 md:h-3.5" />
                                 </a>
                                 {contact.tel && (
                                   <a
                                     href={`tel:${contact.tel}`}
-                                    className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-white hover:text-white transition-all"
+                                    className="w-6 h-6 md:w-7 md:h-7 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-white hover:text-white transition-all"
                                     title="Call Now"
                                   >
-                                    <Phone className="w-3.5 h-3.5" />
+                                    <Phone className="w-3 h-3 md:w-3.5 md:h-3.5" />
                                   </a>
                                 )}
                               </div>
@@ -773,31 +773,31 @@ const PropertyDetails = () => {
 
                     <form
                       onSubmit={handleEnquiry}
-                      className="bg-white rounded-[2.5rem] p-8 md:p-12 space-y-6 shadow-2xl"
+                      className="bg-white rounded-[1.5rem] md:rounded-[2.5rem] p-6 md:p-12 space-y-5 md:space-y-6 shadow-2xl"
                     >
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div className="space-y-1 md:space-y-2">
                           <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
                             Full Name
                           </label>
                           <input
                             type="text"
                             required
-                            className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-6 py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
+                            className="w-full bg-stone-50 border border-stone-100 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
                             value={form.name}
                             onChange={(e) =>
                               setForm({ ...form, name: e.target.value })
                             }
                           />
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-1 md:space-y-2">
                           <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
                             Email Address
                           </label>
                           <input
                             type="email"
                             required
-                            className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-6 py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
+                            className="w-full bg-stone-50 border border-stone-100 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
                             value={form.email}
                             onChange={(e) =>
                               setForm({ ...form, email: e.target.value })
@@ -805,27 +805,27 @@ const PropertyDetails = () => {
                           />
                         </div>
                       </div>
-                      <div className="space-y-2">
+                      <div className="space-y-1 md:space-y-2">
                         <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
                           Phone Number
                         </label>
                         <input
                           type="tel"
                           required
-                          className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-6 py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
+                          className="w-full bg-stone-50 border border-stone-100 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all shadow-inner"
                           value={form.phone}
                           onChange={(e) =>
                             setForm({ ...form, phone: e.target.value })
                           }
                         />
                       </div>
-                      <div className="space-y-2">
+                      <div className="space-y-1 md:space-y-2">
                         <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
                           Personal Message
                         </label>
                         <textarea
                           rows={3}
-                          className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-6 py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all resize-none shadow-inner"
+                          className="w-full bg-stone-50 border border-stone-100 rounded-xl md:rounded-2xl px-4 md:px-6 py-3 md:py-4 text-stone-900 text-sm focus:border-gold outline-none transition-all resize-none shadow-inner"
                           placeholder="I'm interested in this project..."
                           value={form.message}
                           onChange={(e) =>
@@ -835,11 +835,11 @@ const PropertyDetails = () => {
                       </div>
                       <Button
                         disabled={submitting}
-                        className="w-full bg-[#0D3430] hover:bg-gold text-white rounded-[1.5rem] h-16 font-black uppercase tracking-[0.3em] shadow-xl shadow-[#0D3430]/10 transition-all active:scale-95"
+                        className="w-full bg-[#0D3430] hover:bg-gold text-white rounded-[1.5rem] h-12 md:h-16 text-[11px] md:text-base font-black uppercase tracking-[0.2em] md:tracking-[0.3em] shadow-xl shadow-[#0D3430]/10 transition-all active:scale-95"
                       >
                         {submitting
-                          ? "Establishing Connection..."
-                          : "Secure Priority Access"}
+                          ? "Connecting..."
+                          : "Get Priority Access"}
                       </Button>
                     </form>
                   </div>

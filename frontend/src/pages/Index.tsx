@@ -161,16 +161,11 @@ const Index = () => {
     <Layout>
       {/* Hero */}
       <section className="relative min-h-[100svh] flex items-center py-20 lg:py-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
+        <img
+          src="/images/hero-dubai-v2.png"
+          alt="Dubai Luxury Living"
           className="absolute inset-0 w-full h-full object-cover"
-          poster="/images/hero-dubai.jpg"
-        >
-          <source src="/video/hero-intro-video.mp4" type="video/mp4" />
-        </video>
+        />
         <div className="absolute inset-0 bg-gradient-hero" />
 
         <div className="relative z-10 container mx-auto px-4 lg:px-8">
@@ -1005,7 +1000,7 @@ const Index = () => {
                 className="w-full sm:w-auto"
               >
                 <a
-                  href="https://wa.me/971000000000"
+                  href="https://wa.me/971588251088"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

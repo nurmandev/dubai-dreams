@@ -13,6 +13,8 @@ import {
   Landmark,
   FileText,
   CheckCircle2,
+  CarFront,
+  Handshake,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -67,6 +69,16 @@ const services = [
     icon: FileText,
     title: "OCI (Overseas Citizen of India) Assistance",
     desc: "We provide guidance for individuals applying for Overseas Citizen of India (OCI) status. OCI allows eligible individuals of Indian origin to live and work in India with long-term privileges. Our team assists with documentation guidance and application procedures.",
+  },
+  {
+    icon: CarFront,
+    title: "Luxury Car Rental",
+    desc: "Experience premium and luxury car rentals across Dubai and the UAE. From business travel to special occasions, we help arrange the right vehicle with a smooth booking experience. Use code OMNIS2026 to get 20% off your first rental.",
+  },
+  {
+    icon: Handshake,
+    title: "Business Sales & Acquisition Advisory",
+    desc: "We help clients sell existing businesses or acquire established businesses across the UAE. From identifying opportunities to coordinating buyers, sellers, and negotiations, our team supports clients throughout the process with a clear and professional approach.",
   },
 ];
 

@@ -226,12 +226,12 @@ const Contact = () => {
                         {[
                           { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
                           { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
-                          { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
+                          { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405", tel: "+917678651405" },
                         ].map((contact, idx) => (
                           <div key={idx} className="flex items-center justify-between p-3.5 rounded-xl border border-border/80 bg-white shadow-sm hover:shadow-md hover:border-gold/30 transition-all group">
                             <div className="flex items-center gap-3">
                               <span className="text-xl shrink-0">{contact.flag}</span>
-                              <span className="font-body font-bold text-foreground tracking-wide">{contact.num}</span>
+                              <span className="font-body font-bold text-foreground tracking-wide whitespace-nowrap">{contact.num}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <a
