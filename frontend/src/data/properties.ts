@@ -27,6 +27,7 @@ export interface Property {
   technicalPdf?: string;
   floorPlans?: string[];
   featured?: boolean;
+  theme?: "default" | "modern" | "minimal";
   // Off-plan fields
   unitTypes?: string;
   handoverYear?: string;

@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { DashboardController } from "./controllers/dashboard.controller";
 import { KYCController } from "./controllers/kyc.controller";
+import { PropertyController } from "./controllers/property.controller";
+import { BlogAdminController } from "./controllers/blog.controller";
+import { ChannelController } from "./controllers/channel.controller";
 import { authenticate } from "../auth/middlewares/auth.middleware";
+import { upload } from "../middlewares/upload.middleware";
 
 const router = Router();
 
@@ -20,6 +24,9 @@ router.get("/recent-messages", DashboardController.getRecentMessages);
 // GET /api/dashboard/properties   — paginated property list
 router.get("/properties", DashboardController.getProperties);
 
+// GET /api/dashboard/properties/:id — fetch single property by ID
+router.get("/properties/:id", PropertyController.getPropertyById);
+
 // Lead Inquiries
 router.patch("/inquiry/:id/status", DashboardController.updateInquiryStatus);
 
@@ -27,9 +34,6 @@ router.patch("/inquiry/:id/status", DashboardController.updateInquiryStatus);
 router.get("/kyc", KYCController.getAllSubmissions);
 router.patch("/kyc/:id/status", KYCController.updateStatus);
 router.get("/kyc/:id/summary", KYCController.getSummary);
-
-import { PropertyController } from "./controllers/property.controller";
-import { upload } from "../middlewares/upload.middleware";
 
 // POST /api/dashboard/properties — create a new property
 router.post(
@@ -59,9 +63,6 @@ router.patch(
 
 // DELETE /api/dashboard/properties/:id — delete a property
 router.delete("/properties/:id", PropertyController.deleteProperty);
-
-import { BlogAdminController } from "./controllers/blog.controller";
-import { ChannelController } from "./controllers/channel.controller";
 
 // Blog Management
 router.get("/blogs", BlogAdminController.getAllBlogs);

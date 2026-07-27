@@ -52,6 +52,7 @@ export interface IProperty extends Document {
     duringConstruction?: number;
     onHandover?: number;
   };
+  theme?: "default" | "modern" | "minimal";
   slug: string;
   createdAt: Date;
   updatedAt: Date;
@@ -122,6 +123,11 @@ const PropertySchema = new Schema<IProperty>(
       onBooking: { type: Number },
       duringConstruction: { type: Number },
       onHandover: { type: Number },
+    },
+    theme: {
+      type: String,
+      enum: ["default", "modern", "minimal"],
+      default: "default",
     },
     slug: { type: String, unique: true, index: true },
   },

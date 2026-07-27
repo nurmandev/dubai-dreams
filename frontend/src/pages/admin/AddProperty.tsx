@@ -28,12 +28,11 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import DirhamIcon from "@/components/icons/DirhamIcon";
-import { AMENITIES_LIST } from "@/data/properties";
-
 const AddProperty = () => {
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [amenityInput, setAmenityInput] = useState("");
 
   // File handling for New Assets
   const [images, setImages] = useState<File[]>([]);
@@ -79,6 +78,7 @@ const AddProperty = () => {
     paymentPlanOnBooking: "",
     paymentPlanDuringConstruction: "",
     paymentPlanOnHandover: "",
+    theme: "default",
   });
 
   const isOffPlan = formData.listedIn === "Off-Plan";
@@ -825,6 +825,26 @@ const AddProperty = () => {
                     <option value="rented">Leased</option>
                   </select>
                 </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-body font-black text-muted-foreground uppercase tracking-widest">
+                    Detail Page Theme
+                  </label>
+                  <select
+                    className="w-full bg-muted/30 border border-border rounded-xl px-4 py-3 outline-none font-body text-sm focus:border-gold appearance-none"
+                    value={formData.theme || "default"}
+                    onChange={(e) =>
+                      setFormData({ ...formData, theme: e.target.value })
+                    }
+                  >
+                    <option value="default">Classic (Default)</option>
+                    <option value="modern">Modern Dark</option>
+                    <option value="minimal">Minimal Light</option>
+                  </select>
+                  <p className="text-[9px] text-muted-foreground opacity-60 mt-1">
+                    Choose the layout style for the property detail page.
+                  </p>
+                </div>
               </div>
 
               <div className="pt-4 space-y-3">
@@ -860,34 +880,66 @@ const AddProperty = () => {
                   Lifestyle Amenities
                 </h3>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                {AMENITIES_LIST.map((amenity) => (
-                  <label
-                    key={amenity}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-muted/20 border border-border/50 cursor-pointer hover:bg-gold/5 transition-colors group"
-                  >
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 rounded border-border text-gold focus:ring-gold"
-                      checked={selectedAmenities.includes(amenity)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedAmenities((prev) => [...prev, amenity]);
-                        } else {
-                          setSelectedAmenities((prev) =>
-                            prev.filter((a) => a !== amenity),
-                          );
-                        }
-                      }}
-                    />
-                    <span className="text-xs font-bold text-foreground/70 group-hover:text-gold transition-colors">
-                      {amenity}
-                    </span>
-                  </label>
-                ))}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={amenityInput}
+                  onChange={(e) => setAmenityInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      const trimmed = amenityInput.trim();
+                      if (trimmed && !selectedAmenities.includes(trimmed)) {
+                        setSelectedAmenities((prev) => [...prev, trimmed]);
+                        setAmenityInput("");
+                      }
+                    }
+                  }}
+                  placeholder="Type an amenity and press Enter..."
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-muted/20 border border-border/50 text-xs font-bold text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0 rounded-xl border-gold/30 text-gold hover:bg-gold/10 hover:text-gold"
+                  disabled={!amenityInput.trim()}
+                  onClick={() => {
+                    const trimmed = amenityInput.trim();
+                    if (trimmed && !selectedAmenities.includes(trimmed)) {
+                      setSelectedAmenities((prev) => [...prev, trimmed]);
+                      setAmenityInput("");
+                    }
+                  }}
+                >
+                  Add
+                </Button>
               </div>
+              {selectedAmenities.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {selectedAmenities.map((amenity, idx) => (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gold/10 border border-gold/20 text-[10px] font-black text-gold uppercase tracking-wider"
+                    >
+                      {amenity}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelectedAmenities((prev) =>
+                            prev.filter((_, i) => i !== idx),
+                          )
+                        }
+                        className="hover:text-destructive transition-colors"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
               <p className="text-[10px] text-muted-foreground opacity-60">
-                Select standardized features for high-visibility filtering.
+                Add custom amenities. Press Enter or click Add to include each one.
               </p>
             </div>
 

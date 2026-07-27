@@ -46,6 +46,7 @@ export class PropertyController {
         paymentPlanOnBooking,
         paymentPlanDuringConstruction,
         paymentPlanOnHandover,
+        theme,
       } = req.body;
 
       // Extract uploaded files safely
@@ -137,6 +138,7 @@ export class PropertyController {
         unitTypes,
         handoverYear,
         totalFloors: parseNum(totalFloors),
+        theme: theme || "default",
         paymentPlan: {
           onBooking: parseNum(paymentPlanOnBooking),
           duringConstruction: parseNum(paymentPlanDuringConstruction),
@@ -171,6 +173,27 @@ export class PropertyController {
       res
         .status(500)
         .json({ message: error.message || "Failed to create property" });
+    }
+  }
+
+  /**
+   * Get a single property by ID
+   * GET /api/dashboard/properties/:id
+   */
+  static async getPropertyById(req: Request, res: Response) {
+    try {
+      const userId = (req as any).user.userId;
+      const userRole = (req as any).user.role;
+      const { id } = req.params;
+
+      const filter = userRole === "admin" ? { _id: id } : { _id: id, ownerId: userId };
+      const property = await Property.findOne(filter).lean();
+      if (!property) {
+        return res.status(404).json({ message: "Property not found or unauthorized" });
+      }
+      res.status(200).json({ property });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
   }
 

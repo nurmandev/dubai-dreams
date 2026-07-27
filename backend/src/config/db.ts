@@ -3,16 +3,25 @@ import User from '../models/User';
 
 const seedAdmin = async () => {
   try {
-    // Remove existing admin configuration to reset to default
-    await User.deleteMany({ role: 'admin' });
-
     const email = process.env.ADMIN_EMAIL;
     const password = process.env.ADMIN_PASSWORD;
+
+    if (!email || !password) {
+      console.warn('[Admin Seeder] ADMIN_EMAIL or ADMIN_PASSWORD not set — skipping.');
+      return;
+    }
+
+    // Only create if no admin exists — never wipe existing admins on restart
+    const existing = await User.findOne({ role: 'admin' });
+    if (existing) {
+      console.log(`[Admin Seeder] Admin already exists (${existing.email}) — skipping.`);
+      return;
+    }
 
     const admin = new User({
       name: 'Omnis Admin',
       email: email,
-      password: password, // User Schema pre-save hook will hash this
+      password: password,
       role: 'admin',
       isEmailVerified: true,
     });

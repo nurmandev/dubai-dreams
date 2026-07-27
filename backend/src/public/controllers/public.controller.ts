@@ -85,6 +85,7 @@ export class PublicController {
         country: prop.country,
         amenities: prop.amenities,
         type: prop.propertyType,
+        theme: prop.theme || "default",
         technicalPdf: PublicController.getFullUrl(prop.technicalPdf || ""),
         // Off-plan fields
         developerName: prop.developerName,
@@ -169,6 +170,7 @@ export class PublicController {
         location: prop.location,
         amenities: prop.amenities,
         type: prop.propertyType,
+        theme: prop.theme || "default",
         yearBuilt: prop.yearBuilt,
         kitchens: prop.kitchens,
         garages: prop.garages,

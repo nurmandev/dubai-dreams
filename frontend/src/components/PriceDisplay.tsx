@@ -30,7 +30,8 @@ const PriceDisplay = ({
   if (category === "off-plan") {
     return (
       <span className={className}>
-        Starting from <DirhamIcon size={iconSize} className={iconClassName} />{" "}
+        <span className="text-[10px] sm:text-[11px] font-semibold text-stone-500 uppercase tracking-wider mr-1.5 inline-block">Starting from</span>
+        <DirhamIcon size={iconSize} className={iconClassName} />{" "}
         {formattedPrice}
       </span>
     );

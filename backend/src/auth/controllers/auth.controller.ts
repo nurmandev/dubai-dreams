@@ -66,13 +66,13 @@ export class AuthController {
       const { email, password, mfaToken } = req.body;
       const deviceInfo = getDeviceInfo(req);
 
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email: email ? email.toLowerCase().trim() : "" });
       if (!user) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      // Check account lock
-      if (user.lockUntil && user.lockUntil > new Date()) {
+      // Check account lock (skip for admin accounts)
+      if (user.role !== "admin" && user.lockUntil && user.lockUntil > new Date()) {
         return res
           .status(403)
           .json({ message: "Account locked. Try again later." });
@@ -80,11 +80,13 @@ export class AuthController {
 
       const isMatch = await user.comparePassword(password);
       if (!isMatch) {
-        user.failedLoginAttempts += 1;
-        if (user.failedLoginAttempts >= 5) {
-          user.lockUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 mins lock
+        if (user.role !== "admin") {
+          user.failedLoginAttempts += 1;
+          if (user.failedLoginAttempts >= 5) {
+            user.lockUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 mins lock
+          }
+          await user.save();
         }
-        await user.save();
         await AuthService.logSecurityEvent(
           user.id,
           "LOGIN_FAIL",
@@ -95,7 +97,7 @@ export class AuthController {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      // Reset failed attempts
+      // Reset failed attempts & lock
       user.failedLoginAttempts = 0;
       user.lockUntil = undefined;
 

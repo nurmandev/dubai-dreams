@@ -2,11 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { api } from "@/lib/api";
-import {
-  type Property as PropertyType,
-  formatPrice,
-  AMENITIES_LIST,
-} from "@/data/properties";
+import { type Property as PropertyType, formatPrice } from "@/data/properties";
 import { Button } from "@/components/ui/button";
 import {
   Bed,
@@ -27,6 +23,14 @@ import {
   PlayCircle,
   FileText,
   X,
+  Heart,
+  EyeOff,
+  Share2,
+  Link2,
+  Mail,
+  Box,
+  Video,
+  Image as ImageIcon,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -130,6 +134,7 @@ const PropertyDetails = () => {
             handoverYear: p.handoverYear,
             totalFloors: p.totalFloors,
             paymentPlan: p.paymentPlan,
+            theme: p.theme || "default",
           };
           console.log("DEBUG property data:", data.property);
           setProperty(mapped);
@@ -231,6 +236,14 @@ const PropertyDetails = () => {
   }
 
   const isOffPlan = property.category === "off-plan";
+
+  if (property.theme === "modern") {
+    return <Layout>{renderModernTheme(property, activeImage, setActiveImage, previewImage, setPreviewImage, form, setForm, submitting, handleEnquiry, handleDownload, nextImage, prevImage)}</Layout>;
+  }
+
+  if (property.theme === "minimal") {
+    return <Layout>{renderMinimalTheme(property, activeImage, setActiveImage, previewImage, setPreviewImage, form, setForm, submitting, handleEnquiry, handleDownload, nextImage, prevImage)}</Layout>;
+  }
 
   if (isOffPlan) {
     return (
@@ -541,8 +554,7 @@ const PropertyDetails = () => {
                       .flatMap((a) =>
                         typeof a === "string" ? a.split(",") : [a],
                       )
-                      .map((a) => (typeof a === "string" ? a.trim() : a))
-                      .filter((a) => AMENITIES_LIST.includes(a));
+                      .map((a) => (typeof a === "string" ? a.trim() : a));
 
                     if (filteredAmenities.length === 0) return null;
 
@@ -553,11 +565,6 @@ const PropertyDetails = () => {
                         </h3>
                         <div className="flex flex-col gap-5">
                           {filteredAmenities.slice(0, 8).map((amenity, idx) => {
-                            const original = AMENITIES_LIST.find(
-                              (item) =>
-                                item.toLowerCase() ===
-                                amenity.toLowerCase().replace(/-/g, " "),
-                            );
                             return (
                               <div
                                 key={idx}
@@ -577,7 +584,7 @@ const PropertyDetails = () => {
                                   />
                                 </svg>
                                 <span className="text-[14px] font-medium text-stone-600 truncate group-hover:text-[#0D3430] transition-colors">
-                                  {original || amenity.replace(/-/g, " ")}
+                                  {amenity}
                                 </span>
                               </div>
                             );
@@ -1237,8 +1244,7 @@ const PropertyDetails = () => {
                     .flatMap((a) =>
                       typeof a === "string" ? a.split(",") : [a],
                     )
-                    .map((a) => (typeof a === "string" ? a.trim() : a))
-                    .filter((a) => AMENITIES_LIST.includes(a));
+                    .map((a) => (typeof a === "string" ? a.trim() : a));
 
                   if (filteredAmenities.length === 0) return null;
 
@@ -1249,11 +1255,6 @@ const PropertyDetails = () => {
                       </h2>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {filteredAmenities.map((amenity, idx) => {
-                          const original = AMENITIES_LIST.find(
-                            (item) =>
-                              item.toLowerCase() ===
-                              amenity.toLowerCase().replace(/-/g, " "),
-                          );
                           return (
                             <div
                               key={idx}
@@ -1261,7 +1262,7 @@ const PropertyDetails = () => {
                             >
                               <CheckCircle2 className="w-4 h-4 text-[#0D3430] shrink-0 fill-none" />
                               <span className="text-[10px] font-black text-stone-600 group-hover:text-[#0D3430] transition-colors uppercase tracking-widest truncate">
-                                {original || amenity.replace(/-/g, " ")}
+                                {amenity}
                               </span>
                             </div>
                           );
@@ -1611,5 +1612,1031 @@ const PropertyDetails = () => {
     </Layout>
   );
 };
+
+function renderModernTheme(
+  property: PropertyType,
+  activeImage: number,
+  setActiveImage: (n: number) => void,
+  previewImage: string | null,
+  setPreviewImage: (s: string | null) => void,
+  form: { name: string; email: string; countryCode: string; phone: string; message: string },
+  setForm: (f: any) => void,
+  submitting: boolean,
+  handleEnquiry: (e: React.FormEvent) => Promise<void>,
+  handleDownload: (url: string | undefined) => Promise<void>,
+  nextImage: () => void,
+  prevImage: () => void,
+) {
+  const images = property.images && property.images.length > 0 ? property.images : [property.image];
+  const gridImages = [...images];
+  while (gridImages.length < 5) {
+    gridImages.push(gridImages[gridImages.length % images.length]);
+  }
+
+  const agentName = "Avenew Development";
+  const agentPhone = "+971 58 825 1088";
+  const agentEmail = "info@omnisrealty.com";
+
+  const pricePerSqft = property.area ? Math.round(property.price / property.area) : 83;
+  const homiqEstimate = Math.round(property.price * 0.5);
+
+  const filteredAmenities = (property.amenities || []).flatMap((a) =>
+    typeof a === "string" ? a.split(",") : [a],
+  ).map((a) => typeof a === "string" ? a.trim() : a);
+
+  return (
+    <div className="bg-[#f8f9fa] min-h-screen font-body text-stone-900 pt-20 pb-20">
+      {/* Top Navigation Sub-header / Section Tabs */}
+      <div className="bg-white border-b border-stone-200 py-3 mb-6 sticky top-16 z-30 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-wrap items-center justify-between gap-4">
+          {/* Section Tabs */}
+          <div className="flex items-center gap-4 sm:gap-8 text-xs sm:text-sm font-semibold text-stone-600 overflow-x-auto py-1 no-scrollbar">
+            <a href="#overview" className="text-stone-900 font-bold border-b-2 border-stone-900 pb-1 shrink-0">Overview</a>
+            <a href="#highlights" className="hover:text-stone-900 transition-colors shrink-0">Highlights</a>
+            <a href="#details" className="hover:text-stone-900 transition-colors shrink-0">Home details</a>
+            <a href="#map" className="hover:text-stone-900 transition-colors shrink-0">Map</a>
+          </div>
+
+          {/* Action Links */}
+          <div className="flex items-center gap-4 text-xs sm:text-sm font-medium text-stone-600">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                toast.success("Link copied to clipboard");
+              }}
+              className="flex items-center gap-2 hover:text-stone-900 transition-colors cursor-pointer"
+            >
+              <Share2 className="w-4 h-4 text-stone-600" />
+              <span>Share</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+
+        {/* 5-Image Gallery Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 mb-8">
+          {/* Main Large Image (Left half) */}
+          <div className="relative aspect-[4/3] sm:aspect-[16/11] lg:h-[460px] w-full rounded-2xl overflow-hidden group shadow-xs bg-stone-200">
+            <img
+              src={cloudinaryUrl(gridImages[activeImage % gridImages.length], { width: 1200 })}
+              alt={property.title}
+              className="w-full h-full object-cover transition-transform duration-500 cursor-pointer"
+              onClick={() => setPreviewImage(gridImages[activeImage % gridImages.length])}
+            />
+
+            {/* Left / Right Carousel Controls */}
+            <button
+              onClick={prevImage}
+              className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 text-stone-800 flex items-center justify-center shadow-md hover:bg-white transition-all opacity-80 hover:opacity-100 cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 text-stone-800 flex items-center justify-center shadow-md hover:bg-white transition-all opacity-80 hover:opacity-100 cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+
+            {/* Bottom-Left Overlay Pills (Floor Plans & Layouts, Project Brochure, Street View) */}
+            <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 flex flex-wrap items-center gap-1.5 sm:gap-2 z-10">
+              <button
+                onClick={() => {
+                  const detailsElement = document.getElementById("details");
+                  detailsElement?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="bg-white/95 text-stone-900 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:bg-white transition-all border border-stone-200/50 backdrop-blur-sm cursor-pointer"
+              >
+                <Layers className="w-3.5 h-3.5 text-stone-700" />
+                <span className="whitespace-nowrap">Floor Plans & Layouts</span>
+              </button>
+              <button
+                onClick={() => {
+                  if (property.technicalPdf && property.technicalPdf !== "null" && property.technicalPdf.trim() !== "") {
+                    handleDownload(property.technicalPdf);
+                  } else {
+                    toast.info("Brochure document available upon inquiry.");
+                  }
+                }}
+                className="bg-white/95 text-stone-900 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:bg-white transition-all border border-stone-200/50 backdrop-blur-sm cursor-pointer"
+              >
+                <FileText className="w-3.5 h-3.5 text-stone-700" />
+                <span className="whitespace-nowrap">Project Brochure</span>
+              </button>
+              <button
+                onClick={() => {
+                  const mapElement = document.getElementById("map");
+                  mapElement?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="bg-white/95 text-stone-900 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:bg-white transition-all border border-stone-200/50 backdrop-blur-sm cursor-pointer"
+              >
+                <MapPin className="w-3.5 h-3.5 text-stone-700" />
+                <span className="whitespace-nowrap">Street View</span>
+              </button>
+            </div>
+
+            {/* Bottom-Right Overlay Pill (Photo Count) */}
+            <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10">
+              <button
+                onClick={() => setPreviewImage(gridImages[activeImage % gridImages.length])}
+                className="bg-white/95 text-stone-900 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold flex items-center gap-1.5 shadow-xs hover:bg-white transition-all border border-stone-200/50 backdrop-blur-sm cursor-pointer"
+              >
+                <ImageIcon className="w-3.5 h-3.5 text-stone-700" />
+                <span>{activeImage + 1}/{property.images && property.images.length > 0 ? property.images.length : images.length}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Right 2x2 Grid (4 Thumbnails) */}
+          <div className="grid grid-cols-2 gap-3 md:gap-4 h-full">
+            {gridImages.slice(1, 5).map((img, idx) => {
+              const actualIndex = (idx + 1) % gridImages.length;
+              const isLast = idx === 3;
+              return (
+                <div
+                  key={idx}
+                  className="relative h-[180px] sm:h-[210px] md:h-[222px] w-full rounded-2xl overflow-hidden group cursor-pointer bg-stone-200"
+                  onClick={() => {
+                    setActiveImage(actualIndex);
+                    setPreviewImage(img);
+                  }}
+                >
+                  <img
+                    src={cloudinaryUrl(img, { width: 600, height: 450 })}
+                    alt={`Property thumbnail ${idx + 2}`}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+
+                  {/* Valid Photos Overlay Pill on 4th Thumbnail */}
+                  {isLast && (
+                    <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPreviewImage(img);
+                        }}
+                        className="bg-white/95 text-stone-900 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-semibold flex items-center gap-1.5 shadow-md hover:bg-white transition-all border border-stone-200/50 backdrop-blur-sm cursor-pointer"
+                      >
+                        <ImageIcon className="w-3.5 h-3.5 text-stone-700" />
+                        <span>{property.images && property.images.length > 0 ? property.images.length : images.length} photos</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Content Layout: Left 2/3 (Details) & Right 1/3 (Agent Card) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 items-start">
+
+          {/* Left Main Content */}
+          <div className="lg:col-span-2 space-y-8">
+
+            {/* Price, Address & Inline Metrics Header Card */}
+            <div className="bg-white p-5 sm:p-7 rounded-2xl border border-stone-200/90 shadow-2xs space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-6 border-b border-stone-100">
+                <div className="space-y-1.5">
+                  <h1 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-stone-900 tracking-tight flex items-center flex-wrap gap-1.5">
+                    <PriceDisplay
+                      price={property.price || 5000000}
+                      category={property.category}
+                      iconSize={18}
+                      iconClassName="w-4 h-4 sm:w-5 sm:h-5 inline-block text-stone-900 mb-0.5"
+                    />
+                  </h1>
+                  <p className="text-stone-600 text-xs sm:text-sm font-medium flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-stone-400 shrink-0" />
+                    <span>{property.address || property.location || "Motor City, Dubai, United Arab Emirates"}</span>
+                  </p>
+                </div>
+
+                {/* Beds | Baths | Sqft Inline Row */}
+                <div className="flex items-center gap-4 sm:gap-6 self-start sm:self-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100 w-full sm:w-auto justify-between sm:justify-start">
+                  <div className="text-center sm:text-left min-w-[50px] sm:min-w-0">
+                    <p className="font-display text-lg sm:text-2xl md:text-3xl font-bold text-stone-900 leading-tight">
+                      {property.category === "off-plan" && property.unitTypes
+                        ? property.unitTypes
+                        : property.bedrooms || 4}
+                    </p>
+                    <p className="text-stone-500 text-xs sm:text-sm font-medium">Beds</p>
+                  </div>
+                  <div className="h-8 sm:h-10 w-[1px] bg-stone-200 shrink-0" />
+                  <div className="text-center sm:text-left min-w-[50px] sm:min-w-0">
+                    <p className="font-display text-lg sm:text-2xl md:text-3xl font-bold text-stone-900 leading-tight">
+                      {property.bathrooms ? property.bathrooms : "1-3"}
+                    </p>
+                    <p className="text-stone-500 text-xs sm:text-sm font-medium">Baths</p>
+                  </div>
+                  <div className="h-8 sm:h-10 w-[1px] bg-stone-200 shrink-0" />
+                  <div className="text-center sm:text-left min-w-[70px] sm:min-w-0">
+                    <p className="font-display text-lg sm:text-2xl md:text-3xl font-bold text-stone-900 leading-tight whitespace-nowrap">
+                      {typeof property.area === 'number'
+                        ? property.area.toLocaleString()
+                        : property.area || "1,963-5,479"}
+                    </p>
+                    <p className="text-stone-500 text-xs sm:text-sm font-medium">Sqft</p>
+                  </div>
+                </div>
+              </div>
+
+            {/* 2 Rows x 3 Columns Badge Pill Cards (Fully Responsive & Clean Alignment) */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+              <div className="bg-[#f4f4f5] rounded-xl p-3 sm:p-4 flex items-center gap-2.5 text-stone-800 text-xs sm:text-sm font-medium border border-stone-200/50">
+                <Link2 className="w-4 h-4 text-stone-600 shrink-0" />
+                <span className="truncate">{property.type ? property.type.charAt(0).toUpperCase() + property.type.slice(1) : "Single Family Residence"}</span>
+              </div>
+              <div className="bg-[#f4f4f5] rounded-xl p-3 sm:p-4 flex items-center gap-2.5 text-stone-800 text-xs sm:text-sm font-medium border border-stone-200/50">
+                <Link2 className="w-4 h-4 text-stone-600 shrink-0" />
+                <span className="truncate">Built in {property.yearBuilt || 2024}</span>
+              </div>
+              <div className="bg-[#f4f4f5] rounded-xl p-3 sm:p-4 flex items-center gap-2.5 text-stone-800 text-xs sm:text-sm font-medium border border-stone-200/50">
+                <Link2 className="w-4 h-4 text-stone-600 shrink-0" />
+                <span className="truncate">0.44 Acres Lot</span>
+              </div>
+
+              <div className="bg-[#f4f4f5] rounded-xl p-3 sm:p-4 flex items-center gap-2.5 text-stone-800 text-xs sm:text-sm font-medium border border-stone-200/50">
+                <DirhamIcon className="w-4 h-4 text-stone-600 shrink-0 inline-block" />
+                <span className="truncate">{homiqEstimate.toLocaleString()} Homiq®</span>
+              </div>
+              <div className="bg-[#f4f4f5] rounded-xl p-3 sm:p-4 flex items-center gap-2.5 text-stone-800 text-xs sm:text-sm font-medium border border-stone-200/50">
+                <DirhamIcon className="w-4 h-4 text-stone-600 shrink-0 inline-block" />
+                <span className="truncate">{pricePerSqft}/sqft</span>
+              </div>
+              <div className="bg-[#f4f4f5] rounded-xl p-3 sm:p-4 flex items-center gap-2.5 text-stone-800 text-xs sm:text-sm font-medium border border-stone-200/50">
+                <Link2 className="w-4 h-4 text-stone-600 shrink-0" />
+                <span className="truncate">10/mo HOA</span>
+              </div>
+            </div>
+            </div>
+
+            {/* About This Home */}
+            <div id="overview" className="pt-4">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-stone-900 mb-4">About This Home</h2>
+              <p className="text-stone-600 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                {property.description ||
+                  `Welcome to this beautifully upgraded single-story home in the heart of Sun City Summerlin! This 2-bedroom, 2-bathroom gem features an open floor plan that's perfect for entertaining. The spacious kitchen boasts an oversized island, stainless steel appliances, and plenty of cabinet space—ideal for any home chef. Enjoy cozy evenings by the fireplace in the inviting family room. You'll love the upgraded flooring throughout, as well as the modern finishes in both bathrooms. The large backyard is a private oasis with stylish pavers and room to relax or entertain.`}
+              </p>
+            </div>
+
+            {/* Highlights & Amenities */}
+            {filteredAmenities.length > 0 && (
+              <div id="highlights" className="pt-8 border-t border-stone-200">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900 mb-6">Highlights & Amenities</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {filteredAmenities.map((amenity, idx) => (
+                    <div key={idx} className="flex items-center gap-3 bg-white p-3.5 rounded-xl border border-stone-200/80 shadow-2xs">
+                      <CheckCircle2 className="w-4 h-4 text-[#1c4d32] shrink-0" />
+                      <span className="text-xs sm:text-sm font-medium text-stone-700 truncate">{amenity}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Home Details & Technical Specifications */}
+            <div id="details" className="pt-8 border-t border-stone-200">
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900 mb-6">Home Details</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 bg-white p-6 rounded-2xl border border-stone-200/80 shadow-2xs">
+                {property.developer && (
+                  <div>
+                    <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">Developer</p>
+                    <p className="text-sm sm:text-base font-bold text-stone-900">{property.developer}</p>
+                  </div>
+                )}
+                {property.yearBuilt && (
+                  <div>
+                    <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">Year Built</p>
+                    <p className="text-sm sm:text-base font-bold text-stone-900">{property.yearBuilt}</p>
+                  </div>
+                )}
+                {property.garages && (
+                  <div>
+                    <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">Parking</p>
+                    <p className="text-sm sm:text-base font-bold text-stone-900">{property.garages} Spaces</p>
+                  </div>
+                )}
+                {property.floorsNo && (
+                  <div>
+                    <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">Floors</p>
+                    <p className="text-sm sm:text-base font-bold text-stone-900">{property.floorsNo}</p>
+                  </div>
+                )}
+                {property.kitchens && (
+                  <div>
+                    <p className="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">Kitchens</p>
+                    <p className="text-sm sm:text-base font-bold text-stone-900">{property.kitchens}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Architectural Blueprints / Floor Plans */}
+            {property.floorPlans && property.floorPlans.length > 0 && (
+              <div className="pt-8 border-t border-stone-200">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900 mb-6">Floor Plans</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {property.floorPlans.map((plan, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white p-4 rounded-2xl border border-stone-200 cursor-pointer hover:shadow-md transition-all flex flex-col items-center"
+                      onClick={() => setPreviewImage(plan)}
+                    >
+                      <img src={cloudinaryUrl(plan, { width: 800 })} alt={`Floor Plan ${idx + 1}`} className="h-48 object-contain mb-3" />
+                      <span className="text-xs font-bold text-stone-500 uppercase tracking-wider">Floor Plan {idx + 1}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Official Brochure PDF */}
+            {property.technicalPdf && property.technicalPdf !== "null" && (
+              <div className="pt-8 border-t border-stone-200">
+                <div className="bg-white p-6 rounded-2xl border border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div>
+                    <h4 className="font-bold text-base sm:text-lg text-stone-900 mb-1">Official Brochure</h4>
+                    <p className="text-stone-500 text-xs sm:text-sm">Download property documents and technical specs.</p>
+                  </div>
+                  <button
+                    onClick={() => handleDownload(property.technicalPdf)}
+                    className="bg-stone-900 hover:bg-stone-800 text-white px-6 py-3 rounded-xl font-semibold text-xs uppercase tracking-wider flex items-center gap-2 shrink-0 transition-colors cursor-pointer"
+                  >
+                    <FileText className="w-4 h-4" /> Download PDF
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Google Map Section */}
+            <div id="map" className="pt-8 border-t border-stone-200">
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900 mb-6">Location Map</h3>
+              <div className="h-[300px] sm:h-[380px] w-full rounded-2xl overflow-hidden border border-stone-200 shadow-2xs">
+                <iframe
+                  width="100%" height="100%" frameBorder="0" scrolling="no"
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent([property.location, property.areaLocation, property.region, property.city].filter(Boolean).join(", "))}&t=&z=14&ie=UTF8&iwloc=B&output=embed`}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Sticky Sidebar (Listing Agent Box) */}
+          <div className="lg:col-span-1 sticky top-24">
+            <div className="bg-white border border-stone-200/90 rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
+              <div>
+                <p className="text-stone-500 text-xs font-semibold mb-1">Listing Agent</p>
+                <h3 className="text-xl font-bold text-stone-900">{agentName}</h3>
+              </div>
+
+              <div className="space-y-2.5 pt-2 border-t border-stone-100">
+                <div className="flex items-center justify-between p-2.5 rounded-xl border border-stone-100 bg-stone-50/50">
+                  <div className="flex items-center gap-2 text-stone-800 text-xs sm:text-sm font-medium">
+                    <span className="text-base shrink-0">🇦🇪</span>
+                    <span className="font-semibold tracking-wide">{agentPhone}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="https://wa.me/971588251088"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-7 h-7 rounded-full bg-[#25D366] flex items-center justify-center text-white hover:scale-110 transition-transform shadow-xs"
+                      title="WhatsApp Business"
+                    >
+                      <WhatsAppIcon className="w-3.5 h-3.5" />
+                    </a>
+                    <a
+                      href="tel:+971588251088"
+                      className="w-7 h-7 rounded-full border border-stone-300 flex items-center justify-center text-stone-600 hover:border-stone-800 hover:text-stone-900 transition-all"
+                      title="Call Now"
+                    >
+                      <Phone className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 text-stone-700 text-xs sm:text-sm font-medium px-1">
+                  <Mail className="w-4 h-4 text-stone-500 shrink-0" />
+                  <span className="truncate">{agentEmail}</span>
+                </div>
+              </div>
+
+              {/* Form matching Experience Dubai's Future form fields */}
+              <form onSubmit={handleEnquiry} className="space-y-3.5 pt-2">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
+                    Full Name
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-stone-800 outline-none focus:border-stone-400 transition-colors shadow-inner"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
+                    Email Address
+                  </label>
+                  <input
+                    required
+                    type="email"
+                    placeholder="name@example.com"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-stone-800 outline-none focus:border-stone-400 transition-colors shadow-inner"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
+                    Phone Number
+                  </label>
+                  <div className="flex gap-2">
+                    <CountryCodeSelector
+                      value={form.countryCode}
+                      onChange={(value) => setForm({ ...form, countryCode: value })}
+                      className="w-[110px] sm:w-[120px] rounded-xl h-[38px] text-xs bg-stone-50 border-stone-200"
+                    />
+                    <input
+                      required
+                      type="tel"
+                      placeholder="58 825 1088"
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      className="flex-1 bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2 text-xs text-stone-800 outline-none focus:border-stone-400 transition-colors shadow-inner"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase text-stone-400 tracking-widest pl-1">
+                    Personal Message
+                  </label>
+                  <textarea
+                    rows={3}
+                    className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs text-stone-800 outline-none focus:border-stone-400 transition-colors resize-none shadow-inner placeholder:text-stone-400"
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    placeholder={`Hi ${agentName}, I would like to know more about this listing.`}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full bg-[#1c4d32] hover:bg-[#153a26] text-white font-semibold py-3 px-4 rounded-xl text-center shadow-xs transition-all text-xs uppercase tracking-wider cursor-pointer active:scale-95"
+                >
+                  {submitting ? "Sending..." : "Send Message"}
+                </button>
+              </form>
+
+              <p className="text-stone-400 text-[10px] sm:text-[11px] text-center font-normal pt-1">
+                Only Homes.com connects you to the Listing Agent.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Lightbox / Preview Modal */}
+      <AnimatePresence>
+        {previewImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md p-4 md:p-10"
+            onClick={() => setPreviewImage(null)}
+          >
+            <motion.button
+              className="absolute top-6 right-6 p-3 text-white/50 hover:text-white transition-colors z-[110]"
+              whileHover={{ rotate: 90 }}
+              onClick={() => setPreviewImage(null)}
+            >
+              <X className="w-8 h-8" />
+            </motion.button>
+
+            <motion.div
+              className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center p-4"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={cloudinaryUrl(previewImage, { width: 1400 })}
+                alt="Preview"
+                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function renderMinimalTheme(
+  property: PropertyType,
+  activeImage: number,
+  setActiveImage: (n: number) => void,
+  previewImage: string | null,
+  setPreviewImage: (s: string | null) => void,
+  form: { name: string; email: string; countryCode: string; phone: string; message: string },
+  setForm: (f: any) => void,
+  submitting: boolean,
+  handleEnquiry: (e: React.FormEvent) => Promise<void>,
+  handleDownload: (url: string | undefined) => Promise<void>,
+  nextImage: () => void,
+  prevImage: () => void,
+) {
+  const images = property.images && property.images.length > 0 ? property.images : [property.image];
+  const gridImages = [...images];
+  while (gridImages.length < 3) {
+    gridImages.push(gridImages[gridImages.length % images.length]);
+  }
+
+  const agentName = property.developerName || property.developer || "Avenew Development";
+  const displayAddress = property.address || property.location || "2464 Royal Ln. Mesa, New Jersey";
+
+  const filteredAmenities = (property.amenities || []).flatMap((a) =>
+    typeof a === "string" ? a.split(",") : [a],
+  ).map((a) => typeof a === "string" ? a.trim() : a);
+
+  return (
+    <div className="bg-[#f8fafc] min-h-screen font-body text-stone-900 pt-20 pb-20">
+
+      {/* Breadcrumb Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <div className="flex items-center gap-2 text-stone-700 text-xs sm:text-sm font-semibold">
+          <Link to="/properties" className="hover:text-stone-900 flex items-center gap-1.5 transition-colors">
+            <ArrowLeft className="w-4 h-4 text-stone-700" />
+            <span>Property details</span>
+          </Link>
+          <span className="text-stone-400">/</span>
+          <span className="text-stone-500 font-medium">{property.title || "Home"}</span>
+        </div>
+      </div>
+
+      {/* Main Grid Layout */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+
+        {/* Left Side Main Content */}
+        <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+
+          {/* 3-Image Collage Gallery Container with Premium Equal-Height Alignment */}
+          <div className="bg-white p-3 sm:p-4 rounded-3xl border border-stone-200/80 shadow-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 sm:h-[380px] md:h-[440px] lg:h-[460px]">
+              {/* Large Main Image (Left 2 cols, Full Grid Height) */}
+              <div className="sm:col-span-2 relative h-full w-full rounded-2xl overflow-hidden bg-stone-100 group shadow-2xs">
+                <img
+                  src={cloudinaryUrl(gridImages[activeImage % gridImages.length], { width: 1200 })}
+                  alt={property.title}
+                  className="w-full h-full object-cover cursor-pointer transition-transform duration-500 group-hover:scale-[1.02]"
+                  onClick={() => setPreviewImage(gridImages[activeImage % gridImages.length])}
+                />
+                {/* Subtle top & bottom shadow gradient overlay for depth */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/25 pointer-events-none" />
+
+                {/* Carousel Arrows */}
+                <button
+                  onClick={prevImage}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 text-stone-800 flex items-center justify-center shadow-md hover:bg-white hover:scale-105 transition-all cursor-pointer z-10"
+                >
+                  <ChevronLeft className="w-5 h-5 text-stone-800" />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 text-stone-800 flex items-center justify-center shadow-md hover:bg-white hover:scale-105 transition-all cursor-pointer z-10"
+                >
+                  <ChevronRight className="w-5 h-5 text-stone-800" />
+                </button>
+              </div>
+
+              {/* Right 2 Stacked Thumbnails (Flex-1 Split to Equal Half Height) */}
+              <div className="flex flex-col gap-3 md:gap-4 h-full">
+                <div
+                  className="relative flex-1 h-1/2 w-full rounded-2xl overflow-hidden bg-stone-100 cursor-pointer shadow-2xs group"
+                  onClick={() => { setActiveImage(1); setPreviewImage(gridImages[1]); }}
+                >
+                  <img
+                    src={cloudinaryUrl(gridImages[1], { width: 600 })}
+                    alt="Thumbnail 1"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div
+                  className="relative flex-1 h-1/2 w-full rounded-2xl overflow-hidden bg-stone-100 cursor-pointer shadow-2xs group"
+                  onClick={() => { setActiveImage(2); setPreviewImage(gridImages[2]); }}
+                >
+                  <img
+                    src={cloudinaryUrl(gridImages[2], { width: 600 })}
+                    alt="Thumbnail 2"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/35 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                    <span className="bg-white/95 backdrop-blur-md text-stone-900 text-xs font-bold px-3.5 py-2 rounded-full shadow-md flex items-center gap-1.5 border border-white/40">
+                      <ImageIcon className="w-3.5 h-3.5 text-stone-700" />
+                      + {property.images && property.images.length > 0 ? property.images.length : images.length} Photos
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Price, Address & Specs Card */}
+          <div className="bg-white rounded-2xl p-5 sm:p-7 border border-stone-200/80 shadow-xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900 flex items-center gap-2">
+                  <PriceDisplay
+                    price={property.price || 125650}
+                    category={property.category}
+                    iconSize={24}
+                    iconClassName="w-6 h-6 inline-block text-stone-900 mb-0.5"
+                  />
+                </div>
+                <p className="text-stone-700 text-xs sm:text-sm font-semibold flex items-center gap-1.5 mt-1.5">
+                  <MapPin className="w-4 h-4 text-stone-500 shrink-0" />
+                  <span>{displayAddress}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Features Sub-row (Beds, Baths, Parking, Sqft) */}
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-3 border-t border-stone-100 text-stone-700 text-xs sm:text-sm font-semibold">
+              <div className="flex items-center gap-1.5">
+                <Bed className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{property.bedrooms || 4} Bed</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Bath className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{property.bathrooms || 4} Baths</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Car className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{property.garages || 2} Parking</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Maximize className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{typeof property.area === 'number' ? property.area.toLocaleString() : property.area || "1254"} Sq Ft</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Property Information Card */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-3">
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-stone-900">Property information</h2>
+            <p className="text-stone-600 text-xs sm:text-sm sm:leading-relaxed whitespace-pre-line">
+              {property.description ||
+                "Charming lakefront cottage located right on the shoreline of Lake Bellaire! Share 150 of beautiful sandy frontage on the west side with six other cottages. Moor your boat right in front of your cottage, with or without a hoist. Freshly painted exterior, brand new split unit A/C with heat, brand new Amana range."}
+            </p>
+          </div>
+
+          {/* Detailed Property Specifications & Characteristics */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-6">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900">Specifications & Overview</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+              {property.propertyType && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Property Type</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900 capitalize">{property.propertyType}</p>
+                </div>
+              )}
+              {property.listedIn && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Listing Type</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900">{property.listedIn}</p>
+                </div>
+              )}
+              {property.yearBuilt && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Year Built</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900">{property.yearBuilt}</p>
+                </div>
+              )}
+              {property.kitchens && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Kitchens</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900">{property.kitchens}</p>
+                </div>
+              )}
+              {property.garages && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Garages / Parking</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900">{property.garages} Spaces</p>
+                </div>
+              )}
+              {property.floorsNo && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Floors</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900">{property.floorsNo}</p>
+                </div>
+              )}
+              {property.developerName && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Developer</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900">{property.developerName}</p>
+                </div>
+              )}
+              {property.handoverYear && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Handover Year</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900">{property.handoverYear}</p>
+                </div>
+              )}
+              {property.unitTypes && (
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Unit Types</p>
+                  <p className="text-xs sm:text-sm font-bold text-stone-900">{property.unitTypes}</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Payment Plan (If Off-Plan) */}
+          {property.paymentPlan && (property.paymentPlan.onBooking !== undefined || property.paymentPlan.duringConstruction !== undefined || property.paymentPlan.onHandover !== undefined) && (
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-6">
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900">Payment Plan</h3>
+              <div className="grid grid-cols-3 gap-4">
+                {property.paymentPlan.onBooking !== undefined && (
+                  <div className="bg-stone-50 rounded-xl p-4 sm:p-6 text-center border border-stone-200/80">
+                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">On Booking</p>
+                    <p className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">{property.paymentPlan.onBooking}%</p>
+                  </div>
+                )}
+                {property.paymentPlan.duringConstruction !== undefined && (
+                  <div className="bg-stone-50 rounded-xl p-4 sm:p-6 text-center border border-stone-200/80">
+                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">During Construction</p>
+                    <p className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">{property.paymentPlan.duringConstruction}%</p>
+                  </div>
+                )}
+                {property.paymentPlan.onHandover !== undefined && (
+                  <div className="bg-stone-50 rounded-xl p-4 sm:p-6 text-center border border-stone-200/80">
+                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-2">On Handover</p>
+                    <p className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">{property.paymentPlan.onHandover}%</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Highlights & Amenities */}
+          {filteredAmenities.length > 0 && (
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-6">
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900">Amenities & Features</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {filteredAmenities.map((amenity, idx) => (
+                  <div key={idx} className="flex items-center gap-3 p-3.5 rounded-xl bg-stone-50 border border-stone-200/80">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span className="text-xs sm:text-sm font-semibold text-stone-700 truncate">{amenity}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Architectural Floor Plans */}
+          {property.floorPlans && property.floorPlans.length > 0 && (
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-6">
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900">Floor Plans</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {property.floorPlans.map((plan, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-stone-50 p-4 rounded-xl border border-stone-200/80 cursor-pointer hover:shadow-md transition-all flex flex-col items-center"
+                    onClick={() => setPreviewImage(plan)}
+                  >
+                    <img src={cloudinaryUrl(plan, { width: 800 })} alt={`Floor Plan ${idx + 1}`} className="h-44 object-contain mb-3" />
+                    <span className="text-xs font-bold text-stone-600 uppercase tracking-wider">Floor Plan {idx + 1}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Official Brochure PDF Download */}
+          {property.technicalPdf && property.technicalPdf !== "null" && (
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <h4 className="font-bold text-base sm:text-lg text-stone-900 mb-1">Project Brochure</h4>
+                <p className="text-stone-500 text-xs sm:text-sm">Download property documents and technical specs PDF.</p>
+              </div>
+              <button
+                onClick={() => handleDownload(property.technicalPdf)}
+                className="bg-stone-900 hover:bg-stone-800 text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 shrink-0 transition-colors cursor-pointer"
+              >
+                <FileText className="w-4 h-4" /> Download Brochure
+              </button>
+            </div>
+          )}
+
+        </div>
+
+        {/* Right Sidebar (Agent Details, Inspection Times, Location Map, Enquiry) */}
+        <div id="agent-sidebar" className="lg:col-span-1 space-y-6">
+
+          {/* Agent Details Card */}
+          <div className="bg-sky-50/40 rounded-2xl p-6 border border-sky-200/80 shadow-xs space-y-4">
+            <h3 className="font-display text-base font-bold text-stone-900">Agent details</h3>
+            <div>
+              <p className="text-sm font-bold text-stone-900">Omnis</p>
+              <p className="text-xs text-stone-500 mt-0.5">{displayAddress}</p>
+            </div>
+            <div className="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 bg-white">
+              <div className="flex items-center gap-2 text-stone-800 text-xs font-semibold">
+                <span>🇦🇪</span>
+                <span>+971 58 825 1088</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <a
+                  href="https://wa.me/971588251088"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-6 h-6 rounded-full bg-[#25D366] flex items-center justify-center text-white hover:scale-110 transition-transform shadow-2xs"
+                  title="WhatsApp"
+                >
+                  <WhatsAppIcon className="w-3 h-3" />
+                </a>
+                <a
+                  href="tel:+971588251088"
+                  className="w-6 h-6 rounded-full border border-stone-300 flex items-center justify-center text-stone-700 hover:bg-stone-100 transition-colors shadow-2xs"
+                  title="Call Agent"
+                >
+                  <Phone className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+            <a
+              href="tel:+971588251088"
+              className="w-full bg-white hover:bg-stone-50 text-stone-800 font-semibold py-2.5 px-4 rounded-xl border border-stone-300 text-xs flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
+            >
+              <Phone className="w-3.5 h-3.5 text-stone-700" />
+              <span>Contact Agent</span>
+            </a>
+          </div>
+
+          {/* Share to Social Media Card */}
+          <div className="bg-white rounded-2xl p-6 border border-stone-200/80 shadow-xs space-y-4">
+            <div>
+              <h3 className="font-display text-base font-bold text-stone-900 flex items-center gap-2">
+                <Share2 className="w-4 h-4 text-stone-700" />
+                <span>Share Property</span>
+              </h3>
+              <p className="text-xs text-stone-500 mt-1">Share this listing across social networks</p>
+            </div>
+
+            <div className="grid grid-cols-5 gap-2 pt-1">
+              {/* 1. WhatsApp */}
+              <a
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Check out this property: ${property.title} - ${window.location.href}`)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-stone-50 border border-stone-200 hover:border-[#25D366] hover:bg-[#25D366]/10 text-stone-700 hover:text-[#25D366] transition-all group cursor-pointer"
+                title="Share on WhatsApp"
+              >
+                <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
+                <span className="text-[10px] font-semibold mt-1">WhatsApp</span>
+              </a>
+
+              {/* 2. Facebook */}
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-stone-50 border border-stone-200 hover:border-[#1877F2] hover:bg-[#1877F2]/10 text-stone-700 hover:text-[#1877F2] transition-all group cursor-pointer"
+                title="Share on Facebook"
+              >
+                <svg className="w-5 h-5 fill-[#1877F2]" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                <span className="text-[10px] font-semibold mt-1">Facebook</span>
+              </a>
+
+              {/* 3. X / Twitter */}
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(`Check out ${property.title}`)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-stone-50 border border-stone-200 hover:border-stone-900 hover:bg-stone-900/10 text-stone-700 hover:text-stone-900 transition-all group cursor-pointer"
+                title="Share on X"
+              >
+                <svg className="w-5 h-5 fill-stone-900" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                <span className="text-[10px] font-semibold mt-1">Twitter</span>
+              </a>
+
+              {/* 4. LinkedIn */}
+              <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-stone-50 border border-stone-200 hover:border-[#0A66C2] hover:bg-[#0A66C2]/10 text-stone-700 hover:text-[#0A66C2] transition-all group cursor-pointer"
+                title="Share on LinkedIn"
+              >
+                <svg className="w-5 h-5 fill-[#0A66C2]" viewBox="0 0 24 24">
+                  <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                </svg>
+                <span className="text-[10px] font-semibold mt-1">LinkedIn</span>
+              </a>
+
+              {/* 5. Telegram */}
+              <a
+                href={`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(property.title)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-stone-50 border border-stone-200 hover:border-[#0088cc] hover:bg-[#0088cc]/10 text-stone-700 hover:text-[#0088cc] transition-all group cursor-pointer"
+                title="Share on Telegram"
+              >
+                <svg className="w-5 h-5 fill-[#0088cc]" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                </svg>
+                <span className="text-[10px] font-semibold mt-1">Telegram</span>
+              </a>
+            </div>
+
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                toast.success("Property link copied to clipboard!");
+              }}
+              className="w-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold py-2.5 px-4 rounded-xl border border-stone-200 text-xs flex items-center justify-center gap-2 shadow-2xs transition-colors cursor-pointer"
+            >
+              <Link2 className="w-3.5 h-3.5 text-stone-700" />
+              <span>Copy Link</span>
+            </button>
+          </div>
+
+          {/* Google Location Map */}
+          <div className="rounded-2xl overflow-hidden border border-stone-200 shadow-xs h-[280px]">
+            <iframe
+              width="100%" height="100%" frameBorder="0" scrolling="no"
+              src={`https://maps.google.com/maps?q=${encodeURIComponent([property.location, property.areaLocation, property.region, property.city].filter(Boolean).join(", "))}&t=&z=14&ie=UTF8&iwloc=B&output=embed`}
+            />
+          </div>
+
+          {/* Quick Enquiry Form */}
+          <div id="enquiry-form" className="bg-white rounded-2xl p-6 border border-stone-200/80 shadow-xs space-y-4">
+            <h3 className="font-display font-bold text-sm text-stone-900">Contact & Enquiry</h3>
+            <form onSubmit={handleEnquiry} className="space-y-3">
+              <input required value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-stone-800 transition-colors" placeholder="Full Name *" />
+              <input required type="email" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-stone-800 transition-colors" placeholder="Email *" />
+              <div className="flex gap-2">
+                <CountryCodeSelector value={form.countryCode} onChange={(val) => setForm({...form, countryCode: val})} className="w-[110px] rounded-xl h-[38px] text-xs" />
+                <input required type="tel" value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value})} className="flex-1 bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2 text-xs outline-none focus:border-stone-800 transition-colors" placeholder="Phone *" />
+              </div>
+              <textarea required rows={3} value={form.message} onChange={(e) => setForm({...form, message: e.target.value})} className="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-stone-800 transition-colors resize-none" placeholder="Write message..." />
+              <Button disabled={submitting} type="submit" className="w-full bg-stone-900 text-white hover:bg-stone-800 rounded-xl py-3 text-xs font-bold">{submitting ? "Sending..." : "Send Message"}</Button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Lightbox / Preview Modal */}
+      <AnimatePresence>
+        {previewImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 md:p-10"
+            onClick={() => setPreviewImage(null)}
+          >
+            <motion.button
+              className="absolute top-6 right-6 p-3 text-white/50 hover:text-white transition-colors z-[110]"
+              whileHover={{ rotate: 90 }}
+              onClick={() => setPreviewImage(null)}
+            >
+              <X className="w-8 h-8" />
+            </motion.button>
+            <motion.div
+              className="relative max-w-6xl max-h-full w-full h-full flex items-center justify-center"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img src={cloudinaryUrl(previewImage, { width: 1400 })} alt="" className="max-w-full max-h-full object-contain rounded-xl shadow-2xl" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default PropertyDetails;
