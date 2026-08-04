@@ -42,6 +42,72 @@ import { cloudinaryUrl } from "@/lib/utils";
 import { CountryCodeSelector } from "@/components/CountryCodeSelector";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
+function renderPreviewNavigation(
+  property: PropertyType,
+  previewImage: string | null,
+  setPreviewImage: (s: string | null) => void,
+  activeImage: number,
+  setActiveImage: (n: number) => void,
+) {
+  const gallery = property.images || [];
+  const idx = gallery.indexOf(previewImage || "");
+  if (idx === -1 || gallery.length < 2) return null;
+
+  const go = (next: number) => {
+    const i = (next + gallery.length) % gallery.length;
+    setPreviewImage(gallery[i]);
+    setActiveImage(i);
+  };
+
+  return (
+    <>
+      {/* Left: go to previous gallery image */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          go(idx - 1);
+        }}
+        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3 md:p-4 rounded-full bg-white/10 text-white backdrop-blur-md hover:bg-gold transition-colors z-[110] cursor-pointer"
+        aria-label="Previous image"
+      >
+        <ChevronLeft className="w-7 h-7 md:w-9 md:h-9" />
+      </button>
+
+      {/* Right: go to next gallery image */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          go(idx + 1);
+        }}
+        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-3 md:p-4 rounded-full bg-white/10 text-white backdrop-blur-md hover:bg-gold transition-colors z-[110] cursor-pointer"
+        aria-label="Next image"
+      >
+        <ChevronRight className="w-7 h-7 md:w-9 md:h-9" />
+      </button>
+
+      {/* Pagination dots */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-[110]">
+        {gallery.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              go(i);
+            }}
+            className={`h-1.5 rounded-full transition-all ${
+              i === idx ? "w-8 bg-gold" : "w-2 bg-white/40"
+            }`}
+            aria-label={`Go to image ${i + 1}`}
+          />
+        ))}
+      </div>
+    </>
+  );
+}
+
 const PropertyDetails = () => {
   const { slug } = useParams();
   const [property, setProperty] = useState<PropertyType | null>(null);
@@ -236,6 +302,7 @@ const PropertyDetails = () => {
   }
 
   const isOffPlan = property.category === "off-plan";
+  const isCommercial = property.type?.toLowerCase() === "commercial";
 
   if (property.theme === "modern") {
     return <Layout>{renderModernTheme(property, activeImage, setActiveImage, previewImage, setPreviewImage, form, setForm, submitting, handleEnquiry, handleDownload, nextImage, prevImage)}</Layout>;
@@ -248,7 +315,7 @@ const PropertyDetails = () => {
   if (isOffPlan) {
     return (
       <Layout>
-        <div className="pt-24 pb-20 bg-[#F9F9F7] font-body">
+        <div className="pt-28 pb-20 bg-[#F9F9F7] font-body">
           <div className="container mx-auto px-4 max-w-7xl">
             {/* Breadcrumbs */}
             <nav className="flex items-center gap-2 text-[10px] md:text-[11px] font-black tracking-[0.2em] text-stone-500 uppercase mb-6 md:mb-8">
@@ -312,6 +379,7 @@ const PropertyDetails = () => {
               </div>
 
               {/* Floating Specs Bar - Refined according to visual design */}
+              {!isCommercial && (
               <div className="relative mx-auto -mt-16 z-20 md:mt-0 md:absolute md:-bottom-10 md:left-1/2 md:-translate-x-1/2 w-[95%] md:w-[90%] bg-white/95 backdrop-blur-3xl rounded-[1rem] md:rounded-[1.25rem] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.1)] py-6 md:py-8 px-4 sm:px-6 md:px-12 grid grid-cols-2 md:grid-cols-4 gap-y-8 md:gap-y-0 md:divide-x divide-stone-100 transition-all border border-stone-100/50">
                 <div className="flex flex-col items-center md:items-start md:pl-4 justify-center">
                   <div className="flex items-center gap-4 mb-1">
@@ -372,6 +440,7 @@ const PropertyDetails = () => {
                   </span>
                 </div>
               </div>
+              )}
             </div>
           </div>
 
@@ -889,6 +958,14 @@ const PropertyDetails = () => {
                         className="max-w-full max-h-full object-contain rounded-2xl shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/5"
                       />
 
+                      {renderPreviewNavigation(
+                        property,
+                        previewImage,
+                        setPreviewImage,
+                        activeImage,
+                        setActiveImage,
+                      )}
+
                       {/* Overlay labels if it's a floor plan */}
                       {property.floorPlans?.includes(previewImage) && (
                         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-gold/90 backdrop-blur-xl px-10 py-4 rounded-full shadow-2xl border border-white/20">
@@ -916,7 +993,7 @@ const PropertyDetails = () => {
 
   return (
     <Layout>
-      <div className="pt-20">
+      <div className="pt-24">
         {/* Gallery Hero */}
         <div className="relative h-[60vh] md:h-[75vh] w-full bg-black overflow-hidden group">
           <AnimatePresence mode="wait">
@@ -1031,6 +1108,7 @@ const PropertyDetails = () => {
                 </div>
 
                 {/* Core Specs Grid */}
+                {isCommercial ? null : (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-8 bg-muted/30 rounded-3xl border border-border/50">
                   <div className="flex flex-col items-center">
                     <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center mb-3 shadow-inner">
@@ -1106,6 +1184,7 @@ const PropertyDetails = () => {
                     </p>
                   </div>
                 </div>
+                )}
 
                 {/* Description */}
                 <div className="mt-12">
@@ -1160,6 +1239,7 @@ const PropertyDetails = () => {
                 )}
 
                 {/* Technical Specs */}
+                {isCommercial ? null : (
                 <div className="mt-12 pt-12 border-t border-border">
                   <h2 className="font-display text-2xl font-black text-foreground mb-8 uppercase tracking-tighter">
                     Technical Profile
@@ -1237,6 +1317,7 @@ const PropertyDetails = () => {
                     )}
                   </div>
                 </div>
+                )}
 
                 {/* Amenities */}
                 {(() => {
@@ -1594,6 +1675,14 @@ const PropertyDetails = () => {
                   className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                 />
 
+                {renderPreviewNavigation(
+                  property,
+                  previewImage,
+                  setPreviewImage,
+                  activeImage,
+                  setActiveImage,
+                )}
+
                 {/* Overlay labels if it's a floor plan */}
                 {property.floorPlans?.includes(previewImage) && (
                   <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-gold/90 backdrop-blur-md px-6 py-2 rounded-full">
@@ -1816,6 +1905,7 @@ function renderModernTheme(
                 </div>
 
                 {/* Beds | Baths | Sqft Inline Row */}
+                {property.type?.toLowerCase() !== "commercial" && (
                 <div className="flex items-center gap-4 sm:gap-6 self-start sm:self-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100 w-full sm:w-auto justify-between sm:justify-start">
                   <div className="text-center sm:text-left min-w-[50px] sm:min-w-0">
                     <p className="font-display text-lg sm:text-2xl md:text-3xl font-bold text-stone-900 leading-tight">
@@ -1842,6 +1932,7 @@ function renderModernTheme(
                     <p className="text-stone-500 text-xs sm:text-sm font-medium">Sqft</p>
                   </div>
                 </div>
+                )}
               </div>
 
             {/* 2 Rows x 3 Columns Badge Pill Cards (Fully Responsive & Clean Alignment) */}
@@ -1899,6 +1990,7 @@ function renderModernTheme(
             )}
 
             {/* Home Details & Technical Specifications */}
+            {property.type?.toLowerCase() === "commercial" ? null : (
             <div id="details" className="pt-8 border-t border-stone-200">
               <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900 mb-6">Home Details</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 bg-white p-6 rounded-2xl border border-stone-200/80 shadow-2xs">
@@ -1934,6 +2026,7 @@ function renderModernTheme(
                 )}
               </div>
             </div>
+            )}
 
             {/* Architectural Blueprints / Floor Plans */}
             {property.floorPlans && property.floorPlans.length > 0 && (
@@ -2138,6 +2231,14 @@ function renderModernTheme(
                 alt="Preview"
                 className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
               />
+
+              {renderPreviewNavigation(
+                property,
+                previewImage,
+                setPreviewImage,
+                activeImage,
+                setActiveImage,
+              )}
             </motion.div>
           </motion.div>
         )}
@@ -2174,17 +2275,17 @@ function renderMinimalTheme(
   ).map((a) => typeof a === "string" ? a.trim() : a);
 
   return (
-    <div className="bg-[#f8fafc] min-h-screen font-body text-stone-900 pt-20 pb-20">
+    <div className="bg-[#f8fafc] min-h-screen font-body text-stone-900 pt-28 pb-20">
 
       {/* Breadcrumb Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <div className="flex items-center gap-2 text-stone-700 text-xs sm:text-sm font-semibold">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+        <div className="flex items-center gap-2 text-stone-500 text-xs sm:text-sm">
           <Link to="/properties" className="hover:text-stone-900 flex items-center gap-1.5 transition-colors">
-            <ArrowLeft className="w-4 h-4 text-stone-700" />
-            <span>Property details</span>
+            <ArrowLeft className="w-4 h-4" />
+            <span className="font-medium">Property details</span>
           </Link>
-          <span className="text-stone-400">/</span>
-          <span className="text-stone-500 font-medium">{property.title || "Home"}</span>
+          <span className="text-stone-300">/</span>
+          <span className="text-stone-900 font-semibold">{property.title}</span>
         </div>
       </div>
 
@@ -2256,42 +2357,59 @@ function renderMinimalTheme(
           </div>
 
           {/* Price, Address & Specs Card */}
-          <div className="bg-white rounded-2xl p-5 sm:p-7 border border-stone-200/80 shadow-xs space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs">
+            <div className="space-y-4">
+              {/* Price */}
               <div>
-                <div className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900 flex items-center gap-2">
+                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Asking Price</p>
+                <div className="font-display text-3xl sm:text-4xl font-extrabold text-stone-900">
                   <PriceDisplay
                     price={property.price || 125650}
                     category={property.category}
-                    iconSize={24}
-                    iconClassName="w-6 h-6 inline-block text-stone-900 mb-0.5"
+                    iconSize={28}
+                    iconClassName="w-7 h-7 inline-block text-stone-900 mb-0.5"
                   />
                 </div>
-                <p className="text-stone-700 text-xs sm:text-sm font-semibold flex items-center gap-1.5 mt-1.5">
-                  <MapPin className="w-4 h-4 text-stone-500 shrink-0" />
-                  <span>{displayAddress}</span>
-                </p>
               </div>
-            </div>
 
-            {/* Features Sub-row (Beds, Baths, Parking, Sqft) */}
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-3 border-t border-stone-100 text-stone-700 text-xs sm:text-sm font-semibold">
-              <div className="flex items-center gap-1.5">
-                <Bed className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{property.bedrooms || 4} Bed</span>
+              {/* Divider */}
+              <div className="h-px bg-stone-100" />
+
+              {/* Address */}
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-stone-50 shrink-0 mt-0.5">
+                  <MapPin className="w-4 h-4 text-stone-500" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Location</p>
+                  <p className="text-stone-700 text-sm font-semibold">{displayAddress}</p>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Bath className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{property.bathrooms || 4} Baths</span>
+
+              {/* Divider */}
+              <div className="h-px bg-stone-100" />
+
+              {/* Features Sub-row (Beds, Baths, Parking, Sqft) */}
+              {property.type?.toLowerCase() !== "commercial" && (
+              <div className="flex flex-wrap items-center gap-5 sm:gap-8 pt-1 text-stone-700 text-xs sm:text-sm font-semibold">
+                <div className="flex items-center gap-2">
+                  <Bed className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{property.bedrooms || 4} Bed</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Bath className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{property.bathrooms || 4} Baths</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Car className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{property.garages || 2} Parking</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Maximize className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{typeof property.area === 'number' ? property.area.toLocaleString() : property.area || "1254"} Sq Ft</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Car className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{property.garages || 2} Parking</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Maximize className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{typeof property.area === 'number' ? property.area.toLocaleString() : property.area || "1254"} Sq Ft</span>
-              </div>
+              )}
             </div>
           </div>
 
@@ -2305,6 +2423,7 @@ function renderMinimalTheme(
           </div>
 
           {/* Detailed Property Specifications & Characteristics */}
+          {property.type?.toLowerCase() === "commercial" ? null : (
           <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/80 shadow-xs space-y-6">
             <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900">Specifications & Overview</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
@@ -2364,6 +2483,7 @@ function renderMinimalTheme(
               )}
             </div>
           </div>
+          )}
 
           {/* Payment Plan (If Off-Plan) */}
           {property.paymentPlan && (property.paymentPlan.onBooking !== undefined || property.paymentPlan.duringConstruction !== undefined || property.paymentPlan.onHandover !== undefined) && (
@@ -2631,6 +2751,13 @@ function renderMinimalTheme(
               onClick={(e) => e.stopPropagation()}
             >
               <img src={cloudinaryUrl(previewImage, { width: 1400 })} alt="" className="max-w-full max-h-full object-contain rounded-xl shadow-2xl" />
+              {renderPreviewNavigation(
+                property,
+                previewImage,
+                setPreviewImage,
+                activeImage,
+                setActiveImage,
+              )}
             </motion.div>
           </motion.div>
         )}
