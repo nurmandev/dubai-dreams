@@ -13,10 +13,17 @@ out/
 
 # Environment
 .env
+.env.*
+!.env.example
+!**/.env.example
+*.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+**/.env
+**/.env.*
+**/*.env
 
 # IDE
 .vscode/
@@ -55,7 +62,18 @@ deploy*.ps1
 ecosystem.config.js
 nginx/
 fix-*.js
+cleanup-vps.js
+deep-diag.js
+diagnose-vps.js
+find-nginx.js
+finish-deploy.js
+upload-images.js
+verify.js
+build_for_cpanel.ps1
 /package.json
+backend/reset-admin*.js
+backend/unlock-admin.js
+backend/verify-admin.js
 hosting_guide.txt
 htaccess_for_cpanel.txt
 vercel.json
