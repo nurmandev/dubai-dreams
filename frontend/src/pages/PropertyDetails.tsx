@@ -1557,7 +1557,7 @@ const PropertyDetails = () => {
                       {[
                         { flag: "🇦🇪", num: "+971 58 825 1088", wa: "971588251088", tel: "+971588251088" },
                         { flag: "🇦🇪", num: "+971 58 153 0100", wa: "971581530100", tel: "+971581530100" },
-                        { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" },
+                        { flag: "🇮🇳", num: "+91 76786 51405", wa: "917678651405" , tel: "+917678651405" },
                       ].map((contact, idx) => (
                         <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-border/50 bg-muted/20 group hover:border-gold/30 transition-all">
                           <div className="flex items-center gap-3 text-foreground/90 font-body text-sm">
